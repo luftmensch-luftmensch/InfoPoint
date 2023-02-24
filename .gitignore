@@ -1,0 +1,10 @@
+### Doc related
+*.aux
+*.blx
+*.log
+*.toc
+*.out
+*.psd
+
+### Server related
+/server/build/*

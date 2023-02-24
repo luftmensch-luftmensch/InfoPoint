@@ -1,0 +1,622 @@
+% Created 2023-02-24 ven 17:05
+% Intended LaTeX compiler: lualatex
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage{lmodern} % Ensures we have the right font
+\usepackage[T1]{fontenc} % Basic font & characters selection
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+% Define font family to use (Other options are: Iosevka, Source Code Pro, Ubuntu, Titillium -> see setup file)
+\setmainfont{RobotoCondensed}[Extension=.ttf, UprightFont=*-Light, BoldFont=*-Regular, ItalicFont=*-LightItalic, BoldItalicFont=*-BoldItalic, Path=/home/valentino/Dropbox/fonts/]
+
+% Tables, wrapping, and other options
+%\usepackage{longtable} % This package defines the longtable environment, a multi-page version of tabular
+% For a long time, the tabular environment was used to build tables.
+% However, writing tables with tabular can be troublesome for beginners and really complex tables can be near impossible to write
+% Also, tables built with the tabular environment have some typographical issues and, when color is used, can be misread by PDF readers.
+% Therefore, more and more LaTeX users are calling to use the tblr environment from the tabularray package instead.
+% Guide at https://www.latex-tables.com/ressources/tabularray.html (To merge cells cell{5}{1} = {c=2}{})
+\usepackage{tabularray} % In order to get tblr env
+\usepackage{wrapfig} % This makes the wrapfigure environment available
+\usepackage{rotating} % Pretty obvious
+\usepackage[normalem]{ulem} % underlining and strike-through
+\usepackage{capt-of} % Captions outside of floats
+\usepackage{graphicx} % Include images
+\usepackage{amsmath, amsthm, amssymb, mathtools} % Subscript & superscript and math environments (amsmath),  Various symbols used for interpreting the entities (amssymb)
+%% Memo for table setup
+%% h -> Place the float here, i.e., approximately at the same point it occurs in the source text (however, not exactly at the spot)
+%% t -> Position at the top of the page
+%% b -> Position at the bottom of the page
+%% p -> Put on a special page for floats only
+%% ! -> Override internal parameters LaTeX uses for determining "good" float positions
+%% H -> Places the float at precisely the location in the LaTeX code (Requires the float package)
+\usepackage[table, xcdraw]{xcolor}
+\usepackage{float} % Needed for table[H] override
+\usepackage{listings} % Code highlighting
+\usepackage{mdframed} % \usepackage[framemethod=TikZ]{mdframed} (Alternativa in caso si voglia usare Tikz come metodo)
+
+% TCOLORBOX DEFINITION AND CUSTOMIZATION
+\usepackage[most, many, breakable]{tcolorbox}
+\tcbuselibrary{skins}
+
+\newtcbtheorem[number within=section]{Definition}{}{enhanced,
+before skip=2mm,after skip=2mm, colback=red!5,colframe=red!80!black,boxrule=0.5mm,
+attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight},
+boxed title style={frame code={
+\path[fill=tcbcolback]
+([yshift=-1mm,xshift=-1mm]frame.north west)
+arc[start angle=0,end angle=180,radius=1mm]
+([yshift=-1mm,xshift=1mm]frame.north east)
+arc[start angle=180,end angle=0,radius=1mm];
+\path[left color=tcbcolback!60!black,right color=tcbcolback!60!black,
+middle color=tcbcolback!80!black]
+([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+-- (frame.south east) -- (frame.south west)
+-- ([xshift=-1mm,yshift=-1mm]frame.north west)
+[sharp corners]-- cycle;
+},interior engine=empty,
+},
+fonttitle=\bfseries,
+label={#2},#1}{def}
+\makeatletter
+\newtcbtheorem{Note}{Nota}{enhanced,
+breakable,
+colback=white,
+colframe=customAzure2!80!black,
+attach boxed title to top left={yshift*=-\tcboxedtitleheight},
+fonttitle=\bfseries,
+title={#2},
+boxed title size=title,
+boxed title style={
+sharp corners,
+rounded corners=northwest,
+colback=tcbcolframe,
+boxrule=0pt,
+},
+underlay boxed title={%
+\path[fill=tcbcolframe] (title.south west)--(title.south east)
+to[out=0, in=180] ([xshift=5mm]title.east)--
+(title.center-|frame.east)
+[rounded corners=\kvtcb@arc] |-
+(frame.north) -| cycle;
+},
+#1
+}{def}
+\makeatother
+\newtcolorbox{note}[1][]{%
+enhanced jigsaw,
+colback=gray!20!white,%
+colframe=gray!80!black,
+size=small,
+boxrule=1pt,
+title=\textbf{\textit{Nota}},
+halign title=flush center,
+coltitle=black,
+breakable,
+drop shadow=black!50!white,
+attach boxed title to top left={xshift=1cm,yshift=-\tcboxedtitleheight/2,yshifttext=-\tcboxedtitleheight/2},
+minipage boxed title=3cm,
+boxed title style={%
+colback=white,
+size=fbox,
+boxrule=1pt,
+boxsep=2pt,
+underlay={%
+\coordinate (dotA) at ($(interior.west) + (-0.5pt,0)$);
+\coordinate (dotB) at ($(interior.east) + (0.5pt,0)$);
+\begin{scope}
+\clip (interior.north west) rectangle ([xshift=3ex]interior.east);
+\filldraw [white, blur shadow={shadow opacity=60, shadow yshift=-.75ex}, rounded corners=2pt] (interior.north west) rectangle (interior.south east);
+\end{scope}
+\begin{scope}[gray!80!black]
+\fill (dotA) circle (2pt);
+\fill (dotB) circle (2pt);
+\end{scope}
+},
+},
+#1,
+}
+% Abbreviation for tcolorbox envs
+\newcommand{\dfn}[2]{\begin{Definition*}[colbacktitle=red!75!black]{#1}{}#2\end{Definition*}} % Invoke with \dfn{Title}{CONTENT}
+\newcommand{\qs}[2]{\begin{Note*}{#1}{}#2\end{Note*}} % Invoke with \qs{}{Content}
+% COLOR DEFINITION
+\definecolor{classTIKZcolor}{RGB}{222,222,222}
+% DEFINIZIONE COLORI TIKZ
+\definecolor{darkblue}{RGB}{0,60,104}
+\definecolor{darkdark}{RGB}{22,22,22}
+% DEFINIZIONE COLORI DA USARE PER IL CODICE
+\definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
+
+% Definizione colori per i linguaggi da usare
+\definecolor{orangered}{RGB}{239,134,64}
+\definecolor{includeStatementCPP}{RGB}{148,123,155}
+\definecolor{libraryStatementCPP}{RGB}{126,190,184}
+\definecolor{colorMainCPP}{RGB}{190,116,67}
+\definecolor{colorTypesCPP}{RGB}{188,90,69}
+\definecolor{colorReservedKeywordsCPP}{RGB}{130,183,75}
+\definecolor{colorLoopsCPP}{RGB}{185,176,176}
+\definecolor{colorOtherKeywordsCPP}{RGB}{254,178,54}
+\definecolor{headerJava}{HTML}{006b3C}
+\definecolor{packageNameJavaDefinition}{HTML}{007BA7}
+\definecolor{classKeywordJava}{HTML}{CD5C5C}
+\definecolor{classNameJava}{HTML}{D2691E}
+\definecolor{methodKeyword}{HTML}{FE6F5E}
+\definecolor{constantsKeyword}{HTML}{FFA812}
+\definecolor{attributesKeyword}{HTML}{9955BB}
+\definecolor{testKeyword}{HTML}{1E90FF}
+\definecolor{assertKeyword}{HTML}{6082B6}
+\definecolor{expectedKeyword}{HTML}{29AB87}
+\definecolor{nullKeyword}{HTML}{E66771}
+\definecolor{variableKeyword}{HTML}{778899}
+% Definizione colori definitiva
+\definecolor{orangelight}{RGB}{238,162,82}
+\definecolor{orange-apricot}{HTML}{FBCEB1}
+\definecolor{greenlight}{RGB}{147,196,125}
+\definecolor{purplelight}{RGB}{176,159,222}
+\definecolor{bluelight}{RGB}{122,171,216}
+\definecolor{lavanda}{HTML}{F4BBFF}
+
+% Definizione gradiente di colori
+% Azure
+\definecolor{customAzure1}{HTML}{B1E7E1}
+\definecolor{customAzure2}{HTML}{A1E2DB}
+\definecolor{customAzure3}{HTML}{92DDD6}
+\definecolor{customAzure4}{HTML}{83D8CF}
+\definecolor{customAzure5}{HTML}{73D3C9}
+\definecolor{customAzure6}{HTML}{64CEC3}
+% Pink
+\definecolor{customPink1}{HTML}{ECD7D5}
+\definecolor{customPink2}{HTML}{E6C9C7}
+\definecolor{customPink3}{HTML}{DFBBB9}
+\definecolor{customPink4}{HTML}{D8ADAB}
+\definecolor{customPink5}{HTML}{D2A09D}
+\definecolor{customPink6}{HTML}{CC928F}
+% Purple
+\definecolor{customPurple1}{HTML}{C5C2EB} % Lavanda
+\definecolor{customPurple2}{HTML}{B5B2E6}
+\definecolor{customPurple3}{HTML}{A6A3E1}
+\definecolor{customPurple4}{HTML}{9793DC}
+\definecolor{customPurple5}{HTML}{8884D7}
+\definecolor{customPurple6}{HTML}{7974D2}
+% Yellow
+\definecolor{customYellow1}{HTML}{EDE8AB}
+\definecolor{customYellow2}{HTML}{EAE39A}
+\definecolor{customYellow3}{HTML}{EAE39A}
+\definecolor{customYellow4}{HTML}{E3DA78}
+\definecolor{customYellow5}{HTML}{E0D667}
+\definecolor{customYellow6}{HTML}{DCD156}
+% Red
+\definecolor{customRed1}{HTML}{FF7073}
+\definecolor{customRed2}{HTML}{FF5C5F}
+\definecolor{customRed3}{HTML}{FF474A}
+\definecolor{customRed4}{HTML}{FF3336}
+\definecolor{customRed5}{HTML}{FF1F22}
+\definecolor{customRed6}{HTML}{FF0A0E}
+% Orange
+\definecolor{customOrange1}{HTML}{FABE75}
+\definecolor{customOrange2}{HTML}{F9B562}
+\definecolor{customOrange3}{HTML}{F9AC4E}
+\definecolor{customOrange4}{HTML}{F8A23A}
+\definecolor{customOrange5}{HTML}{F79926}
+\definecolor{customOrange6}{HTML}{F69013}
+% Brown
+\definecolor{customBrown1}{HTML}{BCA576}
+\definecolor{customBrown2}{HTML}{B59C69}
+\definecolor{customBrown3}{HTML}{AE925B}
+\definecolor{customBrown4}{HTML}{A48851}
+\definecolor{customBrown5}{HTML}{967D4A}
+\definecolor{customBrown6}{HTML}{897243}
+% Green
+\definecolor{customGreen1}{HTML}{D4E5B3}
+\definecolor{customGreen2}{HTML}{CCE0A4}
+\definecolor{customGreen3}{HTML}{C3DB95}
+\definecolor{customGreen4}{HTML}{B9D585}
+\definecolor{customGreen5}{HTML}{B1D076}
+\definecolor{customGreen6}{HTML}{A8CB67}
+\definecolor{redstrong}{RGB}{255,40,50}
+\definecolor{greendark}{RGB}{144,161,106}
+\definecolor{footerColor}{RGB}{0,163,243}
+\definecolor{footerColorSurrounding}{RGB}{22,154,255}
+\definecolor{ygroblue}{HTML}{179AFF}
+% TIKZ
+\usepackage{tikz}
+% DEFINIZIONE CAMPI E FORME PER TIKZ
+\usetikzlibrary{calc,shadows.blur,shapes,arrows,backgrounds,graphdrawing.trees, decorations.pathreplacing,positioning, arrows.meta, automata}
+
+% DEFINIZIONE FORME GEOMETRICHE PER DIAGRAMMI
+\tikzstyle{CIRCLE} = [circle, minimum width=0.8cm, minimum height=0.8cm,text centered, draw=black, fill=blue!30]
+\tikzstyle{CIRCLESMALL} = [circle, minimum width=0.2cm, minimum height=0.2cm,text centered, draw=black, fill=black]
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{class}=[rectangle, draw=black, text centered, anchor=north, text=black, text width=3cm, shading=axis, bottom color=classTIKZcolor,top color=white,shading angle=45]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+% Tree forest
+\usepackage[linguistics]{forest} %\usepackage{forest}
+
+
+% OPTIONS FOR MDFRAMES (ENVIRONMENT)
+\makeatletter
+\mdfdefinestyle{@mdf@stubenv}{
+leftmargin=2pt,
+rightmargin=2pt,
+innermargin=0pt,
+outermargin=0pt,
+skipabove=2pt,
+skipbelow=2pt,
+linewidth=1pt,
+linecolor=stub@tmp!80!black,
+frametitlebackgroundcolor=stub@tmp!80!black,
+backgroundcolor=stub@tmp,
+innertopmargin=1pt,
+innerbottommargin=1pt,
+innerleftmargin=1pt,
+innerrightmargin=1pt,
+nobreak=true}
+% CREATE A DEFINITION WITH YGROBLUE COLOR
+% PER UTILIZZARE LA DEFINITION CREATA -> \begin{definition}[TITOLO] Contenuto \end{definition}
+
+% SET DEFAULT OPTION FOR CODE BLOCKS
+\lstset {
+frame=trBL, %frame=single
+framesep=\fboxsep,
+framerule=\fboxrule,
+frameround=fttt,
+rulecolor=\color{black},
+xleftmargin=\dimexpr\fboxsep+\fboxrule,
+xrightmargin=\dimexpr\fboxsep+\fboxrule,
+breaklines=true,
+basicstyle=\small\tt,
+keywordstyle=\color{blue}\sf,
+columns=flexible,
+}
+
+% Settaggio stile per i linguaggi da usare
+\lstdefinestyle{CPP}{
+language=C++,
+backgroundcolor=\color{white},
+escapeinside={`'},
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+commentstyle=\color{gray},
+% #include statement
+keywords=[1]{\#include},
+keywords=[2]{ main },
+% types
+keywords=[3]{int, char, short, long, float, double},
+% List of reserved keywords
+keywords=[4]{auto, struct , unsigned, signed, enum, register, typedef, extern, return, union, continue, goto, volatile, default, define, static},
+% Loops
+keywords=[5]{do, while, case, else, switch, break, for, if},
+% List of other keywords
+keywords=[6]{void, boolean, const, sizeof, sleep},
+% Colors of the keywords:
+keywordstyle=[1]\color{includeStatementCPP},
+keywordstyle=[2]\color{colorMainCPP},
+keywordstyle=[3]\color{colorTypesCPP},
+keywordstyle=[4]\color{colorReservedKeywordsCPP},
+keywordstyle=[6]\color{colorOtherKeywordsCPP}
+}
+\lstdefinestyle{BASH}{
+language=bash,
+commentstyle=\color{gray},
+backgroundcolor=\color{white},
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+stringstyle=\color{greendark},
+commentstyle=\color{gray},
+keywords=[1]{exit, print_error, fail},
+keywords=[2]{printf, cut, print_ok, basename, while, usage, run},
+keywords=[3]{ls, find, touch, egrep, print_info, read, done},
+keywords=[4]{wc},
+keywordstyle=[1]\color{redstrong},
+keywordstyle=[2]\color{greenlight},
+keywordstyle=[3]\color{bluelight},
+keywordstyle=[4]\color{purplelight}
+}
+\lstdefinestyle{JAVA}{
+language=Java,
+backgroundcolor=\color{white},
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+commentstyle=\color{gray},
+stringstyle=\color{gray},
+keywords=[1]{package, import, static, public, return, true},
+keywords=[2]{android, Manifest, content, Context, util, Log, androidx, core, app, ActivityCompat, org, test, platform, app, InstrumentationRegistry, ext, junit, runner, runners, AndroidJUnit4, Test, RunWith, Assert, com, natour, utils, constants, Constants, persistence, LocalUser, LocalUserDbManager, java, regex, Pattern, Before},
+keywords=[3]{void, boolean, int, String, while, synchronized, volatile, long, double},
+keywords=[4]{class, @RunWith, super},
+keywords=[5]{if, Employee, try, catch},
+keywords=[6]{localUser, dbManager, checkFineLocation, checkCoarseLocation, appContext, controlloRecuperoPassword},
+keywords=[7]{private},
+keywords=[8]{@Test, @Before},
+keywords=[9]{assertTrue, assertFalse},
+keywords=[10]{expected, IllegalArgumentException},
+keywords=[11]{null, false},
+keywords=[12]{username, email, password, confermaPassword, pattern},
+keywordstyle=[1]\color{headerJava},
+keywordstyle=[2]\color{packageNameJavaDefinition},
+keywordstyle=[3]\color{methodKeyword},
+keywordstyle=[4]\color{classKeywordJava},
+keywordstyle=[5]\color{classNameJava},
+keywordstyle=[6]\color{attributesKeyword},
+keywordstyle=[7]\color{constantsKeyword},
+keywordstyle=[8]\color{testKeyword},
+keywordstyle=[9]\color{assertKeyword},
+keywordstyle=[10]\color{expectedKeyword},
+keywordstyle=[11]\color{nullKeyword},
+keywordstyle=[12]\color{variableKeyword},
+morekeywords={*,...}
+}
+\lstdefinestyle{XML}{
+language=XML,
+backgroundcolor=\color{white},
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+commentstyle=\color{gray},
+keywords=[1]{article, author, title, description, text, formula, math},
+keywords=[2]{dbs:,dbs:book,<dbs:description>},
+keywordstyle=[1]\color{colorMainCPP},
+keywordstyle=[2]\color{includeStatementCPP},
+}
+
+% Colorizing links in a nicer way.
+\usepackage{hyperref} % Links
+\hypersetup{colorlinks, linkcolor=black, urlcolor=blue}
+%\hypersetup{pdfauthor={%a}, pdftitle={%t}, pdfkeywords={%k}, pdfsubject={%d}, pdfcreator={%c}, pdflang={%L}, breaklinks=true, colorlinks=true, linkcolor=link, urlcolor=url, citecolor=cite\n}
+%Bibliography
+\usepackage[backend=biber,sortcites,style=verbose-trad2]{biblatex} % maxcitenames=1, maxbibnames=3, backref=true
+\bibliography{./Bibliography.bib}
+\usepackage{titling}
+\setlength{\droptitle}{-9em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage[stretch=10]{microtype}
+\usepackage{hyphenat}
+\usepackage{ragged2e}
+\usepackage{subfig} % Subfigures (not needed in Org I think)
+\usepackage[top=1in, bottom=1.25in, left=0.55in, right=0.55in, showframe]{geometry} % Page geometry (to show frames add showframe options)
+\renewcommand{\baselinestretch}{1.15}
+% Page numbering - Footer
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancy} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\newcommand\FrameBoxR[1]{
+\fcolorbox{footerColorSurrounding}{footerColor}{\makebox[3cm][r]{\textcolor{white}{\bfseries#1}}}
+}
+\fancyfoot[R]{\FrameBoxR{\thepage}}
+\usepackage[explicit]{titlesec}
+
+% Title customization
+\pretitle{\begin{center}\fontsize{20pt}{20pt}\selectfont}
+\posttitle{\par\end{center}}
+\preauthor{\begin{center}\vspace{-6bp}\fontsize{14pt}{14pt}\selectfont}
+\postauthor{\par\end{center}\vspace{-25bp}}
+\predate{\begin{center}\fontsize{12pt}{12pt}\selectfont}
+\postdate{\par\end{center}\vspace{0em}}
+
+% Section/subsection headings:
+%Section
+\titlespacing\section{0pt}{2pt}{2pt} % left margin, space before section header, space after section header
+%Subsection
+\titlespacing\subsection{0pt}{5pt}{-2pt} % left margin, space before subsection header, space after subsection header
+%Subsubsection
+\titlespacing\subsubsection{0pt}{5pt}{-2pt} % left margin, space before subsection header, space after subsection header
+
+% List spacing & options
+\usepackage{enumitem}
+\usepackage{fdsymbol}
+\setlist{itemsep=-2pt} % or \setlist{noitemsep} to leave space around whole list
+\setlist[enumerate, 1]{label=\arabic*.}
+\setlist[enumerate, 2]{label=\Roman*.}
+\setlist[enumerate, 3]{label=\alph*.}
+\setlist[itemize, 1]{label=$\smallblacktriangleright$}
+\setlist[itemize, 2]{label=$\smalldiamond$}
+\setlist[itemize, 3]{label=$\smallcircle$}
+% Enumeration labels
+% Invoke it with: \begin{enumerate}[label=\bfseries\tiny\protect\circled{\small\arabic*}] \end{enumerate}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=1pt] (char) {#1};}} % Numeration with number inside circle
+\author{Valentino Bocchetti}
+\date{}
+\title{}
+\begin{document}
+
+\thispagestyle{empty}
+\newgeometry{margin=0pt}
+\begin{tikzpicture}[remember picture, overlay]
+  \begin{scope}
+
+    % STRUTTURA ESTERNA (ANGOLI E COLORAZIONE)
+    \node[
+      isosceles triangle,
+      isosceles triangle apex angle=90,
+      draw,
+      rotate=315,
+      fill=darkblue,
+      minimum size =55cm] (triangoloPrimoLivelloAngoloInferiore)
+    at ($(current page.south east)$)
+    {};
+
+    \node[
+      isosceles triangle,
+      isosceles triangle apex angle=90,
+      draw,
+      rotate=315,
+      fill=footerColorSurrounding,
+      minimum size =50cm] (triangoloSecondoLivelloAngoloInferiore)
+    at ($(current page.south east)$)
+    {};
+
+    \node[
+      isosceles triangle,
+      isosceles triangle apex angle=90,
+      draw,
+      rotate=315,
+      fill=darkdark,
+      minimum size =35cm] (triangoloTerzoLivelloAngoloInferiore)
+    at ($(current page.south east)$)
+    {};
+
+    \node[
+      isosceles triangle,
+      isosceles triangle apex angle=90,
+      draw,
+      rotate=315,
+      fill=white,
+      minimum size =32cm] (triangoloQuartoLivelloAngoloInferiore)
+    at ($(current page.south east)$)
+    {};
+
+
+    \node[
+      isosceles triangle,
+      isosceles triangle apex angle=90,
+      draw,
+      rotate=135,
+      fill=white,
+      minimum size =31cm] (triangoloSuperiore)
+    at ($(current page.north west)$)
+    {};
+
+
+    % STRUTTURA DEL CERCHIO E IL SUO CONTENUTO
+    \node [circle, minimum size=15cm, fill=white, draw=darkblue, line width = 7pt, xshift=11cm, yshift=1cm](centro)
+    at ($(current page.west)$)
+    {\includegraphics[scale=.3]{./Start-Page/logo.png}};
+
+    %\node[rectangle,
+    %  draw,
+    %  minimum width=4cm,
+    %  minimum height=2mm,
+    %  xshift= 6.42cm,
+    %  yshift= -11cm,
+    %  minimum height=2mm,
+    %  fill = darkblue] (r) at (0,0) {};
+ 
+    %\node[scale=1.5] at (11,-13){\itshape{\LARGE{Università degli studi di Napoli}}};
+    %\node[scale=1.5] at (11,-15){\itshape{\LARGE{Federico II}}};
+
+
+   %% STRUTTURA ANGOLO SINISTRO (angolo north-west)
+   \node[scale=3] at (1,-1){\includegraphics[height=10pt,width=10pt]{./Start-Page/calendar.png}};
+   \node[scale=2] at (6,-1){\itshape{\LARGE{A.A. 2022-2023}}};
+
+   %% ID GRUPPO
+   \node[scale=3] at (1,-4){\includegraphics[height=10pt,width=10pt]{./Start-Page/group-id.png}};
+   \node[scale=1.4] at (4.3, -4.1){ID Gruppo: LSO\_2122\_23};
+
+    
+   %% STRUTTURA ANGOLO DESTRO (angolo south-east)
+   \begin{scope}[node distance=15mm and 1mm]
+     %% Valentino Bocchetti
+     \node [scale=3,] (StudentA) at (14, -22) {\includegraphics[height=10pt,width=10pt]{./Start-Page/graduated.png}};
+        \node[scale=1.2, right=of StudentA] (StudentAInfo) {\textbf{Valentino Bocchetti - N86003405}};
+
+     %% Dario Morace
+     \node [scale=3, below= of StudentA.west,anchor=west] (StudentB) {\includegraphics[height=10pt,width=10pt]{./Start-Page/graduated.png}};
+        \node[scale=1.2, right=of StudentB] (StudentBInfo) {\textbf{Dario Morace - }};
+
+     %% Lucia Brando
+     \node [scale=3, below= of StudentB.west,anchor=west] (StudentC) {\includegraphics[height=10pt,width=10pt]{./Start-Page/graduated_alt.png}};
+        \node[scale=1.2, right=of StudentC] (StudentCInfo) {\textbf{Lucia Brando - }};
+   \end{scope}
+
+  \end{scope}
+
+\end{tikzpicture}
+
+\newpage
+\restoregeometry
+\renewcommand*\contentsname{\hfill Indice \hfill}
+\tableofcontents
+\pagebreak
+
+\noindent\rule{\textwidth}{0.5pt}
+\section{Revisioni}
+\label{Revisioni}
+\section{Presentazione}
+\label{Presentazione}
+\noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{Start-Page/title.png}}
+
+\(InfoPoint^{\copyright}\) è un progetto che nasce per offrire un supporto ai visitatori del museo.
+
+Questo progetto si concretizza in 2 componenti ben definite:
+\begin{itemize}
+\item Un backend scritto in \texttt{C} per la gestione dei dati, hostato \autocite{HOSTING} su una macchina virtuale offerta da Azure \autocite{VirtualMachines};
+\item Una applicazione \texttt{Android}, scritta in \texttt{Java} che fa da client;
+\end{itemize}
+\section{Guida al Server}
+\label{Guida al Server}
+\subsection{Funzionalità}
+\label{Guida al Server - Funzionalità}
+Il Sistema, deve offrire, una serie di funzionalità:
+\begin{itemize}
+\item Possibilità di connessione concorrente;
+\item Possibilità di potersi registrare alla piattaforma \autocite{RefRegistrazione};
+\item Possibilità di usufruire dei contenuti in base alla tipologia di utente, in modo da permette un focus diverso in base alle sue caratteristiche \autocite{RefUtenti};
+\end{itemize}
+\subsection{Scelte implementative}
+\label{Guida al Server - Scelte implementative}
+Seguendo il concetto del \emph{DIVIDE ET IMPERA} \autocite{DIVIDE_ET_IMPERA} si è scelto di spezzare le varie funzionalità che vengono messe a disposizione per rendere il codice facilmente manutenibile ed evitare lo stato di codice monolitico \autocite{MONOLITICO}.
+\subsection{Tecnologie e strumenti utilizzati}
+\label{Guida al Server -}
+Per una migliore gestione del Sistema, si è fatto uso di una serie di strumenti.
+
+Durante lo sviluppo si è fatto uso dell'utility \href{https://cmake.org/}{cmake} \autocite{CMAKE}, tool modulare che permette la generazione di un Makefile \autocite{MAKEFILE}
+\subsection{Memorizzazione dei dati}
+\label{Guida al Server - Memorizzazione dei dati}
+\section{Guida al Client}
+\label{Guida al Client}
+\subsection{Primo avvio}
+\label{Guida al Client - Primo avvio}
+\subsection{Post registrazione}
+\label{Guida al Client - Post registrazione}
+\subsection{Memorizzazione delle informazioni}
+\label{Guida al Client - Memorizzazione delle informazioni}
+\subsection{Modelli di Dominio}
+\label{sec:orga47dad6}
+\begin{center}
+\textbf{Class Diagram}
+\end{center}
+
+\begin{center}
+\textbf{Sequence Diagram}
+\end{center}
+\section{Protocollo applicativo}
+\label{Protocollo applicativo}
+Come già indicato in precedenza abbiamo preferito il protocollo \texttt{TCP} rispetto al protocollo \texttt{UDP}, per la presenza di un controllo della congestione e affidabilità in termini di \texttt{invio/ricezione} di dati \autocite{UDP}.
+
+Lo sviluppo dell'applicativo è stato inizialmente verticalizzato sulla creazione dello scheletro del Server, per avere un primo approccio nudo e crudo allo scambio di messaggi via \texttt{socket}.
+
+Per avere un programma robusto e manutenibile si è fatto largo uso delle \texttt{good pratices} che questo tipo di comunicazione richiede. In particolare:
+\begin{itemize}
+\item La connessione viene aperta solo nel momento in cui devono essere \texttt{inviati/ricevuti} dati (Si evita in questo modo di tenere aperte connessioni in momenti in cui queste non vengono sfruttate);
+\item Si effettuano controlli di raggiungibilità del server lato client \autocite{RAGGIUNGIBILE};
+\item Vengono controllati i dati \texttt{inviati/ricevuti} sempre prima di compiere operazioni che possano minare il corretto funzionamento di \texttt{Server} e \texttt{Client} \autocite{CONTROLLO};
+\item Vengono effettuati controlli e gestione degli stati di tutte le operazioni lato \texttt{Server.}
+\end{itemize}
+\section{Dettagli implementativi}
+\label{Dettagli implementativi}
+\subsection{Server}
+\label{Dettagli implementativi - Server}
+\subsection{Client}
+\label{Dettagli implementativi - Client}
+\section{Codice sorgente sviluppato}
+\label{Codice sorgente sviluppato}
+Il codice sorgente prodotto durante lo sviluppo di \(InfoPoint^{\copyright}\) è disponibile sulla piattaforma \emph{GitHub}, che ne ha permesso anche il versionamento.
+
+Di seguito riportiamo un link per il \href{https://github.com/luftmensch-luftmensch/InfoPoint/}{download} \autocite{informazioniRepository}
+\section{Contributori}
+\label{Contributori}
+\section{Ringraziamenti}
+\label{Ringraziamenti}
+Ringraziamo la professoressa \href{mailto:alessandra.rossi@unina.it}{Alessandra Rossi} per lo splendido corso, che ci ha permesso di conoscere nuove interessanti tecnologie e del supporto offertoci durante e dopo le lezioni.
+\end{document}

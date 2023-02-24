@@ -32,7 +32,7 @@
 #include "utils/common/welcome_message.h" // Welcome message
 
 
-int main(int argc, char* argv[]){
+int main(){
   // Welcome message
   printf(ANSI_COLOR_MAGENTA "%s\n" ANSI_COLOR_RESET , ascii_server_message);
   
