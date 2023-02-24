@@ -1,0 +1,13 @@
+### InfoPoint Server containers ###
+version: '3.8'
+services:
+  database:
+    container_name: pg_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: infopoint
+      POSTGRES_PASSWORD: infopoint
+      POSTGRES_DB: info_db
+    ports:
+      - "5432:5432"

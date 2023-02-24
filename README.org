@@ -1,0 +1,60 @@
+#+OPTIONS: date:nil title:nil toc:nil author:nil
+#+STARTUP: overview
+----------------------------------------------------------------
+[[file:res/logo-2/png/logo-color.png]]
+
+#+BEGIN_HTML
+<div align="center">
+
+  <!-- License -->
+  <a href="https://github.com/luftmensch-luftmensch/InfoPoint/blob/main/LICENSE"
+          ><img
+              src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge&color=red"
+              alt="License"
+      /></a>
+
+ <!-- Work on my machine -->
+ <a href="https://img.shields.io/badge/WORKS%20ON-MY%20MACHINE-red?style=for-the-badge"
+           ><img
+             src="https://img.shields.io/badge/WORKS%20ON-MY%20MACHINE-red?style=for-the-badge"
+             alt="Work on my machine"
+      /></a>
+
+ <!-- Android -->
+  <a href="https://github.com/luftmensch-luftmensch/InfoPoint/tree/main/client"
+          ><img
+              src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"
+              alt="Powered by Android"
+      /></a>
+
+  <!-- C -->
+  <a href="https://github.com/luftmensch-luftmensch/InfoPoint/tree/main/server"
+          ><img
+              src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white"
+              alt="Powered by C"
+      /></a>
+</div>
+
+<h1 align="center"> InfoPoint</h1>
+#+END_HTML
+
+* Contributori
+#+BEGIN_HTML
+<p align="center" width="100%">
+    <!-- Valentino -->
+    <a href="https://github.com/luftmensch-luftmensch">
+        <img width="15%" src="./res/contributors/luftmensch-luftmensch.png"> 
+    </a>
+
+    <!-- Dario -->
+    <a href="https://github.com/saltyDario">
+        <img width="15%" src="./res/contributors/goblino.png"> 
+    </a>
+
+    <!-- Lucia -->
+    <a href="https://github.com/lbrando">
+        <img width="15%" src="./res/contributors/lbrando.png"> 
+    </a>
+
+</p>
+#+END_HTML
