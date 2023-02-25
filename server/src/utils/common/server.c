@@ -101,3 +101,17 @@ server* server_init(uint port){
 
   return s;
 }
+
+void server_kill(server* s){
+  _m(_msginfo, "Shutting down the server as requested");
+
+  // Disconnect and handle users 
+  static char msg_disconnect[]	= "\n[SERVER] Server is shutting down... Goodbye!\n";
+  while(s->conn_count){
+    s->conn_count--;
+    _m(_msginfo, "Disconnetting user %ld", s->conn_count);
+  }
+  close(s->socket);
+  _m(_msgevent, "Goodbye!");
+  free(s);
+}

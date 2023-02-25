@@ -1,6 +1,7 @@
 #ifndef InfoPoint_Server
 #define InfoPoint_Server
 
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
 
@@ -16,6 +17,7 @@
   #ifndef MAX_CLIENTS_IN_QUEUE
 	  #define MAX_CLIENTS_IN_QUEUE 100
   #endif
+  enum conn_status{ NEW, NAME };
 
   // Server Struct
   typedef struct server {
@@ -23,6 +25,7 @@
     ssize_t socket;
     struct sockaddr_in transport;
 
+    size_t conn_count;			
   } server;
 
   // Server function
