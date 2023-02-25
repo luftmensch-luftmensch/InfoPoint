@@ -1,0 +1,6 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Scritto da Valentino Bocchetti il &amp;#36;{today.day}/&amp;#36;{today.month}/&amp;#36;{today.year} alle ore &amp;#36;{today.hour24}:&amp;#36;{today.minute}&#10;&#10;Copyright © 2023 InfoPoint" />
+    <option name="myName" value="signature" />
+  </copyright>
+</component>

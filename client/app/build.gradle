@@ -1,0 +1,78 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.infoPoint'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.infoPoint"
+        minSdk 28
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        applicationVariants.all{
+            // this method is use to rename your all apk weather
+            // it may be signed or unsigned(debug apk)
+            variant ->
+                variant.outputs.each{
+                    // on below line we are setting a
+                    // name to our apk as InfoPoint.apk
+                    output->
+                        def name = "InfoPoint.apk"
+                        // on below line we are setting the
+                        // outputFile Name to our apk file.
+                        output.outputFileName = name
+                }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    def glide_sdk = '4.15.0'
+    def lombok_version  = '1.18.22'
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+
+    // Material Design 3 Pack - https://github.com/material-components/material-components-android
+    implementation 'com.google.android.material:material:1.8.0'
+
+    // Glide - media management and image loading framework -> https://github.com/bumptech/glide
+    implementation "com.github.bumptech.glide:glide:$glide_sdk"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_sdk"
+
+    // Layouts
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Toasty -> https://github.com/GrenderG/Toasty
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    // Socket programming
+    implementation ('io.socket:socket.io-client:2.0.1') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+
+    // Lombok annotations
+    // NB: Ignore warning (solution breaks import)
+    compileOnly "org.projectlombok:lombok:$lombok_version"
+
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
