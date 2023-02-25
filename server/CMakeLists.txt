@@ -49,8 +49,8 @@ verbose_message_info(${sources} ${headers})
 add_executable(${PROJECT_EXECUTABLE})
 target_sources(${PROJECT_EXECUTABLE} PRIVATE ${sources} ${headers})
 
-include(cmake/CompilerWarnings.cmake)
-set_project_warnings(${PROJECT_EXECUTABLE})
+#include(cmake/CompilerWarnings.cmake)
+#set_project_warnings(${PROJECT_EXECUTABLE})
 
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_EXECUTABLE})

@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <signal.h>
 
-#include "handlers.h"
+#include "utils.h"
 
 #define _m(type, format, ...) _msgcategory(type, "UTILITY", format, ##__VA_ARGS__)
 volatile sig_atomic_t persist = 1;

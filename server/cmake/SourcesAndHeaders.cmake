@@ -1,11 +1,11 @@
 set(sources
-    src/server.c
-    src/utils/common/socket_utils.c
-    src/utils/common/handlers.c
+    src/main.c
+    src/utils/common/server.c
+    src/utils/common/utils.c
 )
 
 set(headers
     src/utils/common/welcome_message.h
-    src/utils/common/socket_utils.h
-    src/utils/common/handlers.h
+    src/utils/common/server.h
+    src/utils/common/utils.h
 )
