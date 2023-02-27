@@ -1,5 +1,5 @@
-function(set_project_warnings project_name)
-  set(MSVC_WARNINGS
+function(set_project_build_flags project_name)
+  set(MSVC_BUILD_FLAG
       /W4     # Baseline reasonable warnings
       /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss
               # of data
@@ -33,7 +33,7 @@ function(set_project_warnings project_name)
       /permissive- # standards conformance mode for MSVC compiler.
   )
 
-  set(CLANG_WARNINGS
+  set(CLANG_BUILD_FLAGS
       -Wall
       -Wextra  # reasonable and standard
       -Wshadow # warn the user if a variable declaration shadows one from a
@@ -55,36 +55,63 @@ function(set_project_warnings project_name)
                  # (ie printf)
   )
 
-  if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)
-    set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
-    set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
-  endif()
+  # Full list here -> https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html
+  set(GCC_BUILD_FLAGS
+      ### BASICS ###
+      -Wall              # Enables a base set of warnings generally agreed upon as being useful and easy to fix
+      -Wextra            # Enables an additional set of flags not covered by -Wall
+      -Wshadow           # Shadowing variables at the very least makes code difficult to read and often can be indicative of a bug because the code is not operating on the value the programmer expects
+      -Wdouble-promotion # C type float and double are not the same! (When using floating point numbers in a project, it’s quite easy to unintentionally use a double, so don't forget the f after a float number)
+      ### Formatter checks ###
+      -Wformat=2 # Warn on security issues around functions that format output (ie printf)
+      -Wformat-truncation # The options are able to detect various types of buffer overflows and truncation that could arise when using routines such as sprintf and snprintf respectively
+      -Wformat-overflow
+      -Wundef    # A classic bug in C code is an undefined macro silently evaluating as 0 and causing unexpected behavior (In general, it’s advisable to use #ifdef sparingly in a project for these reasons.)
+      -Wmisleading-indentation # warn if indentation implies blocks where blocks do not exist
+      
+      -Wduplicated-cond     # Warn if if / else chain has duplicated conditions
+      -Wduplicated-branches # Warn if if / else branches have duplicated code
+      -Wlogical-op          # Warn about suspicious uses of logical operators in expressions
 
-  set(GCC_WARNINGS
-      # ${CLANG_WARNINGS}
-      -Wmisleading-indentation # warn if indentation implies blocks where blocks
-                               # do not exist
-      -Wduplicated-cond # warn if if / else chain has duplicated conditions
-      -Wduplicated-branches # warn if if / else branches have duplicated code
-      -Wlogical-op   # warn about logical operations being used where bitwise were
-                     # probably wanted
-      # -Wuseless-cast # warn if you perform a cast to the same type
+      ### Optimization & Sections ###
+      -O2
+      # By default the linker will place all functions in an object within the same linker “section”. This becomes very clear when examining the mapfile and seeing a bunch of symbols in the .text section.
+      # With this option each functions gets its own section
+      -ffunction-sections 
+      #--gc-sections # Enable optimization using the linker gc
   )
 
+  if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)
+    set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -Werror)
+    set(CLANG_BUILD_FLAGS ${CLANG_BUILD_FLAGS} -Werror)
+    set(MSVC_BUILD_FLAG   ${MSVC_BUILD_FLAG} /WX)
+  endif()
+
+  if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(GCC_WARNINGS
+      ${GCC_BUILD_FLAGS}
+      -g3                  # Produces debugging information (Useful w/ gdb)
+      --print-gc-sections  # Diagnostic logs about sections
+      )
+  endif()
+
   if(MSVC)
-    set(PROJECT_WARNINGS ${MSVC_WARNINGS})
+    set(PROJECT_BUILD_FLAG ${MSVC_BUILD_FLAG})
+
   elseif(CMAKE_C_COMPILER_ID MATCHES ".*Clang")
-    set(PROJECT_WARNINGS ${CLANG_WARNINGS})
+    set(PROJECT_BUILD_FLAG ${CLANG_BUILD_FLAGS})
+
   elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    set(PROJECT_WARNINGS ${GCC_WARNINGS})
+    set(PROJECT_BUILD_FLAGS ${GCC_BUILD_FLAGS})
+
   else()
     message(AUTHOR_WARNING "No compiler warnings set for '${CMAKE_C_COMPILER_ID}' compiler.")
   endif()
 
   if(${PROJECT_NAME}_BUILD_HEADERS_ONLY)
-        target_compile_options(${project_name} INTERFACE ${PROJECT_WARNINGS})
+        target_compile_options(${project_name} INTERFACE ${PROJECT_BUILD_FLAGS})
   else()
-        target_compile_options(${project_name} PUBLIC ${PROJECT_WARNINGS})
+        target_compile_options(${project_name} PUBLIC ${PROJECT_BUILD_FLAGS})
   endif()
 
   if(NOT TARGET ${project_name})

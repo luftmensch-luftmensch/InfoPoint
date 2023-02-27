@@ -106,7 +106,7 @@ void server_kill(server* s){
   _m(_msginfo, "Shutting down the server as requested");
 
   // Disconnect and handle users 
-  static char msg_disconnect[]	= "\n[SERVER] Server is shutting down... Goodbye!\n";
+  //static char msg_disconnect[]	= "\n[SERVER] Server is shutting down... Goodbye!\n";
   while(s->conn_count){
     s->conn_count--;
     _m(_msginfo, "Disconnetting user %ld", s->conn_count);

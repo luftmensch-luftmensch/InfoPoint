@@ -15,6 +15,6 @@ option(${PROJECT_NAME}_USE_ALT_NAMES "Use alternative names for the project, suc
 option(${PROJECT_NAME}_WARNINGS_AS_ERRORS "Treat compiler warnings as errors." ON)
 
 #
-# Miscelanious options
+# Miscellaneous options
 #
 option(${PROJECT_NAME}_VERBOSE_OUTPUT "Enable verbose output, allowing for a better understanding of each step taken." ON)
