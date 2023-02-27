@@ -2,6 +2,11 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 #
+# FAQS
+#
+# Define compiler https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#how-do-i-use-a-different-compiler
+
+#
 # Project details
 #
 
@@ -10,6 +15,9 @@ project("SERVER"
     VERSION 1.0
     DESCRIPTION "InfoPoint server w/ C"
     HOMEPAGE_URL "https://github.com/lufthmensch-luftmensch/InfoPoint")
+
+# If enabled, generates a compile_commands.json file containing the exact compiler calls for all translation units of the project in machine-readable form
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #
 # Set project options
@@ -49,8 +57,8 @@ verbose_message_info(${sources} ${headers})
 add_executable(${PROJECT_EXECUTABLE})
 target_sources(${PROJECT_EXECUTABLE} PRIVATE ${sources} ${headers})
 
-#include(cmake/CompilerWarnings.cmake)
-#set_project_warnings(${PROJECT_EXECUTABLE})
+include(cmake/CompilerWarnings.cmake)
+set_project_warnings(${PROJECT_EXECUTABLE})
 
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_EXECUTABLE})
