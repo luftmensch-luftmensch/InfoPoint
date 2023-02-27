@@ -6,33 +6,48 @@
 
 package com.infoPoint.model;
 
-public class Client {
-    private String name;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
+import com.infoPoint.BR;
+
+public class Client extends BaseObservable {
+    private String username;
     private String password;
     private ClientType type;
 
-    // Constructors
-    public Client() { }
-    public Client(String name, String password, ClientType type) {
-        this.name = name;
-        this.password = password;
-        this.type = type;
-    }
+    /*
+        Data binding generates a class named BR (BindingResources) in the module package which contains the IDs of the resources used for data binding.
+        The Bindable annotation generates an entry in the BR class file during compilation. If the base class for data classes cannot be changed,
+        the Observable interface can be implemented using a PropertyChangeRegistry object to register and notify listeners efficiently.
+    */
 
-    // GETTERS
-    public String getName() { return name; }
+    @Bindable
+    public String getUsername() { return username; }
+    @Bindable
     public String getPassword() { return password; }
+    @Bindable
     public ClientType getType() { return type; }
 
-    // SETTERS
-    public void setName(String name) { this.name = name; }
-    public void setPassword(String password) { this.password = password; }
-    public void setType(ClientType type) { this.type = type; }
+    public void setUsername(String username) {
+        this.username = username;
+        notifyPropertyChanged(BR.username);
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+        notifyPropertyChanged(BR.password);
+    }
+
+    public void setType(ClientType type) {
+        this.type = type;
+        notifyPropertyChanged(BR.type);
+    }
 
     @Override
     public String toString() {
         return "Client{" +
-                "name='" + name + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", type=" + type +
                 '}';

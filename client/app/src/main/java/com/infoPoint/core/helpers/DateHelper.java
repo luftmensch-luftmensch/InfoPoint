@@ -1,17 +1,17 @@
 /*
- * Scritto da Valentino Bocchetti il 26/2/2023 alle ore 23:28
+ * Scritto da Valentino Bocchetti il 27/2/2023 alle ore 16:13
  *
  * Copyright © 2023 InfoPoint
  */
 
-package com.infoPoint.core.util;
+package com.infoPoint.core.helpers;
 
 import android.util.Log;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DateUtils {
+public class DateHelper {
     private static final String _TAG = "[DateTimeParser] ";
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

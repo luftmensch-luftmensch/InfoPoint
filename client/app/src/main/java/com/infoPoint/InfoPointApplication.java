@@ -16,12 +16,21 @@ import androidx.core.splashscreen.SplashScreen;
 import com.infoPoint.core.util.Constants;
 import com.infoPoint.core.preferences.PreferencesManager;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class InfoPointApplication extends AppCompatActivity { // MultiDexApplication
     private static final String _TAG = "[InfoPointApplication] ";
+
+    private static InfoPointApplication instance;
+
+    public static InfoPointApplication getInstance() { return instance; }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        instance = this;
 
         PreferencesManager.init(getApplicationContext());
 

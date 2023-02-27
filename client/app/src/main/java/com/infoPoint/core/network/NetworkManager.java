@@ -8,21 +8,25 @@ package com.infoPoint.core.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.util.Log;
 
 import com.infoPoint.model.ArtWork;
 import com.infoPoint.model.Client;
 
 import java.util.List;
 
-public class NetworkHandler {
+public class NetworkManager {
     private static final String _TAG = "[NetworkHandler] ";
 
-    public boolean networkAvailable(Context context){
+    public Boolean isNetworkAvailable(Context context){
+        Log.d(_TAG, "Checking if network is available");
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getActiveNetworkInfo() != null) {
-            return connectivityManager.getActiveNetworkInfo().isConnected();
-        }
-        return false;
+        Network network = connectivityManager.getActiveNetwork();
+        if (network == null) return false;
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+        return networkCapabilities != null && (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
     }
     public boolean isServerRunning(){ return false; }
 

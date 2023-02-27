@@ -24,6 +24,7 @@ public class GlideConfig extends AppGlideModule {
         whether or not the device is low ram and the screen resolution. Applications can customize the MemoryCache size in their AppGlideModule
         with the applyOptions(Context, GlideBuilder) method by configuring MemorySizeCalculator
     */
+    /*
     @Override
     public void applyOptions(@NonNull Context context, GlideBuilder builder) {
         MemorySizeCalculator calculator = new MemorySizeCalculator.Builder(context)
@@ -33,4 +34,6 @@ public class GlideConfig extends AppGlideModule {
                 .setMemoryCache(new LruResourceCache(calculator.getMemoryCacheSize()));
 
     }
+
+     */
 }

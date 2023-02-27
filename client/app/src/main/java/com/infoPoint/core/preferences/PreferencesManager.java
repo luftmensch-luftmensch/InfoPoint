@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class PreferencesManager {
     private static final String _TAG = "[PreferencesManager] ";
 
