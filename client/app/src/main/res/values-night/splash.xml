@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.InfoPoint.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/md_theme_dark_inverseOnSurface</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_info_point_icon</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.InfoPoint</item>
+    </style>
+</resources>

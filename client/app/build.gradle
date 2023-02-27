@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -12,6 +13,14 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        /*
+            Android application (APK) files contain executable bytecode files in the form of Dalvik Executable (DEX) files,
+            which contain the compiled code used to run your app. The Dalvik Executable specification limits the total number
+            of methods that can be referenced within a single DEX file to 65,536, including Android framework methods, library
+            methods, and methods in your own code. Getting past this limit requires that you configure your app build process
+            to generate more than one DEX file, known as a multidex configuration.
+        */
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,6 +45,11 @@ android {
                 }
         }
     }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -44,9 +58,36 @@ android {
 
 dependencies {
     def glide_sdk = '4.15.0'
-    def lombok_version  = '1.18.22'
+    def multidex_version = '2.0.1'
+    def dagger_hilt_version = '2.45'
+    def en_shared_pref_version = '1.1.0-alpha05'
+    def splash_screen_version = '1.0.0-beta02'
+    def lifecycle_version = '2.5.1'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
+
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    // Build interactive settings screens without needing to interact with device storage or manage the UI
+    implementation 'androidx.preference:preference:1.2.0'
+
+    // Splash screen (Do not update!)
+    implementation "androidx.core:core-splashscreen:$splash_screen_version"
+
+    // LiveData (Observable data holder class)
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+
+    // Dependency injection w/ Hilt (https://dagger.dev/hilt/)
+    implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$dagger_hilt_version"
+
+    // Encrypted shared preferences
+    implementation "androidx.security:security-crypto:$en_shared_pref_version"
+
+    // Custom intro page
+    implementation 'com.github.AppIntro:AppIntro:6.2.0'
 
     // Material Design 3 Pack - https://github.com/material-components/material-components-android
     implementation 'com.google.android.material:material:1.8.0'
@@ -67,12 +108,15 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
-    // Lombok annotations
-    // NB: Ignore warning (solution breaks import)
-    compileOnly "org.projectlombok:lombok:$lombok_version"
-
-    // Testing
+    // Local unit tests
+    testImplementation "com.google.dagger:hilt-android-testing:$dagger_hilt_version"
+    testAnnotationProcessor "com.google.dagger:hilt-compiler:$dagger_hilt_version"
     testImplementation 'junit:junit:4.13.2'
+
+    // Instrumentation testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation  "com.google.dagger:hilt-android-testing:$dagger_hilt_version"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-compiler:$dagger_hilt_version"
+
 }
