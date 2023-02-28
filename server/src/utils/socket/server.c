@@ -6,23 +6,26 @@
   +  Valentino Bocchetti (matr. N86003405)
   +  Dario Morace        (matr. )
   +  Lucia Brando        (matr. )
-
 */
 
 // Global headers
+#include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include <stdlib.h>
-#include <strings.h>
 
 // Personal headers
-#include "netinet/in.h"
+#include "handler.h"
 #include "server.h"
-#include "sys/socket.h"
-#include "utils.h"
+#include "wrapper.h"
 
 #define _m(type, format, ...) _msgcategory(type, "SERVER", format, ##__VA_ARGS__)
 #define _mth(type, format, ...) _msgcategory(type, "SERV_TH", format, ##__VA_ARGS__)
+
+volatile sig_atomic_t persist = 1;
+pthread_cond_t cond1 = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t lock_condition = PTHREAD_MUTEX_INITIALIZER;
 
 int check(int expr, const char* msg){
   if(expr == SOCKET_ERROR){
@@ -32,10 +35,30 @@ int check(int expr, const char* msg){
   return expr;
 }
 
+void handle_interrupt(int sig){
+	(void)sig;
+	pthread_cond_signal(&cond1); 
+	persist = 0; 
+}
+
+void setup_signals(){
+  struct sigaction sa;
+
+  sa.sa_handler = handle_interrupt;
+  sa.sa_flags = SA_RESTART;
+  sigemptyset(&sa.sa_mask);
+  if(sigaction(SIGINT, &sa, NULL) == -1){
+    _msgfatal("[SIG] Error on signal setup!");
+    perror("sigaction: ");
+    exit(errno);
+  }
+}
+
 server* server_init(uint port){
   unsigned int use_port = !port ? DEFAULT_PORT : port;
 
   server* s = malloc(sizeof(struct server));
+
   // Socket creation
   s ->socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
   if (s -> socket < 0){
@@ -45,6 +68,7 @@ server* server_init(uint port){
 
   // Socket options
 
+  /* Set socket as reusable */
   if(setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, (int[]) { 1 }, sizeof(int[1]))) {
     _m(_msgfatal, "Could not change socket settings"); perror("setsockopt: "); exit(errno);
   }
@@ -95,9 +119,11 @@ server* server_init(uint port){
   }
   _m(_msgevent, "Server ready and it is listening for new clients on port: %d!", use_port);
 
-  // TODO: SETUP handler
+  s->handler = handler_init(&s->socket, MAX_CLIENTS_ACCEPTANCE, SERVER_POLL_TIMER);
+  s->conn_count = 0;
+
   _mth(_msginfo, "Done!");
-  _m(_msginfo, "Server reade, please use server_loop");
+  _m(_msginfo, "Server ready, please use server_loop");
 
   return s;
 }
@@ -114,4 +140,26 @@ void server_kill(server* s){
   close(s->socket);
   _m(_msgevent, "Goodbye!");
   free(s);
+}
+
+bool _refuse_connection(server* s){
+  static char message[] = "Server connection queue is full! Please try again later";
+  static const size_t msg_lenght = sizeof(message);
+
+  ssize_t socket;
+  struct sockaddr_in transport;
+  socklen_t len = sizeof(transport);
+
+  // Check accept status
+  if ((socket = accept(s->socket, (struct sockaddr*) & transport, & len)) == -1){
+    _m(_msgwarn, "accept failed!");
+    perror("accept: ");
+    close(socket);
+    return false;
+  }
+  wrap_send(socket, message, msg_lenght, 0);
+  _m(_msgevent, "Refusing sock client <%ld> from <" IPV4_ADDRESS_FORMAT "> as the server connection queue is full", socket, IPV4(transport.sin_addr.s_addr));
+
+  close(socket);
+  return true;
 }

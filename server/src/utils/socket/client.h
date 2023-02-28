@@ -1,9 +1,8 @@
 #ifndef Client_H
-  #define Client_H
+#define Client_H
 
-  #include <cstddef>
-#include <netinet/in.h>
-  #include <stdio.h>
+  #include <netinet/in.h>
+  #include <stdlib.h>
 
   #ifndef CLIENT_PAR_MAXLENGTH
     #define CLIENT_PAR_MAXLENGTH 16

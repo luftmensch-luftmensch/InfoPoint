@@ -13,11 +13,11 @@
     #include <errno.h>
     #include <signal.h>
 
-    extern volatile sig_atomic_t persist;
-    extern pthread_cond_t cond1;
-    extern pthread_mutex_t lock_condition;
+    #ifndef IPV4_ADDRESS_FORMAT
+	    #define IPV4_ADDRESS_FORMAT "%d.%d.%d.%d"
+    #endif
 
-    void setup_signals();
+
     #define IPV4(IP) \
 	    (IP & 0x000000ff) >> 0, \
 	    (IP & 0x0000ff00) >> 8, \

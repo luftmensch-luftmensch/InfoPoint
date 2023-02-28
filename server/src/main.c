@@ -28,7 +28,7 @@
 
 // Personal Headers
 #include "utils/common/utils.h"        // Custom functions
-#include "utils/common/server.h"    // Custom functions
+#include "utils/socket/server.h"    // Custom functions
 #include "utils/common/welcome_message.h" // Welcome message
 
 

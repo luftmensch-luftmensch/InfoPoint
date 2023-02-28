@@ -21,31 +21,10 @@
 #include "utils.h"
 
 #define _m(type, format, ...) _msgcategory(type, "UTILITY", format, ##__VA_ARGS__)
-volatile sig_atomic_t persist = 1;
-pthread_cond_t cond1 = PTHREAD_COND_INITIALIZER;
-pthread_mutex_t lock_condition = PTHREAD_MUTEX_INITIALIZER;
 
 static inline struct tm get_time() {
   time_t t = time(NULL);
   return *localtime(&t);
-}
-
-void handle_interrupt(int sig){
-	(void)sig;
-	pthread_cond_signal(&cond1); 
-	persist = 0; 
-}
-
-void setup_signals(){
-  struct sigaction sa;
-
-  sa.sa_handler = handle_interrupt;
-  sa.sa_flags = SA_RESTART;
-  sigemptyset(&sa.sa_mask);
-  if(sigaction(SIGINT, &sa, NULL) == -1){
-    _msgfatal("[SIG] Error on signal setup!");
-    perror("sigaction: "); exit(errno);
-  }
 }
 
 char *ltrim(char *s) {
