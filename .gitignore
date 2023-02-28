@@ -1,5 +1,8 @@
 ### Doc related
 *.aux
+*.bbl
+*.bcf
+*.blg
 *.blx
 *.log
 *.toc

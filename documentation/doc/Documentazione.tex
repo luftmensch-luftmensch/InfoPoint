@@ -1,4 +1,4 @@
-% Created 2023-02-24 ven 17:05
+% Created 2023-02-28 mar 16:20
 % Intended LaTeX compiler: lualatex
 \documentclass[letterpaper, 11pt]{article}
 
@@ -570,9 +570,16 @@ Seguendo il concetto del \emph{DIVIDE ET IMPERA} \autocite{DIVIDE_ET_IMPERA} si 
 \label{Guida al Server -}
 Per una migliore gestione del Sistema, si è fatto uso di una serie di strumenti.
 
-Durante lo sviluppo si è fatto uso dell'utility \href{https://cmake.org/}{cmake} \autocite{CMAKE}, tool modulare che permette la generazione di un Makefile \autocite{MAKEFILE}
+Durante lo sviluppo si è fatto uso dell'utility \texttt{cmake} \autocite{CMAKE} , tool modulare che permette la generazione di un \texttt{Makefile} \autocite{MAKEFILE} .
+
+Per la fase di deploy invece si è fatto uso di \texttt{docker}, tool che permette l'esecuzione di programmi in maniera containerizzata.
+
+Come sperato, la combinazione di questi tool ha permesso un passaggio immediato da una situazione di esecuzione locale (di debug) ad una 
+
+Come sperato, avendo adottato entrambe le strategie non si sono riscontrati problemi durante il passaggio da un ambiente locale (di testing) a uno decentralizzato (in produzione).
 \subsection{Memorizzazione dei dati}
 \label{Guida al Server - Memorizzazione dei dati}
+Per essere sempre in linea con le nuove tendenze e tecnologie si è scelto di abbandonare il classico approccio basato su un collegamento ad una base di dati relazionale, preferendo un approccio di tipo \textbf{NOSQL} \autocite{RefNoSQL} , che offre una maggiore elasticità e scalabilità nel tempo.
 \section{Guida al Client}
 \label{Guida al Client}
 \subsection{Primo avvio}
@@ -582,7 +589,7 @@ Durante lo sviluppo si è fatto uso dell'utility \href{https://cmake.org/}{cmake
 \subsection{Memorizzazione delle informazioni}
 \label{Guida al Client - Memorizzazione delle informazioni}
 \subsection{Modelli di Dominio}
-\label{sec:orga47dad6}
+\label{Guida al Client - Modelli di Dominio}
 \begin{center}
 \textbf{Class Diagram}
 \end{center}
@@ -614,8 +621,6 @@ Per avere un programma robusto e manutenibile si è fatto largo uso delle \textt
 Il codice sorgente prodotto durante lo sviluppo di \(InfoPoint^{\copyright}\) è disponibile sulla piattaforma \emph{GitHub}, che ne ha permesso anche il versionamento.
 
 Di seguito riportiamo un link per il \href{https://github.com/luftmensch-luftmensch/InfoPoint/}{download} \autocite{informazioniRepository}
-\section{Contributori}
-\label{Contributori}
 \section{Ringraziamenti}
 \label{Ringraziamenti}
 Ringraziamo la professoressa \href{mailto:alessandra.rossi@unina.it}{Alessandra Rossi} per lo splendido corso, che ci ha permesso di conoscere nuove interessanti tecnologie e del supporto offertoci durante e dopo le lezioni.
