@@ -1,0 +1,228 @@
+:REVEAL_PROPERTIES:
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+
+#+REVEAL_REVEAL_JS_VERSION: 4
+
+#+OPTIONS: timestamp:nil toc:nil num:nil title:nil author:nil
+#+REVEAL_INIT_OPTIONS: plugins: [RevealMarkdown, RevealZoom, RevealNotes, RevealMenu, RevealHighlight], slideNumber:"c/t"
+
+#+REVEAL_EXTRA_INITIAL_JS: menu: {side: 'right', width: 'normal', numbers: true, titleSelector: 'h1, h2, h3, h4, h5, h6', useTextContentForMissingTitles: true, hideMissingTitles: false, markers: true, custom: false, themes: false, themesPath: 'dist/theme/', transitions: true, openButton: true, openSlideNumber: true, keyboard: true, sticky: false, autoOpen: true, delayInit: false, openOnInit: false, loadIcons: true}, parallaxBackgroundImage: './background.jpg', parallaxBackgroundHorizontal: 130, parallaxBackgroundVertical: 3, backgroundTransition: 'zoom', hash: true, mouseWheel: false, width: 1900, height: 1060
+:END:
+#+title: InfoPoint
+#+SUBTITLE:  Un nuovo modo per fare trekking
+#+author: Valentino Bocchetti - Mario Carofano
+#+begin_export html
+<!-- Per ovviare alla customizzazione post export del file customizzo le impostazioni e inserisco un custom stylesheet -->
+<link rel="stylesheet" href="./theme.css" id="theme"/>
+<link rel="stylesheet" href="plugins/highlight/monokai.css">
+
+
+<section id="sec-title-slide">
+  <h1><a href=""><img src="logo.png" alt="NaTour" width="10%" align="top"/></a>InfoPoint</h1>
+
+  <h3 class="subtitle">Educate Yourself</h3>
+  <br>
+  <h4 class="author">Valentino Bocchetti - Dario Morace</h4>
+  <h4 class="author">Lucia Brando</h4>
+
+  <img src="FedericoII.png" alt="FedericoII.png" width="8%" align="center"/>
+
+</section>
+
+<!-- Aggiungiamo uno stile per settare il testo scritto justified -->
+<style type="text/css">
+    .underline { text-decoration: underline; }
+    p { text-align: left; }
+</style>
+#+end_export
+# -*- (require 'ox-reveal) -*-
+# -*- (setq org-reveal-plugins nil) -*-
+# -*- (setq  org-reveal-title-slide nil) -*-
+* La nostra idea di InfoPoint
+:PROPERTIES:
+:CUSTOM_ID: La nostra idea di InfoPoint
+:END:
+
+#+ATTR_REVEAL: :frag (appear)
+/InfoPoint ©/ nasce come prodotto di quanto appreso e studiato durante il corso di *Laboratorio di Sistemi Operativi* nel AA. 2022-2023.
+** Su InfoPoint
+:PROPERTIES:
+:CUSTOM_ID: Su InfoPoint
+:END:
+#+ATTR_REVEAL: :frag (appear)
+Affidati anche tu ad InfoPoint per conoscere le tue opere preferite!
+#+REVEAL: split
+
+La piattaforma InfoPoint è costituita da 2 applicativi:
+#+ATTR_REVEAL: :frag (appear)
+Un'applicazione ~Android~, scritta in ~Java~, che, una volta registrati, mette a disposizione l'accesso alle informazioni di tutte le opere presenti nel museo
+
+#+REVEAL: split
+
+Un backend, scritto in ~C~ che serve le richieste effettuate dai client
+#+ATTR_REVEAL: :frag (appear)
+** Per registrarsi
+:PROPERTIES:
+:CUSTOM_ID: Per registrarsi
+:END:
+#+ATTR_REVEAL: :frag (appear)
+Gli utenti hanno la possibilità di registrarsi:
+#+ATTR_REVEAL: :frag (appear)
++ Utilizzando il ~form~ build-in utilizzando la classica combinazione ~username/password~;
++ Accedendo in modalità sicura facendo uso del riconoscimento facciale =e/o= impronta digitale;
+
+#+ATTR_REVEAL: :frag (appear)
+** Servizi offerti
+:PROPERTIES:
+:CUSTOM_ID: Servizi offerti
+:END:
+#+ATTR_REVEAL: :frag (appear)
+Una volta registrati gli utenti avranno la possibilità di:
+#+ATTR_REVEAL: :frag (appear)
++ Visualizzare le informazioni di una particolare installazione potendo scegliere il livello di dettaglio (accedendo a una descrizione dell'opera più o meno complessa);
++ Visualizzare tutte le installazioni presenti sulla piattaforma sulla HomePage;
++ Possibilità di aggiungere ai preferiti le installazioni piaciute;
+** Tecnologie utilizzate
+:PROPERTIES:
+:CUSTOM_ID: Tecnologie utilizzate
+:END:
+#+ATTR_REVEAL: :frag (appear)
+Con lo scopo di rendere sempre affidabile e sicura la piattaforma si è scelto di mettere in campo tutte le tecnologie conosciute durante le nostre esperienze lavorative. In particolare abbiamo fatto uso di:
+#+ATTR_REVEAL: :frag (appear)
+#+REVEAL: split
++ Cloud services, offerto dal noto service provider /AWS/, di proprietà /Amazon Inc./, per la gestione dei dati degli utenti iscritti alla piattaforma e delle informazioni delle installazioni del museo;
+#+REVEAL: split
++ Container docker, per la gestione dei dati affidabile nel tempo, che offre una soluzione plug & play svincolata dall'hardware utilizzato.
+
+#+REVEAL: split
+Una soluzione di questo tipo è stata possibile anche grazie all'utilizzo di un file configurazione che ci ha permesso in pochi secondi di spostarci da un ambiente di testing (in locale) al deploy di una versione release del nostro prodotto.
+
+#+BEGIN_NOTES
+(NOTE SUL FILE DOCKER-COMPOSE)
+Di seguito viene riportato il contenuto del file necessario a docker-compose per il deploy del container
+
+Definiamo '3' in quanto rappresenta l'ultima versione disponibile
+
+Docker Compose lavora con il concetto di `services` dove 1 service = 1 container
+
+Utilizziamo la keyword 'services' per la creazione del servizio necessario al deploy di un database PostGres
+
+Il nome del nostro service sarà "database" (è possibile ovviamente modificarlo)
+
+Selezionamo l'immagine docker ufficiale di Postgres da DockerHub (useremo l'ultima versione disponibile)
+
+Definiamo un nome per il container (risulta comodo in situazioni in cui si vada a deployare `n` container diversi)
+
+Definiamo un volume necessario al container per il salvataggio dei dati
+
+Come default Postgres utilizza la porta 5432.
+
+Volendo accedere al database dall'esterno dobbiamo definire una porta di condivisione del tipo
+
+[porta che si vuole usare sulla macchina]:[porta su cui vogliamo comunicare con il container]
+
+Di seguito definiamo delle variabili di ambiente necessarie al database e
+
+alla connessione che viene eseguita dal server (Spring boot)
+#+END_NOTES
+
+#+begin_export html
+<pre><code data-line-numbers data-trim data-noescape>
+version: '3'
+services:
+  database:
+    image: 'postgres:latest'
+
+    container_name: 'pg_db'
+
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+</code></pre>
+#+end_export
+** Demo
+:PROPERTIES:
+:CUSTOM_ID: Demo
+:END:
+Di seguito riportiamo una breve demo che mostra in azione *InfoPoint* durante il suo utilizzo:
+#+REVEAL: split
+
+#+begin_export html
+<!-- È possibile anche inserire il path del file che si vuole caricare -->
+<video data-autoplay src="./demo.mp4"></video>
+#+end_export
+** Riferimenti
+:PROPERTIES:
+:CUSTOM_ID: Riferimenti
+:END:
+#+begin_export html
+<div style="width: 40%; float:left">
+  <ul>
+    <li><a href="https://natour2022.netlify.app/">NaTour sul web</a></li>
+    <li><a href="https://aws.amazon.com/it/">AWS</a></li>
+    <li><a href="https://www.docker.com/">Docker</a></li>
+    <li><a href="https://spring.io/projects/spring-boot">Springboot</a></li>
+    <li><a href="https://wiki.openstreetmap.org/wiki/Main_Page">OpenStreetMap</a></li>
+  </ul>
+</div>
+
+<div style="width: 40%; float:right">
+  <ul>
+    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+    <li><a href="https://github.com/square/retrofit">Retrofit</a></li>
+    <li><a href="https://bumptech.github.io/glide/">Glide</a></li>
+    <li><a href="https://m3.material.io/">Material Design 3</a></li>
+    <li><a href="https://revealjs.com/">RevealJS</a></li>
+  </ul>
+</div>
+#+end_export
+* Chi siamo
+:PROPERTIES:
+:CUSTOM_ID: Chi siamo
+:END:
+#+begin_export html
+<div style="width: 35%; float:left">
+
+  <p><img src="./res/contributors/luftmensch-luftmensch.png" alt="Valentino" width="25%" align="center"/></p>
+  <p><img src="./res/contributors/goblino.png" alt="Dario" width="25%" align="center"/></p>
+  <p><img src="./res/contributors/lbrando.png" alt="Lucia" width="25%" align="center"/></p>
+</div>
+
+<div style="width: 65%; float:right">
+  <p>
+    Siamo
+    <a href="https://github.com/luftmensch-luftmensch/">Valentino</a>,
+    <a href="https://github.com/lbrando/">Lucia</a> e
+    <a href="https://github.com/saltyDario/">Dario</a>,
+
+    3 studenti appassionati di tecnologia ed iscritti al <b>Corso di Laurea in Informatica</b> <i>all'Università</i> <a href="https://www.unina.it/">Federico II</a> di Napoli.
+  </p>
+  <br>
+  <p>
+    Con il mondo a portata di mano, Valentino Dario e Lucia, riescono a trovare il tempo tra gli studi per sviluppare e mostrare le loro applicazioni.
+  </p>
+</div>
+#+end_export
+* Ringraziamenti
+:PROPERTIES:
+:CUSTOM_ID: Ringraziamenti
+:END:
+
+Ringraziamo la professoressa [[mailto:alessandra.rossi@unina.it][Alessandra Rossi]] per lo splendido corso, che ci ha permesso di conoscere nuove interessanti tecnologie e del supporto offertoci durante e dopo le lezioni.
+* Fine
+:PROPERTIES:
+:CUSTOM_ID: End
+:END:
+#+begin_export html
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom/zoom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js"></script>
+<script src="plugins/menu/menu.js"></script>
+<script src="plugins/highlight/highlight.js"></script>
+#+end_export

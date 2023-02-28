@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>InfoPoint</title>
+<meta name="author" content="Valentino Bocchetti - Mario Carofano"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/moon.css" id="theme"/>
+
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<!-- Per ovviare alla customizzazione post export del file customizzo le impostazioni e inserisco un custom stylesheet -->
+<link rel="stylesheet" href="./theme.css" id="theme"/>
+<link rel="stylesheet" href="plugins/highlight/monokai.css">
+
+
+<section id="sec-title-slide">
+  <h1><a href=""><img src="logo.png" alt="NaTour" width="10%" align="top"/></a>InfoPoint</h1>
+
+  <h3 class="subtitle">Educate Yourself</h3>
+  <br>
+  <h4 class="author">Valentino Bocchetti - Dario Morace</h4>
+  <h4 class="author">Lucia Brando</h4>
+
+  <img src="FedericoII.png" alt="FedericoII.png" width="8%" align="center"/>
+
+</section>
+
+<!-- Aggiungiamo uno stile per settare il testo scritto justified -->
+<style type="text/css">
+    .underline { text-decoration: underline; }
+    p { text-align: left; }
+</style>
+<section>
+<section id="slide-La nostra idea di InfoPoint">
+<h2 id="La nostra idea di InfoPoint">La nostra idea di InfoPoint</h2>
+<p class="fragment (appear)">
+<i>InfoPoint ©</i> nasce come prodotto di quanto appreso e studiato durante il corso di <b>Laboratorio di Sistemi Operativi</b> nel AA. 2022-2023.
+</p>
+</section>
+<section id="slide-Su InfoPoint">
+<h3 id="Su InfoPoint">Su InfoPoint</h3>
+<p class="fragment (appear)">
+Affidati anche tu ad InfoPoint per conoscere le tue opere preferite!
+</p>
+</section>
+<section id="slide-Su InfoPoint-split">
+
+<p>
+La piattaforma InfoPoint è costituita da 2 applicativi:
+</p>
+<p class="fragment (appear)">
+Un'applicazione <code>Android</code>, scritta in <code>Java</code>, che, una volta registrati, mette a disposizione l'accesso alle informazioni di tutte le opere presenti nel museo
+</p>
+
+</section>
+<section id="slide-Su InfoPoint-split">
+
+<p>
+Un backend, scritto in <code>C</code> che serve le richieste effettuate dai client
+</p>
+</section>
+<section id="slide-Per registrarsi">
+<h3 id="Per registrarsi">Per registrarsi</h3>
+<p class="fragment (appear)">
+Gli utenti hanno la possibilità di registrarsi:
+</p>
+<ul>
+<li class="fragment appear">Utilizzando il <code>form</code> build-in utilizzando la classica combinazione <code>username/password</code>;</li>
+<li class="fragment appear">Accedendo in modalità sicura facendo uso del riconoscimento facciale <code>e/o</code> impronta digitale;</li>
+
+</ul>
+</section>
+<section id="slide-Servizi offerti">
+<h3 id="Servizi offerti">Servizi offerti</h3>
+<p class="fragment (appear)">
+Una volta registrati gli utenti avranno la possibilità di:
+</p>
+<ul>
+<li class="fragment appear">Visualizzare le informazioni di una particolare installazione potendo scegliere il livello di dettaglio (accedendo a una descrizione dell'opera più o meno complessa);</li>
+<li class="fragment appear">Visualizzare tutte le installazioni presenti sulla piattaforma sulla HomePage;</li>
+<li class="fragment appear">Possibilità di aggiungere ai preferiti le installazioni piaciute;</li>
+
+</ul>
+</section>
+<section id="slide-Tecnologie utilizzate">
+<h3 id="Tecnologie utilizzate">Tecnologie utilizzate</h3>
+<p class="fragment (appear)">
+Con lo scopo di rendere sempre affidabile e sicura la piattaforma si è scelto di mettere in campo tutte le tecnologie conosciute durante le nostre esperienze lavorative. In particolare abbiamo fatto uso di:
+</p>
+</section>
+<section id="slide-Tecnologie utilizzate-split">
+<ul>
+<li>Cloud services, offerto dal noto service provider <i>AWS</i>, di proprietà <i>Amazon Inc.</i>, per la gestione dei dati degli utenti iscritti alla piattaforma e delle informazioni delle installazioni del museo;</li>
+
+</ul>
+</section>
+<section id="slide-Tecnologie utilizzate-split">
+<ul>
+<li>Container docker, per la gestione dei dati affidabile nel tempo, che offre una soluzione plug &amp; play svincolata dall'hardware utilizzato.</li>
+
+</ul>
+
+</section>
+<section id="slide-Tecnologie utilizzate-split">
+<p>
+Una soluzione di questo tipo è stata possibile anche grazie all'utilizzo di un file configurazione che ci ha permesso in pochi secondi di spostarci da un ambiente di testing (in locale) al deploy di una versione release del nostro prodotto.
+</p>
+
+<aside class="notes">
+<p>
+(NOTE SUL FILE DOCKER-COMPOSE)
+Di seguito viene riportato il contenuto del file necessario a docker-compose per il deploy del container
+</p>
+
+<p>
+Definiamo '3' in quanto rappresenta l'ultima versione disponibile
+</p>
+
+<p>
+Docker Compose lavora con il concetto di `services` dove 1 service = 1 container
+</p>
+
+<p>
+Utilizziamo la keyword 'services' per la creazione del servizio necessario al deploy di un database PostGres
+</p>
+
+<p>
+Il nome del nostro service sarà "database" (è possibile ovviamente modificarlo)
+</p>
+
+<p>
+Selezionamo l'immagine docker ufficiale di Postgres da DockerHub (useremo l'ultima versione disponibile)
+</p>
+
+<p>
+Definiamo un nome per il container (risulta comodo in situazioni in cui si vada a deployare `n` container diversi)
+</p>
+
+<p>
+Definiamo un volume necessario al container per il salvataggio dei dati
+</p>
+
+<p>
+Come default Postgres utilizza la porta 5432.
+</p>
+
+<p>
+Volendo accedere al database dall'esterno dobbiamo definire una porta di condivisione del tipo
+</p>
+
+<p>
+[porta che si vuole usare sulla macchina]:[porta su cui vogliamo comunicare con il container]
+</p>
+
+<p>
+Di seguito definiamo delle variabili di ambiente necessarie al database e
+</p>
+
+<p>
+alla connessione che viene eseguita dal server (Spring boot)
+</p>
+
+</aside>
+
+<pre><code data-line-numbers data-trim data-noescape>
+version: '3'
+services:
+  database:
+    image: 'postgres:latest'
+
+    container_name: 'pg_db'
+
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+</code></pre>
+</section>
+<section id="slide-Demo">
+<h3 id="Demo">Demo</h3>
+<p>
+Di seguito riportiamo una breve demo che mostra in azione <b>InfoPoint</b> durante il suo utilizzo:
+</p>
+</section>
+<section id="slide-Demo-split">
+
+<!-- È possibile anche inserire il path del file che si vuole caricare -->
+<video data-autoplay src="./demo.mp4"></video>
+</section>
+<section id="slide-Riferimenti">
+<h3 id="Riferimenti">Riferimenti</h3>
+<div style="width: 40%; float:left">
+  <ul>
+    <li><a href="https://natour2022.netlify.app/">NaTour sul web</a></li>
+    <li><a href="https://aws.amazon.com/it/">AWS</a></li>
+    <li><a href="https://www.docker.com/">Docker</a></li>
+    <li><a href="https://spring.io/projects/spring-boot">Springboot</a></li>
+    <li><a href="https://wiki.openstreetmap.org/wiki/Main_Page">OpenStreetMap</a></li>
+  </ul>
+</div>
+
+<div style="width: 40%; float:right">
+  <ul>
+    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+    <li><a href="https://github.com/square/retrofit">Retrofit</a></li>
+    <li><a href="https://bumptech.github.io/glide/">Glide</a></li>
+    <li><a href="https://m3.material.io/">Material Design 3</a></li>
+    <li><a href="https://revealjs.com/">RevealJS</a></li>
+  </ul>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-Chi siamo">
+<h2 id="Chi siamo">Chi siamo</h2>
+<div style="width: 35%; float:left">
+
+  <p><img src="./res/contributors/luftmensch-luftmensch.png" alt="Valentino" width="25%" align="center"/></p>
+  <p><img src="./res/contributors/goblino.png" alt="Dario" width="25%" align="center"/></p>
+  <p><img src="./res/contributors/lbrando.png" alt="Lucia" width="25%" align="center"/></p>
+</div>
+
+<div style="width: 65%; float:right">
+  <p>
+    Siamo
+    <a href="https://github.com/luftmensch-luftmensch/">Valentino</a>,
+    <a href="https://github.com/lbrando/">Lucia</a> e
+    <a href="https://github.com/saltyDario/">Dario</a>,
+
+    3 studenti appassionati di tecnologia ed iscritti al <b>Corso di Laurea in Informatica</b> <i>all'Università</i> <a href="https://www.unina.it/">Federico II</a> di Napoli.
+  </p>
+  <br>
+  <p>
+    Con il mondo a portata di mano, Valentino Dario e Lucia, riescono a trovare il tempo tra gli studi per sviluppare e mostrare le loro applicazioni.
+  </p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-Ringraziamenti">
+<h2 id="Ringraziamenti">Ringraziamenti</h2>
+<p>
+Ringraziamo la professoressa <a href="mailto:alessandra.rossi@unina.it">Alessandra Rossi</a> per lo splendido corso, che ci ha permesso di conoscere nuove interessanti tecnologie e del supporto offertoci durante e dopo le lezioni.
+</p>
+</section>
+</section>
+<section>
+<section id="slide-End">
+<h2 id="End">Fine</h2>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom/zoom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js"></script>
+<script src="plugins/menu/menu.js"></script>
+<script src="plugins/highlight/highlight.js"></script>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+plugins: [RevealMarkdown, RevealZoom, RevealNotes, RevealMenu, RevealHighlight], slideNumber:"c/t",
+menu: {side: 'right', width: 'normal', numbers: true, titleSelector: 'h1, h2, h3, h4, h5, h6', useTextContentForMissingTitles: true, hideMissingTitles: false, markers: true, custom: false, themes: false, themesPath: 'dist/theme/', transitions: true, openButton: true, openSlideNumber: true, keyboard: true, sticky: false, autoOpen: true, delayInit: false, openOnInit: false, loadIcons: true}, parallaxBackgroundImage: './background.jpg', parallaxBackgroundHorizontal: 130, parallaxBackgroundVertical: 3, backgroundTransition: 'zoom', hash: true, mouseWheel: false, width: 1900, height: 1060
+});
+
+</script>
+</body>
+</html>
