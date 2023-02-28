@@ -1,0 +1,36 @@
+### InfoPoint microservice backend ###
+version: '3.9'
+services:
+  ### Server ###
+  container_name: infopoint-server
+  build:
+    context: .
+    dockerfile: Dockerfile
+  ports:
+    - "9090:9090"
+  expose:
+    - "9090"
+    depends_on:
+      - database
+
+  server:
+  ### Database ###
+  database:
+    # Official Mongo image from DockerHub (latest)
+    image: mongo
+    container_name: infopoint-mongodb
+   # By default, a Mongo database is running on the 27017 port.
+   # If we want to access the database from our computer (outside the container),
+   # we must share the port with our computer's port.
+   # The syntax is [port we want on our machine]:[port we want to retrieve in the container]
+   # Note: You are free to change your computer's port,
+   # but take into consideration that it will change the way
+   # you are connecting to your database.
+   ports:
+     - 27017:27017
+   expose:
+     - "27017"
+   # Environment variables
+   environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=password
