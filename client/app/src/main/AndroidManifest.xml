@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
+    <!-- Auth permission (Biometric/Facial recognition) -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <!--
         * Setting android:allowBackup to false disable backups to google drive
         * Setting android:supportsRtl to true enable right-to-left (RTL) layouts (in order to use in countries where language is written from right to left)
