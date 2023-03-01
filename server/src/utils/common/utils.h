@@ -1,5 +1,5 @@
-#ifndef HANDLERS_H
-#define HANDLERS_H
+#ifndef InfoPoint_Utils
+#define InfoPoint_Utils
 
 
     #include <pthread.h>
