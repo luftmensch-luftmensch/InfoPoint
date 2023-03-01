@@ -1,0 +1,101 @@
+% TeX root = main.tex
+\documentclass{./document_class}
+\begin{document}
+    \coverpage
+    \tableofcontents
+
+    \chapter{Su InfoPoint}
+      \begin{abstract}
+          \hi{$InfoPoint^{\copyright}$} è una piattaforma che nasce per offrire un supporto ai visitatori del museo.
+
+          L'implementazione è suddivisa in 2 componenti che identificheremo come \hi{server} e \hi{client}
+
+          \begin{itemize}
+            \item Un backend scritto in \texttt{C} per la gestione dei dati, hostato\footnotemark \footnotetext{Indica un servizio di rete che consiste nell'allocare su un server web delle pagine web di un sito web o di un'applicazione web, rendendolo così accessibile dalla rete Internet e ai suoi utenti}  su una macchina virtuale offerta da Azure\footnotemark \footnotetext{Per maggiori informazioni visitare il seguente \href{https://azure.microsoft.com/it-it/services/virtual-machines}{sito}};
+            \item Una applicazione \texttt{Android}, scritta in \texttt{Java} che fa da client;
+          \end{itemize}
+      \end{abstract}
+        % Breve presentazione
+      \section{Presentazione}
+
+      \begingroup
+      \phantom{\null}\noindent
+        \begin{tikzpicture}[overlay, remember picture]
+          \node at (current page.center) {\includegraphics[width=\pagewidth]{content/img/title.png}};
+        \end{tikzpicture}
+      \newpage
+      \endgroup
+    
+    \chapter{Guida all'uso}
+      \begin{abstract}
+        <TODO>
+      \end{abstract}
+      \section{Guida al Server}
+        \subsection{Funzionalità}
+          Il Sistema, deve offrire, una serie di funzionalità:
+          \begin{itemize}
+            \item Possibilità di connessione concorrente;
+            \item Possibilità di potersi registrare alla piattaforma\footnotemark \footnotetext{Le credenziali vengono salvate facendo uso di un Database, che risulta molto più affidabile di un semplice file di testo};
+            \item Possibilità di usufruire dei contenuti in base alla tipologia di utente, in modo da permette un focus diverso in base alle sue caratteristiche\footnotemark \footnotetext{Ricordiamo che il bacino degli utenti che possono fare uso del sistema può variare da scolaresche, famiglie o esperti} ;
+          \end{itemize}
+
+        \subsection{Scelte implementative}
+            Seguendo il concetto del \emph{DIVIDE ET IMPERA}\footnotemark \footnotetext{Metodologia per la risoluzione di problemi $\rightarrow$ Il problema viene diviso in sottoproblemi più semplici e si continua fino a ottenere problemi facilmente risolvibili. Combinando le soluzioni ottenute si risolve il problema originario.} si è scelto di spezzare le varie funzionalità che vengono messe a disposizione per rendere il codice facilmente manutenibile ed evitare lo stato di codice monolitico\footnotemark \footnotetext{Che risulta notoriamente più difficile da gestire e modificare nel tempo}.
+        \subsection{Tecnologie e strumenti utilizzati}
+          Per una migliore gestione del Sistema, si è fatto uso di una serie di strumenti.
+
+          Durante lo sviluppo si è fatto uso dell'utility \hi{cmake}\footnotemark \footnotetext{Per maggiori informazioni visitare il seguente \href{https://cmake.org/}{sito}} , tool modulare che permette la generazione di un \hi{Makefile}\footnotemark \footnotetext{Che contiene tutte le direttive utilizzate dall'utility make, che ne permettono la corretta compilazione} .
+
+          Per la fase di deploy invece si è fatto uso di \hi{docker}, tool che permette l'esecuzione di programmi in maniera containerizzata.
+
+          Come sperato, la combinazione di questi tool ha permesso un passaggio immediato da una situazione di esecuzione locale (di debug) ad una 
+
+          Come sperato, avendo adottato entrambe le strategie non si sono riscontrati problemi durante il passaggio da un ambiente locale (di testing) a uno decentralizzato (in produzione).
+        \subsection{Memorizzazione dei dati}
+            Per essere sempre in linea con le nuove tendenze e tecnologie si è scelto di abbandonare il classico approccio basato su un collegamento ad una base di dati relazionale, preferendo un approccio di tipo \hi{NOSQL}\footnotemark \footnotetext{Che a differenza dei classici DBMS relazioni (che offrono un approccio \texttt{relazione} ai dati) offre un approccio al documento, rendendo il design più semplice} , che offre una maggiore elasticità e scalabilità nel tempo.
+        \newpage
+        
+      \section{Guida al Client}
+        \subsection{Primo avvio}
+        \subsection{Post registrazione}
+        \subsection{Memorizzazione delle informazioni}
+        \subsection{Modelli di dominio}
+          \begin{center}
+            \hi{Class Diagram}
+          \end{center}
+
+          \begin{center}
+            \hi{Sequence Diagram}
+          \end{center}
+        \newpage
+
+    \chapter{Protocollo applicativo}
+      Come già indicato in precedenza abbiamo preferito il protocollo \hi{TCP} rispetto al protocollo \hi{UDP}, per la presenza di un controllo della congestione e affidabilità in termini di \texttt{invio/ricezione} di dati\footnotemark \footnotetext{Ricordiamo infatti che UDP non ha garanzie sulla trasmissione dei pacchetti, seguento la logica di best-effort} .
+
+      Lo sviluppo dell'applicativo è stato inizialmente verticalizzato sulla creazione dello scheletro del Server, per avere un primo approccio nudo e crudo allo scambio di messaggi via \hi{socket}.
+
+      Per avere un programma robusto e manutenibile si è fatto largo uso delle \textbf{good pratices} che questo tipo di comunicazione richiede. In particolare:
+      \begin{itemize}
+        \item La connessione viene aperta solo nel momento in cui devono essere \texttt{inviati/ricevuti} dati (Si evita in questo modo di tenere aperte connessioni in momenti in cui queste non vengono sfruttate);
+        \item Si effettuano controlli di raggiungibilità del server lato client\footnotemark \footnotetext{Non ha senso infatti tenere aperta una connessione se non utilizzata, anzi si rischia anche di causare interruzione di servizio dovuti a timeout improvvisi};
+        \item Vengono controllati i dati \texttt{inviati/ricevuti} sempre prima di compiere operazioni che possano minare il corretto funzionamento di \hi{Server} e \hi{Client} \footnotemark \footnotetext{Questo avviene anche attraverso un particolare pattern di costruzione dei dati}
+        \item Vengono effettuati controlli e gestione degli stati di tutte le operazioni lato \hi{Server};
+      \end{itemize}
+
+    \chapter{Dettagli implementativi}
+      \section{Server}
+        \newpage
+      \section{Client}
+        \newpage
+
+    \chapter{Codice sorgente sviluppato}
+      Il codice sorgente prodotto durante lo sviluppo di $InfoPoint^{\copyright}$ è disponibile sulla piattaforma \emph{GitHub}, che ne ha permesso anche il versionamento.
+
+      Di seguito riportiamo un link per il \href{https://github.com/luftmensch-luftmensch/InfoPoint/}{download}\footnotemark \footnotetext{Potrebbe essere richiesta l'autenticazione (il repository è per privacy privato)}
+
+    \chapter{Ringraziamenti}
+        Ringraziamo la professoressa \href{mailto:alessandra.rossi@unina.it}{Alessandra Rossi} per lo splendido corso, che ci ha permesso di conoscere nuove interessanti tecnologie e del supporto offertoci durante e dopo le lezioni.
+
+    \credits
+   
+\end{document}
