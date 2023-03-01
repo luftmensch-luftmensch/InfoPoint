@@ -1,7 +1,8 @@
 \chapter{Guida all'uso}
   \begin{abstract}
-    <TODO>
+    Come detto \hi{InfoPoint} è suddiviso nelle 2 componenti di \hi{server} e \hi{client}. Di seguito riportiamo, per entrambi, l'analisi e le scelte effettuate durante il loro sviluppo
   \end{abstract}
+
   \section{Guida al Server}
     \subsection{Funzionalità}
       Il Sistema, deve offrire, una serie di funzionalità:
@@ -13,10 +14,19 @@
 
     \subsection{Scelte implementative}
         Seguendo il concetto del \emph{DIVIDE ET IMPERA}\footnotemark \footnotetext{Metodologia per la risoluzione di problemi $\rightarrow$ Il problema viene diviso in sottoproblemi più semplici e si continua fino a ottenere problemi facilmente risolvibili. Combinando le soluzioni ottenute si risolve il problema originario.} si è scelto di spezzare le varie funzionalità che vengono messe a disposizione per rendere il codice facilmente manutenibile ed evitare lo stato di codice monolitico\footnotemark \footnotetext{Che risulta notoriamente più difficile da gestire e modificare nel tempo}.
+
+        In particolare l'implementazione fa ampiamente uso di codice sviluppato in \hi{C POSIX}, che permette l'utilizzo di funzionalità
+        e \hi{system call}\footnotemark su cui si basa l'intera code-base: epoll, send, recv, socket, nanosleep, threads, mutex, semaphores \dots
+
+        \footnotetext{Una chiamata si definisce, appunto, \hi{di sistema}, quando fa uso di servizi e funzionalità a livello kernel del sistema operativo in uso.}
     \subsection{Tecnologie e strumenti utilizzati}
       Per una migliore gestione del Sistema, si è fatto uso di una serie di strumenti.
 
-      Durante lo sviluppo si è fatto uso dell'utility \hi{cmake}\footnotemark \footnotetext{Per maggiori informazioni visitare il seguente \href{https://cmake.org/}{sito}} , tool modulare che permette la generazione di un \hi{Makefile}\footnotemark \footnotetext{Che contiene tutte le direttive utilizzate dall'utility make, che ne permettono la corretta compilazione} .
+      Durante lo sviluppo si è fatto uso dell'utility \hi{cmake}\footnotemark \footnotetext{Per maggiori informazioni visitare il seguente \href{https://cmake.org/}{sito}} , tool modulare che permette la generazione di un \hi{Makefile}\footnotemark
+
+      automatizzato.
+
+      \footnotetext{Che contiene tutte le direttive utilizzate dall'utility make, che ne permettono la corretta compilazione}
 
       Per la fase di deploy invece si è fatto uso di \hi{docker}, tool che permette l'esecuzione di programmi in maniera containerizzata.
 
@@ -24,19 +34,43 @@
 
       Come sperato, avendo adottato entrambe le strategie non si sono riscontrati problemi durante il passaggio da un ambiente locale (di testing) a uno decentralizzato (in produzione).
     \subsection{Memorizzazione dei dati}
-        Per essere sempre in linea con le nuove tendenze e tecnologie si è scelto di abbandonare il classico approccio basato su un collegamento ad una base di dati relazionale, preferendo un approccio di tipo \hi{NOSQL}\footnotemark \footnotetext{Che a differenza dei classici DBMS relazioni (che offrono un approccio \texttt{relazione} ai dati) offre un approccio al documento, rendendo il design più semplice} , che offre una maggiore elasticità e scalabilità nel tempo.
-    \newpage
+    Per essere sempre in linea con le nuove tendenze e tecnologie si è scelto di abbandonare il classico approccio basato su un collegamento ad una base di dati relazionale, preferendo un approccio di tipo \hi{NOSQL}\footnotemark , \footnotetext{Che a differenza dei classici DBMS relazioni (che offrono un approccio \texttt{relazione} ai dati) offre un approccio al documento, rendendo il design più semplice} che offre una maggiore elasticità \footnotemark \footnotetext{Per loro natura infatti sono pensati per lavorare in situazioni di alto carico di lavoro pur mantenendo basse latenze}
+    e scalabilità\footnotemark nel tempo.
 
+    \footnotetext{Per la loro natura offrono una forte resilienza a situazioni di fault, considerando il focus scelto (AP) nel \href{https://www.ibm.com/it-it/cloud/learn/cap-theorem}{\hi{CAP}} (Consistency-Availability-Partition Tolerance) }
+    \newpage
   \section{Guida al Client}
+    Prestando particolare attenzione alla semplicità di utilizzo che un'applicazione mobile deve garantire si è scelto di fare uso di un’interfaccia snella e lineare.
     \subsection{Primo avvio}
+      All'avvio all'utente è richiesto di registrarsi o accedere alla piattaforma, potendo scegliere tra 3 diverse metodologie:
+      \begin{itemize}
+        \item Sblocco mediante \hi{username} e \hi{password};
+        \item Sblocco con \hi{impronta digitale} (se supportato);
+        \item Sblocco con \hi{riconoscimento facciale} (se supportato);
+      \end{itemize}
     \subsection{Post registrazione}
+      In seguito ad una corretta registrazione l'utente accede alla HomePage, nella quale ha la possibilità di visualizzare:
+      \begin{itemize}
+        \item L'elenco delle \hi{artwork} presenti nel museo;
+        \item Il proprio profilo;
+        \item L'accesso diretto alle artwork preferite.
+      \end{itemize}
     \subsection{Memorizzazione delle informazioni}
+    In linea con il design pattern \hi{MVVM} \footnotemark \footnotetext{(Model–view–viewmodel), pattern nel quale viene astratto lo stato di view (visualizzazione) e comportamento}, si è fatto uso delle \href{https://developer.android.com/reference/android/content/SharedPreferences}{\hi{SharedPreferences}} per il salvataggio e la gestione di componenti chiave quali:
+      \begin{itemize}
+        \item Credenziali dell'utente;
+        \item Variabili d'ambiente;
+        \item Variabili di stato;
+      \end{itemize}
+    
     \subsection{Modelli di dominio}
       \begin{center}
         \hi{Class Diagram}
+            Di seguito riportiamo il diagramma delle classi di Analisi prodotto durante lo sviluppo della piattaforma InfoPoint
       \end{center}
 
       \begin{center}
         \hi{Sequence Diagram}
+            Di seguito riportiamo il diagramma delle classi di Analisi prodotto durante lo sviluppo della piattaforma InfoPoint, in merito alla:
       \end{center}
     \newpage

@@ -1,5 +1,17 @@
 \chapter{Dettagli implementativi}
+  \begin{abstract}
+    In questo capitolo tratteremo l'implementazione e il funzionamento delle componenti che hanno reso possibile lo sviluppo della piattaforma \hi{InfoPoint}, prestando particolare attenzione alle funzionalità richieste da programma
+  \end{abstract}
   \section{Server}
+    Di seguito riportiamo alcuni dettagli implementativi della struttura del \textbf{Server}. In particolare:
+
+    \begin{itemize}
+      \item Analisi e controllo delle principali system call che il C mette a disposizione per la programmazione tramite socket\footnotemark; \footnotetext{Per un'analisi più completa si faccia riferimento al codice sorgente, come indicato nel capitolo successivo}
+      \item Analisi delle funzioni di logging e controllo degli stati utilizzate;
+      \item Analisi e controllo delle principali system call per la gestione del Database utilizzato.
+    \end{itemize}
+
     \newpage
   \section{Client}
+    Di seguito riportiamo alcuni dettagli implementativi della struttura del Client.
     \newpage
