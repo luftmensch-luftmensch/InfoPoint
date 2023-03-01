@@ -1,0 +1,12 @@
+\chapter{Protocollo applicativo}
+  Come già indicato in precedenza abbiamo preferito il protocollo \hi{TCP} rispetto al protocollo \hi{UDP}, per la presenza di un controllo della congestione e affidabilità in termini di \texttt{invio/ricezione} di dati\footnotemark \footnotetext{Ricordiamo infatti che UDP non ha garanzie sulla trasmissione dei pacchetti, seguento la logica di best-effort} .
+
+  Lo sviluppo dell'applicativo è stato inizialmente verticalizzato sulla creazione dello scheletro del Server, per avere un primo approccio nudo e crudo allo scambio di messaggi via \hi{socket}.
+
+  Per avere un programma robusto e manutenibile si è fatto largo uso delle \textbf{good pratices} che questo tipo di comunicazione richiede. In particolare:
+  \begin{itemize}
+    \item La connessione viene aperta solo nel momento in cui devono essere \texttt{inviati/ricevuti} dati (Si evita in questo modo di tenere aperte connessioni in momenti in cui queste non vengono sfruttate);
+    \item Si effettuano controlli di raggiungibilità del server lato client\footnotemark \footnotetext{Non ha senso infatti tenere aperta una connessione se non utilizzata, anzi si rischia anche di causare interruzione di servizio dovuti a timeout improvvisi};
+    \item Vengono controllati i dati \texttt{inviati/ricevuti} sempre prima di compiere operazioni che possano minare il corretto funzionamento di \hi{Server} e \hi{Client} \footnotemark \footnotetext{Questo avviene anche attraverso un particolare pattern di costruzione dei dati}
+    \item Vengono effettuati controlli e gestione degli stati di tutte le operazioni lato \hi{Server};
+  \end{itemize}

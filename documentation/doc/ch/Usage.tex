@@ -1,0 +1,42 @@
+\chapter{Guida all'uso}
+  \begin{abstract}
+    <TODO>
+  \end{abstract}
+  \section{Guida al Server}
+    \subsection{Funzionalità}
+      Il Sistema, deve offrire, una serie di funzionalità:
+      \begin{itemize}
+        \item Possibilità di connessione concorrente;
+        \item Possibilità di potersi registrare alla piattaforma\footnotemark \footnotetext{Le credenziali vengono salvate facendo uso di un Database, che risulta molto più affidabile di un semplice file di testo};
+        \item Possibilità di usufruire dei contenuti in base alla tipologia di utente, in modo da permette un focus diverso in base alle sue caratteristiche\footnotemark \footnotetext{Ricordiamo che il bacino degli utenti che possono fare uso del sistema può variare da scolaresche, famiglie o esperti} ;
+      \end{itemize}
+
+    \subsection{Scelte implementative}
+        Seguendo il concetto del \emph{DIVIDE ET IMPERA}\footnotemark \footnotetext{Metodologia per la risoluzione di problemi $\rightarrow$ Il problema viene diviso in sottoproblemi più semplici e si continua fino a ottenere problemi facilmente risolvibili. Combinando le soluzioni ottenute si risolve il problema originario.} si è scelto di spezzare le varie funzionalità che vengono messe a disposizione per rendere il codice facilmente manutenibile ed evitare lo stato di codice monolitico\footnotemark \footnotetext{Che risulta notoriamente più difficile da gestire e modificare nel tempo}.
+    \subsection{Tecnologie e strumenti utilizzati}
+      Per una migliore gestione del Sistema, si è fatto uso di una serie di strumenti.
+
+      Durante lo sviluppo si è fatto uso dell'utility \hi{cmake}\footnotemark \footnotetext{Per maggiori informazioni visitare il seguente \href{https://cmake.org/}{sito}} , tool modulare che permette la generazione di un \hi{Makefile}\footnotemark \footnotetext{Che contiene tutte le direttive utilizzate dall'utility make, che ne permettono la corretta compilazione} .
+
+      Per la fase di deploy invece si è fatto uso di \hi{docker}, tool che permette l'esecuzione di programmi in maniera containerizzata.
+
+      Come sperato, la combinazione di questi tool ha permesso un passaggio immediato da una situazione di esecuzione locale (di debug) ad una 
+
+      Come sperato, avendo adottato entrambe le strategie non si sono riscontrati problemi durante il passaggio da un ambiente locale (di testing) a uno decentralizzato (in produzione).
+    \subsection{Memorizzazione dei dati}
+        Per essere sempre in linea con le nuove tendenze e tecnologie si è scelto di abbandonare il classico approccio basato su un collegamento ad una base di dati relazionale, preferendo un approccio di tipo \hi{NOSQL}\footnotemark \footnotetext{Che a differenza dei classici DBMS relazioni (che offrono un approccio \texttt{relazione} ai dati) offre un approccio al documento, rendendo il design più semplice} , che offre una maggiore elasticità e scalabilità nel tempo.
+    \newpage
+
+  \section{Guida al Client}
+    \subsection{Primo avvio}
+    \subsection{Post registrazione}
+    \subsection{Memorizzazione delle informazioni}
+    \subsection{Modelli di dominio}
+      \begin{center}
+        \hi{Class Diagram}
+      \end{center}
+
+      \begin{center}
+        \hi{Sequence Diagram}
+      \end{center}
+    \newpage
