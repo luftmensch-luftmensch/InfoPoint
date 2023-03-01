@@ -34,7 +34,7 @@ ENV CC=${C_COMPILER}
 WORKDIR /builder
 
 ### Build project w/ cmake ###
-RUN echo -e "\033[1;34m Copying src folder...\033[0m"
+RUN echo -e "\033[1;34m Copying directories...\033[0m"
 COPY . .
 RUN echo -e "\033[1;34m Done!\033[0m"
 

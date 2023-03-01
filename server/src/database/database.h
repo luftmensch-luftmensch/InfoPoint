@@ -24,24 +24,24 @@
       #define MONGO_DB_PASSWORD "password"
   #endif
 
-typedef struct db_handler {
-  // TODO: Add variables
-  const char* uri;
+  typedef struct db_handler {
+    // TODO: Add variables
+    const char* uri;
 
-} db_handler;
+  } db_handler;
 
-// Database Handler functions
-db_handler* db_init();
-void db_kill(db_handler*);
-// TODO: Change return type
-void retrieve_single();
-void retrieve_all();
-void fillCollection();
-void retrieve_key();
+  // Database Handler functions
+  db_handler* db_init();
+  void db_kill(db_handler*);
+  // TODO: Change return type
+  void retrieve_single();
+  void retrieve_all();
+  void fillCollection();
+  void retrieve_key();
 
-// Client data related
-void add_client();
-void remove_client();
-void update_client();
+  // Client data related
+  void add_client();
+  void remove_client();
+  void update_client();
 
 #endif
