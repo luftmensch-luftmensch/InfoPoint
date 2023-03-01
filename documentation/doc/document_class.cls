@@ -427,7 +427,6 @@
 				{{\color{primary!65!black}\Gobold\fontsize{26}{0}\selectfont A.A.\ 2022-2023}};
 
 			% Title of the documentation
-			% TODO: Position of text 
 			\node at ([xshift=0.1cm, yshift=0.1cm] $(0,0)!0.5!(1,1)$) [align=center, anchor=center, inner sep=0pt, outer sep=0pt] 
 				{{\color{primary!10!black}\Gobold\fontsize{72}{0}\selectfont Info}{\color{primary!10!black}\Gobold\fontsize{50}{0}\selectfont Point}};
 			\node at ($(0,0)!0.5!(1,1)$) [align=center, anchor=center, inner sep=0pt, outer sep=0pt] 
@@ -457,7 +456,7 @@
 			\path [mpath=primary] ([xshift=0.15cm, yshift=0.15cm] auth1graduate.north) -- ([xshift=0.25cm, yshift=0.25cm]auth1graduate.north)
 				-- ([xshift=0.65cm, yshift=0.25cm] auth1matr.east |- auth1graduate.north) -- ([xshift=0.5cm, yshift=0.15cm] auth1matr.east |- auth1graduate.north) -- cycle;
 
-			% Author 2
+			% Author 2 (Dario)
 			\node (auth2graduate) at ([xshift=0.40cm, yshift=0.40cm] auth1graduate.north) [anchor=south west]
 				{{\color{primary!80!black}\fontsize{26}{0}\selectfont\igraduate}};
 			\node (auth2name) at ([xshift=0.05cm] auth2graduate.east) [anchor=west]
@@ -465,17 +464,17 @@
 			\node (auth2mailcon) at (auth1mailcon.north |- auth2graduate.east) [anchor=west]
 				{{\color{primary!80!black}\fontsize{14}{0}\selectfont\imail}};
 			\node (auth2mail) at ([xshift=0.025cm] auth2mailcon.east) [anchor=west]
-				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont <TODO>@studenti.unina.it}};
+				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont da.morace@studenti.unina.it}};
 			\node (auth2imatr) at (auth1imatr.north |- auth2mail.east) [anchor=west]
 				{{\color{primary!80!black}\fontsize{14}{0}\selectfont\iid}};
 			\node (auth2matr) at ([xshift=0.05cm] auth2imatr.east) [anchor=west]
-				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont <TODO>}};
+				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont N86003778}};
 
 			% Separator 2
 			\path [mpath=primary] ([xshift=0.15cm, yshift=0.15cm] auth2graduate.north) -- ([xshift=0.25cm, yshift=0.25cm]auth2graduate.north)
 				-- ([xshift=0.65cm, yshift=0.25cm] auth2matr.east |- auth2graduate.north) -- ([xshift=0.5cm, yshift=0.15cm] auth2matr.east |- auth2graduate.north) -- cycle;
 
-			% Author 3
+			% Author 3 (Lucia)
 			\node (auth3graduate) at ([xshift=0.40cm, yshift=0.40cm] auth2graduate.north) [anchor=south west]
 				{{\color{primary!80!black}\fontsize{26}{0}\selectfont\igraduate}};
 			\node (auth3name) at ([xshift=0.05cm] auth3graduate.east) [anchor=west]
@@ -483,11 +482,11 @@
 			\node (auth3mailcon) at (auth2mailcon.north |- auth3graduate.east) [anchor=west]
 				{{\color{primary!80!black}\fontsize{14}{0}\selectfont\imail}};
 			\node (auth3mail) at ([xshift=0.025cm] auth3mailcon.east) [anchor=west]
-				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont <TODO>@studenti.unina.it}};
+				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont l.brando@studenti.unina.it}};
 			\node (auth3imatr) at (auth2imatr.north |- auth3mail.east) [anchor=west]
 				{{\color{primary!80!black}\fontsize{14}{0}\selectfont\iid}};
 			\node (auth3matr) at ([xshift=0.05cm] auth3imatr.east) [anchor=west]
-				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont <TODO>}};
+				{{\color{primary!80!black}\Alte\fontsize{12}{0}\selectfont N86003382}};
 
 		\end{scope}%
 	\end{tikzpicture}\restoregeometry\newpage}
@@ -531,7 +530,7 @@
 			\node (auth1-block-git-text) at (auth1-block-git-icon.east) [anchor=west, align=left]
 				{\color{primary}\fontsize{14}{20}\selectfont \href{https://github.com/luftmensch-luftmensch/}{\hi{Profilo}}};
 
-			% Auth-Block-2
+			% Auth-Block-2 (Lucia)
 			\node (auth2-block-img) at (0.125, 0.75) [anchor=west, circle, minimum width=4cm,
 				path picture={\node at (path picture bounding box.center) [anchor=center] {\includegraphics[width=3cm]{content/img/lbrando.png}};}]{};
 			\node (auth2-block-name) at ([xshift=0.05cm, yshift=-0.6cm] auth2-block-img.north east) [anchor=north west]
@@ -539,17 +538,17 @@
 			\node (auth2-block-matr-icon) at (auth2-block-name.south west) [anchor=north west, square]
 				{\color{primary}\fontsize{16}{20}\selectfont\iid};
 			\node (auth2-block-matr-text) at (auth2-block-matr-icon.east) [anchor=west, align=left]
-				{\color{primary}\fontsize{14}{20}\selectfont <TODO>};
+				{\color{primary}\fontsize{14}{20}\selectfont N86003382};
 			\node (auth2-block-mail-icon) at ([xshift=0.45cm] auth2-block-matr-icon.south west) [anchor=north west, square]
 				{\color{primary}\fontsize{16}{20}\selectfont\imail};
 			\node (auth2-block-mail-text) at (auth2-block-mail-icon.east) [anchor=west, align=left]
-				{\color{primary}\fontsize{14}{20}\selectfont <TODO>@studenti.unina.it};
+				{\color{primary}\fontsize{14}{20}\selectfont l.brando@studenti.unina.it};
 			\node (auth2-block-git-icon) at ([xshift=0.45cm] auth2-block-mail-icon.south west) [anchor=north west, square]
 				{\color{primary}\fontsize{16}{20}\selectfont\iuser};
 			\node (auth2-block-git-text) at (auth2-block-git-icon.east) [anchor=west, align=left]
 				{\color{primary}\fontsize{14}{20}\selectfont  \href{https://github.com/lbrando/}{\hi{Profilo}}};
 
-			% Auth-Block-3
+			% Auth-Block-3 (Dario)
 			\node (auth3-block-img) at (0.875, 0.25) [anchor=east, circle, minimum width=4cm,
 				path picture={\node at (path picture bounding box.center) [anchor=center] {\includegraphics[width=3cm]{content/img/goblino.png}};}]{};
 			\node (auth3-block-name) at ([xshift=-0.10cm, yshift=-0.6cm] auth3-block-img.north west) [anchor=north east]
@@ -557,11 +556,11 @@
 			\node (auth3-block-matr-icon) at (auth3-block-name.north east) [anchor=south east, square]
 				{\color{accent!80!black}\fontsize{16}{20}\selectfont\iid};
 			\node (auth3-block-matr-text) at (auth3-block-matr-icon.west) [anchor=east, align=right]
-				{\color{accent!80!black}\fontsize{14}{20}\selectfont <TODO>};
+				{\color{accent!80!black}\fontsize{14}{20}\selectfont N86003778};
 			\node (auth3-block-mail-icon) at ([xshift=-0.45cm] auth3-block-matr-icon.north east) [anchor=south east, square]
 				{\color{accent!80!black}\fontsize{16}{20}\selectfont\imail};
 			\node (auth3-block-mail-text) at (auth3-block-mail-icon.west) [anchor=east, align=right]
-				{\color{accent!80!black}\fontsize{14}{20}\selectfont <TODO>@studenti.unina.it};
+				{\color{accent!80!black}\fontsize{14}{20}\selectfont da.morace@studenti.unina.it};
 			\node (auth3-block-git-icon) at ([xshift=-0.45cm] auth3-block-mail-icon.north east) [anchor=south east, square]
 				{\color{accent!80!black}\fontsize{16}{20}\selectfont\iuser};
 			\node (auth3-block-git-text) at (auth3-block-git-icon.west) [anchor=east, align=right]
