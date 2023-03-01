@@ -2,6 +2,7 @@
 #define InfoPoint_Database
 
   #include "../utils/common/utils.h"
+  #include <mongoc/mongoc.h>
   /** Global variables used to connect to the mongodb instance */
 
   /* Connection URI */
@@ -24,9 +25,17 @@
       #define MONGO_DB_PASSWORD "password"
   #endif
 
+
+  enum collection_type { CLIENT, ART_WORK };
+
   typedef struct db_handler {
     // TODO: Add variables
-    const char* uri;
+    mongoc_uri_t* uri;
+    // Client to the mongodb instance
+    mongoc_client_t* client;
+    mongoc_cursor_t* cursor;
+    bson_error_t error;
+    enum collection_type collections;
 
   } db_handler;
 

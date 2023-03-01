@@ -47,6 +47,9 @@ endif()
 # Create library, setup header and source files
 #
 
+# Find driver needed for mongodb connection
+include(cmake/DatabaseSettings.cmake)
+
 # Find all headers and implementation files
 include(cmake/SourcesAndHeaders.cmake)
 

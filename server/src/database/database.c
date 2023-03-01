@@ -14,9 +14,13 @@
 
 #define _m(type, format, ...) _msgcategory(type, "DATABASE", format, ##__VA_ARGS__)
 
-db_handler* db_init(){
+db_handler* db_init(const char* uri){
   db_handler* db = malloc(sizeof(struct db_handler));
-  // TODO: DB_HANDLER SETUP
+
+  /* Required to initialize libmongoc's internals (It should be called only once!) */
+  mongoc_init ();
+
+  //db -> uri = mongoc_uri_new_with_error(uri, &error)
 
   _m(_msginfo, "Database handler successfully created!");
   return db;
