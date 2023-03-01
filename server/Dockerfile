@@ -8,6 +8,7 @@ FROM archlinux:base as base
 
 # Global variables
 ARG C_COMPILER=gcc
+
 ARG BUILD_TYPE=Release
 
 ### Update & install required pkgs ###
@@ -17,7 +18,13 @@ RUN pacman -Syy
 RUN echo -e "\033[1;34m Done!\033[0m"
 
 RUN echo -e "\033[1;34m Installing dependencies...\033[0m"
-RUN pacman -S --noconfirm make cmake ${C_COMPILER}
+RUN pacman -S --noconfirm \
+    # Build utilities
+    make cmake \
+    # Compiler used
+    ${C_COMPILER} \
+    mongo-c-driver # Mongodb driver (needed to connect to the mongodb instance)
+
 RUN echo -e "\033[1;34m Done!\033[0m"
 
 

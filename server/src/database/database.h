@@ -26,6 +26,7 @@
 
 typedef struct db_handler {
   // TODO: Add variables
+  const char* uri;
 
 } db_handler;
 
