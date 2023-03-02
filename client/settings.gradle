@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
         // Needed for https://github.com/GrenderG/Toasty (Toast on steroid)
         maven { url "https://jitpack.io" }
     }
