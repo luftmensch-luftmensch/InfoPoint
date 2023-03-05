@@ -1,3 +1,8 @@
+<!--
+  ~ Scritto da Valentino Bocchetti il 5/3/2023 alle ore 21:23
+  ~
+  ~ Copyright © 2023 InfoPoint
+  -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.InfoPoint" parent="Theme.Material3.Dark.NoActionBar">
