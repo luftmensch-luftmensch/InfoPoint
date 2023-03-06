@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/post_item_shimmer" />
+            <include layout="@layout/art_work_item_shimmer" />
 
-            <include layout="@layout/post_item_shimmer" />
+            <include layout="@layout/art_work_item_shimmer" />
 
         </LinearLayout>
 

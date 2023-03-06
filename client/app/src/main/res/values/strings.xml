@@ -114,4 +114,16 @@
     <string name="title_placeholder_text">Titolo Opera</string>
     <string name="cover_password">Cover password dimenticata</string>
     <string name="button_forgot_password_text">Invia codice</string>
+    <string name="rateArtWork">Valuta Opera</string>
+    <string name="title_info">Nome opera</string>
+    <string name="tagArtWork1">TODO-TAG</string>
+    <string name="tagArtWork2">TODO-TAG 2</string>
+    <string name="tagArtWork3">TODO-TAG 3</string>
+    <string name="edit_profile_pic">Modifica foto profilo</string>
+    <string name="remove_art_work">Rimuovi opera</string>
+    <string name="resend_confirmation_code">Inviami di nuovo il codice di conferma</string>
+    <string name="hint_confirmation_code">Inserisci il codice di conferma</string>
+    <string name="search_art_work">Ricerca opere</string>
+    <string name="comment_placeholder">Commento</string>
+    <string name="placeholder_artist">Artista</string>
 </resources>
