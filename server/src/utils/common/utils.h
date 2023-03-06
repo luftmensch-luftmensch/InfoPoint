@@ -12,6 +12,7 @@
     #include <unistd.h>
     #include <errno.h>
     #include <signal.h>
+    #include <regex.h>
 
     #ifndef IPV4_ADDRESS_FORMAT
 	    #define IPV4_ADDRESS_FORMAT "%d.%d.%d.%d"

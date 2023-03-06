@@ -13,7 +13,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <regex.h>
 #include <time.h>
 #include <unistd.h>
 #include <signal.h>
