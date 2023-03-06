@@ -17,6 +17,8 @@ public class Client extends BaseObservable {
     private String password;
     private ClientType type;
 
+    private String email;
+
     /*
         Data binding generates a class named BR (BindingResources) in the module package which contains the IDs of the resources used for data binding.
         The Bindable annotation generates an entry in the BR class file during compilation. If the base class for data classes cannot be changed,
@@ -27,6 +29,10 @@ public class Client extends BaseObservable {
     public String getUsername() { return username; }
     @Bindable
     public String getPassword() { return password; }
+
+    @Bindable
+    public String getEmail() { return email; }
+
     @Bindable
     public ClientType getType() { return type; }
 
@@ -38,6 +44,11 @@ public class Client extends BaseObservable {
     public void setPassword(String password) {
         this.password = password;
         notifyPropertyChanged(BR.password);
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+        notifyPropertyChanged(BR.email);
     }
 
     public void setType(ClientType type) {

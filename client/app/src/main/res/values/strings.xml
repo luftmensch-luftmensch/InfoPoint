@@ -126,4 +126,5 @@
     <string name="search_art_work">Ricerca opere</string>
     <string name="comment_placeholder">Commento</string>
     <string name="placeholder_artist">Artista</string>
+    <string name="button_confirm_text">Conferma</string>
 </resources>

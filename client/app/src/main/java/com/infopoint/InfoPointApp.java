@@ -5,9 +5,12 @@
 */
 package com.infopoint;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnticipateInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
@@ -17,15 +20,16 @@ import com.infopoint.core.utils.Constants;
 import com.infopoint.ui.intro.InfoPointIntro;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.HiltAndroidApp;
 
-//@AndroidEntryPoint
-public class Application extends AppCompatActivity {
+@AndroidEntryPoint
+public class InfoPointApp extends AppCompatActivity {
 
     private static final String _TAG = "[InfoPointApplication] ";
 
-    private static Application instance;
+    private static InfoPointApp instance;
 
-    public static Application getInstance() { return instance; }
+    public static InfoPointApp getInstance() { return instance; }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -38,7 +42,7 @@ public class Application extends AppCompatActivity {
         // Keep the splash screen visible for this Activity
         splashScreen.setKeepOnScreenCondition(() -> true );
 
-        handleUserStatus();
+        //handleUserStatus();
         finish();
 
     }
@@ -47,8 +51,8 @@ public class Application extends AppCompatActivity {
         Log.d(_TAG, "Handle route");
         if(PreferencesManager.contains(Constants.FIRST_RUN)){
             Log.d(_TAG, "First run! Move view to intro");
-            //Intent intent;
-            //intent = new Intent(Application.this, InfoPointIntro.class);
+            Intent intent;
+            intent = new Intent(InfoPointApp.this, InfoPointIntro.class);
         } else {
             Log.d(_TAG, "Not first run! Checking stored credential...");
         }

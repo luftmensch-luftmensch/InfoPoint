@@ -14,12 +14,17 @@
     <!-- Auth permission (Biometric/Facial recognition) -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
+    <!-- Camera permission (Needed for the authentication & Scanning the Bar Code) -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <!--
         * Setting android:allowBackup to false disable backups to google drive
         * Setting android:supportsRtl to true enable right-to-left (RTL) layouts (in order to use in countries where language is written from right to left)
     -->
 
     <application
+        android:name=".App"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -32,7 +37,7 @@
 
         <!-- Main Activity w/ Splash Screen -->
         <activity
-            android:name=".Application"
+            android:name=".InfoPointApp"
             android:theme="@style/Theme.InfoPoint.Starting"
             android:exported="true">
             <intent-filter>

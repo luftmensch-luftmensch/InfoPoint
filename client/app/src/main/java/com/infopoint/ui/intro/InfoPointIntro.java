@@ -6,6 +6,7 @@
 
 package com.infopoint.ui.intro;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,13 +17,20 @@ import com.github.appintro.AppIntroFragment;
 import com.github.appintro.AppIntroPageTransformerType;
 import com.infopoint.R;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class InfoPointIntro extends AppIntro2 {
+
+    private static final String _TAG = "[InfoPointIntro] ";
+    private static final String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.USE_BIOMETRIC};
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // TODO: Update Drawable icons
-        addSlide(AppIntroFragment.createInstance("Welcome!",
+        addSlide(AppIntroFragment.createInstance(
+                "Benvenuto!",
                 "This is a demo example in java of AppIntro library, with a custom background on each slide!",
                 R.drawable.ic_avatar_icon
         ));
@@ -45,11 +53,17 @@ public class InfoPointIntro extends AppIntro2 {
                 R.drawable.ic_avatar_icon
         ));
 
+        askForPermissions(
+                permissions,
+                3,
+                true
+        );
+
         // Fade Transition
         setTransformer(AppIntroPageTransformerType.Fade.INSTANCE);
 
         // Show/hide status bar
-        showStatusBar(true);
+        showStatusBar(false);
 
         //Speed up or down scrolling
         setScrollDurationFactor(2);
@@ -74,6 +88,8 @@ public class InfoPointIntro extends AppIntro2 {
 
         // Enable Vibration
         setVibrate(false);
+
+        // Ask for permission
 
     }
 }
