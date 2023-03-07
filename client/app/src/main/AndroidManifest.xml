@@ -37,7 +37,7 @@
 
         <!-- Main Activity w/ Splash Screen -->
         <activity
-            android:name=".InfoPointApp"
+            android:name=".ui.main.MainActivity"
             android:theme="@style/Theme.InfoPoint.Starting"
             android:exported="true">
             <intent-filter>

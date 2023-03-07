@@ -3,33 +3,37 @@
  *
  * Copyright © 2023 InfoPoint
 */
-package com.infopoint;
+package com.infopoint.ui.main;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.animation.AnticipateInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
+import androidx.navigation.fragment.NavHostFragment;
+
 
 import com.infopoint.core.preferences.PreferencesManager;
 import com.infopoint.core.utils.Constants;
+import com.infopoint.databinding.MainActivityBinding;
 import com.infopoint.ui.intro.InfoPointIntro;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import dagger.hilt.android.HiltAndroidApp;
 
 @AndroidEntryPoint
-public class InfoPointApp extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String _TAG = "[InfoPointApplication] ";
 
-    private static InfoPointApp instance;
 
-    public static InfoPointApp getInstance() { return instance; }
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() { return instance; }
+
+    private MainActivityBinding binding;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -39,11 +43,28 @@ public class InfoPointApp extends AppCompatActivity {
 
         PreferencesManager.init(getApplicationContext());
 
+        binding = MainActivityBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+
+        setupUi();
         // Keep the splash screen visible for this Activity
-        splashScreen.setKeepOnScreenCondition(() -> true );
+        //splashScreen.setKeepOnScreenCondition(() -> true );
 
         //handleUserStatus();
-        finish();
+        //finish();
+
+    }
+
+    private void setupUi(){
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        //NavHostFragment navHostFragment = getSupportFragmentManager().findFragmentById(binding.navHostFragmentActivityMain.getId());
+        NavHostFragment navHostFragment;
+        //navHostFragment = getSupportFragmentManager().findFragmentById(binding.navHostFragmentActivityMain.getId());
+    }
+
+    private void setListeners(){
 
     }
 
@@ -52,7 +73,7 @@ public class InfoPointApp extends AppCompatActivity {
         if(PreferencesManager.contains(Constants.FIRST_RUN)){
             Log.d(_TAG, "First run! Move view to intro");
             Intent intent;
-            intent = new Intent(InfoPointApp.this, InfoPointIntro.class);
+            intent = new Intent(MainActivity.this, InfoPointIntro.class);
         } else {
             Log.d(_TAG, "Not first run! Checking stored credential...");
         }

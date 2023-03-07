@@ -6,8 +6,17 @@
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/info_point_navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/info_point_navigation"
+    app:startDestination="@+id/navigation_home">
 
     <!-- TODO: Add navigation items  -->
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.infopoint.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+
+    </fragment>
 
 </navigation>
