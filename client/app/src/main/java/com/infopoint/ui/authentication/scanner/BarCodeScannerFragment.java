@@ -1,7 +1,19 @@
 /*
- * Scritto da Valentino Bocchetti il 6/3/2023 alle ore 15:18
+ * Copyright © 2023 InfoPoint. All rights reserved.
  *
- * Copyright © 2023 InfoPoint
+ * Licensed under the MIT License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://mit-license.org/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * First written in 6/3/2023 at 15:18
 */
 
 package com.infopoint.ui.authentication.scanner;
@@ -12,9 +24,12 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+/**
+ * Scanner ui interface for registration and retrieval of the info of a specific {@link com.infopoint.model.ArtWork ArtWork}
+ * @author valentino
+*/
 public class BarCodeScannerFragment extends Fragment implements OnRequestPermissionsResultCallback, OnItemSelectedListener  {
     private static final String _TAG = "[BarCodeScannerFragment] ";
 

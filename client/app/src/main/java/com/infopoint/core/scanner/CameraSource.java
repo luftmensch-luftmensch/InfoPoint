@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * First written in 5/3/2023 at 21:54
+ * First written in 9/3/2023 at 7:27
 */
 
-package com.infopoint.ui.profile;
+
+package com.infopoint.core.scanner;
 
 /**
- * Ui interface for showing {@link com.infopoint.model.Client Client} information
+ * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or
+ * displaying extra information). This receives preview frames from the camera at a specified rate,
+ * sending those frames to child classes' detectors / classifiers as fast as it is able to process.
  * @author valentino
 */
-public class ProfileFragment {
+public class CameraSource {
 }

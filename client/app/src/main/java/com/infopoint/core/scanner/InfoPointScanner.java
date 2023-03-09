@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * First written in 5/3/2023 at 21:54
+ * First written in 9/3/2023 at 07:13
 */
 
-package com.infopoint.ui.profile;
 
-/**
- * Ui interface for showing {@link com.infopoint.model.Client Client} information
- * @author valentino
-*/
-public class ProfileFragment {
+package com.infopoint.core.scanner;
+
+/** @author valentino */
+public class InfoPointScanner {
 }
