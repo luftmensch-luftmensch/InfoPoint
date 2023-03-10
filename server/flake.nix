@@ -40,7 +40,7 @@
         buildInputs = [mongo-driver];
 
         shellHook = ''
-                echo "Hello, ready to cry with the LSO project?"
+                echo "Ready to cry c:"
               '';
       };
     });

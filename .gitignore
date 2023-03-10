@@ -11,3 +11,4 @@
 
 ### Server related
 /server/build/*
+/server/.direnv/*

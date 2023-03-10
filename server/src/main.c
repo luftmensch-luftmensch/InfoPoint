@@ -31,6 +31,7 @@
 #include "utils/socket/server.h"    // Custom functions
 #include "utils/common/welcome_message.h" // Welcome message
 
+// #include <mongoc/mongoc.h>
 
 #define PORT 9000
 #define SERVER_BACKLOG 1000 // Number of connections handled at once

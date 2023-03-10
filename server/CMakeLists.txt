@@ -48,7 +48,8 @@ endif()
 #
 
 # Find driver needed for mongodb connection
-include(cmake/DatabaseSettings.cmake)
+#include(cmake/DatabaseSettings.cmake)
+
 
 # Find all headers and implementation files
 include(cmake/SourcesAndHeaders.cmake)
@@ -58,6 +59,22 @@ include(cmake/SourcesAndHeaders.cmake)
 verbose_message_info(${sources} ${headers})
 
 add_executable(${PROJECT_EXECUTABLE})
+
+#
+# Database setup
+#
+
+# In order to generate the compile_commands.json to make clangd able to find mongoc lib:
+# 1. cmake -S . -B build/  -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+# 2. In the build folder run
+#   1. make clean
+#   2. bear -- make
+# DONE!
+
+find_package(mongoc-1.0 1.7 REQUIRED)
+target_link_libraries(${PROJECT_EXECUTABLE} PRIVATE mongo::mongoc_shared)
+
+
 target_sources(${PROJECT_EXECUTABLE} PRIVATE ${sources} ${headers})
 
 include(cmake/CompilerBuildFlags.cmake)
