@@ -1,7 +1,7 @@
 #+OPTIONS: date:nil title:nil toc:nil author:nil
 #+STARTUP: overview
 ----------------------------------------------------------------
-[[file:res/logo-2/png/logo-color.png]]
+[[file:res/logo-2/png/logo-no-background.png]]
 
 #+BEGIN_HTML
 <div align="center">
