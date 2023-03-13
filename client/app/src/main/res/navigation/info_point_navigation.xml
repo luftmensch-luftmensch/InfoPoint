@@ -10,7 +10,7 @@
     android:id="@+id/info_point_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <!-- TODO: Add navigation items  -->
+    <!-- TODO: Add navigation items -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.infopoint.ui.home.HomeFragment"
@@ -18,5 +18,4 @@
         tools:layout="@layout/fragment_home">
 
     </fragment>
-
 </navigation>

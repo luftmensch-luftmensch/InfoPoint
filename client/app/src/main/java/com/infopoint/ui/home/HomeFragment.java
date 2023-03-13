@@ -18,6 +18,12 @@
 
 package com.infopoint.ui.home;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -25,4 +31,11 @@ import androidx.fragment.app.Fragment;
  * @author valentino
 */
 public class HomeFragment extends Fragment {
+    private static final String _TAG = "[HomeFragment] ";
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(_TAG, "Showing HomeFragment");
+    }
 }

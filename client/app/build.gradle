@@ -125,8 +125,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
-    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
-
     //// Miscellaneous
     // Intro page
     implementation 'com.github.AppIntro:AppIntro:6.2.0'

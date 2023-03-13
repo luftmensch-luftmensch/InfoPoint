@@ -43,7 +43,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
-    private static final String _TAG = "[InfoPointApplication] ";
+    private static final String _TAG = "[MainActivity] ";
 
 
     private static MainActivity instance;
