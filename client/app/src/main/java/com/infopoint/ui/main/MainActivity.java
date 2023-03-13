@@ -25,9 +25,10 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowCompat;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.infopoint.core.preferences.PreferencesManager;
 import com.infopoint.core.utils.Constants;
 import com.infopoint.databinding.MainActivityBinding;
@@ -50,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getInstance() { return instance; }
 
     private MainActivityBinding binding;
+    // NavView & NavController
+    private NavHostFragment navHostFragment;
+    private BottomNavigationView navView;
+    private NavController navController;
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         instance = this;
@@ -73,15 +78,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupUi(){
+    private void setupUi() {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-
-        //NavHostFragment navHostFragment = getSupportFragmentManager().findFragmentById(binding.navHostFragmentActivityMain.getId());
-        NavHostFragment navHostFragment;
-        //navHostFragment = getSupportFragmentManager().findFragmentById(binding.navHostFragmentActivityMain.getId());
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(binding.navHostFragmentActivityMain.getId());
+        navController = navHostFragment.getNavController();
+        navView = binding.navView;
     }
 
-    private void setListeners(){
+    private void setListeners() {
+
+    }
+
+    private void checkClientStatus() {
 
     }
 

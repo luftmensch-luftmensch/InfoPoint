@@ -46,8 +46,8 @@ public class InfoPointIntro extends AppIntro2 {
 
         // TODO: Update Drawable icons
         addSlide(AppIntroFragment.createInstance(
-                "Benvenuto!",
-                "This is a demo example in java of AppIntro library, with a custom background on each slide!",
+                getString(R.string.titleSlide1),
+                getString(R.string.descriptionSlide1),
                 R.drawable.ic_avatar_icon
         ));
 
@@ -69,11 +69,8 @@ public class InfoPointIntro extends AppIntro2 {
                 R.drawable.ic_avatar_icon
         ));
 
-        askForPermissions(
-                permissions,
-                3,
-                true
-        );
+        // Ask for permission
+        askForPermissions(permissions, 3, true);
 
         // Fade Transition
         setTransformer(AppIntroPageTransformerType.Fade.INSTANCE);
@@ -104,8 +101,6 @@ public class InfoPointIntro extends AppIntro2 {
 
         // Enable Vibration
         setVibrate(false);
-
-        // Ask for permission
 
     }
 }

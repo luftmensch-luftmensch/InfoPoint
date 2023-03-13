@@ -127,4 +127,8 @@
     <string name="comment_placeholder">Commento</string>
     <string name="placeholder_artist">Artista</string>
     <string name="button_confirm_text">Conferma</string>
+
+    <!-- INTRO -->
+    <string name="titleSlide1">Benvenuto su InfoPoint!</string>
+    <string name="descriptionSlide1">Il supporto di cui avevi bisogno</string>
 </resources>
