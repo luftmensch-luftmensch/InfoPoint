@@ -4,6 +4,7 @@ set(sources
     src/utils/socket/handler.c
     src/utils/socket/wrapper.c
     src/utils/socket/server.c
+    src/database/database.c
 )
 
 set(headers
@@ -12,4 +13,6 @@ set(headers
     src/utils/socket/handler.h
     src/utils/socket/server.h
     src/utils/common/utils.h
+
+    src/database/database.h
 )

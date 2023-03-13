@@ -27,6 +27,7 @@
 #include <pthread.h>    // Contiene dichiarazioni di funzione e mapping per le interfacce di threading (definisce una serie di costanti utilizzate da tali funzioni)
 
 // Personal Headers
+#include "database/database.h"
 #include "utils/common/utils.h"        // Custom functions
 #include "utils/socket/server.h"    // Custom functions
 #include "utils/common/welcome_message.h" // Welcome message
@@ -52,5 +53,8 @@ int main(int argc, char* argv[]){
   }
   setup_signals();
   server* s = server_init(port);
-  printf("%lu", s ->conn_count);
+  printf("%lu\n", s ->conn_count);
+
+  db_handler* db = db_init(MONGO_DB_URI);
+  db_kill(db);
 }

@@ -58,7 +58,7 @@
 
     // Macros [Logging]
     #define _msgsystem(format, ...) ftime_print(format "\n", ##__VA_ARGS__)
-    #define _msginfo(format, ...) _msgsystem(ANSI_COLOR_BLUE "(INFO):  " format ANSI_COLOR_RESET, ##__VA_ARGS__)
+    #define _msginfo(format, ...) _msgsystem(ANSI_COLOR_GREEN "(INFO):  " format ANSI_COLOR_RESET, ##__VA_ARGS__)
     #define _msgevent(format, ...) _msgsystem(ANSI_COLOR_BBLUE "(EVENT): " format ANSI_COLOR_RESET, ##__VA_ARGS__)
     #define _msgwarn(format, ...) _msgsystem(ANSI_COLOR_YELLOW "(WARN):  " format ANSI_COLOR_RESET, ##__VA_ARGS__)
     #define _msgfatal(format, ...) _msgsystem(ANSI_COLOR_BRED "(FATAL): " format ANSI_COLOR_RESET, ##__VA_ARGS__) 
@@ -96,7 +96,7 @@
 
 
     #ifndef TIME_FORMAT
-      #define TIME_FORMAT "(%02d:%02d:%02d, %02d-%02d-%d)" 
+      #define TIME_FORMAT "[%02d:%02d:%02d, %02d-%02d-%d] "
       #define TIME_FORMAT_ARGS(tm) tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_mday, tm.tm_mon + 1, 1900 + tm.tm_year // [Giorno - Mese - Anno] (ora:minuti:secondi)
     #endif
 

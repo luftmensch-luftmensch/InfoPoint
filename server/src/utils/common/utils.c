@@ -83,7 +83,8 @@ void ftime_print(const char *format, ...){
 	va_list args; 
 	va_start(args, format); 
 	struct tm tm = get_time();
-	printf("[TIME] " TIME_FORMAT, TIME_FORMAT_ARGS(tm));
+	// TODO: Move to write
+	printf(TIME_FORMAT, TIME_FORMAT_ARGS(tm));
 	vprintf(format, args);
 	va_end(args);
 }

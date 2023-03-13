@@ -1,19 +1,20 @@
 ### InfoPoint microservice backend ###
 version: '3.9'
 services:
-  ### Server ###
-  container_name: infopoint-server
-  build:
-    context: .
-    dockerfile: Dockerfile
-  ports:
-    - "9090:9090"
-  expose:
-    - "9090"
-    depends_on:
-      - database
 
+  ### Server ###
   server:
+    container_name: infopoint-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    expose:
+      - "9090"
+      depends_on:
+        - database
+
   ### Database ###
   database:
     # Official Mongo image from DockerHub (latest)
