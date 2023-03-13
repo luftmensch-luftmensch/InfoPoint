@@ -41,6 +41,14 @@
     char* trim(char *s);
     bool validate_regex(const void * const, const void * const);
 
+
+    /* Count the occurence of a given delimeter inside a given buffer */
+    static int count_occurence(const char*, const char*, bool overlap);
+
+    /* Strip a given delimeter from a given buffer */
+    /* TODO: Change return type */
+    void strip_data(char*, const char*);
+
     // Random values
     void init_random();
     size_t random_in(const size_t, const size_t);

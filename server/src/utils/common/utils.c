@@ -42,6 +42,17 @@ char *trim(char *s){
 	return rtrim(ltrim(s)); 
 }
 
+static int count_substr(const char *str, const char* substr, bool overlap) {
+  if ((strlen(substr) == 0) || (strlen(str) == 0)) return -1; // forbid empty substr
+
+  int count = 0;
+  int increment = overlap ? 1 : strlen(substr);
+  for (char* s = (char*)str; (s = strstr(s, substr)); s += increment)
+    ++count;
+  return count;
+}
+
+
 // Initialize random generator
 void init_random(){
 	srand(time(NULL));
