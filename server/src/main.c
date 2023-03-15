@@ -29,7 +29,7 @@
 // Personal Headers
 #include "database/database.h"
 #include "utils/common/utils.h"        // Custom functions
-#include "utils/socket/server.h"    // Custom functions
+#include "utils/socket/server/server.h"    // Custom functions
 #include "utils/common/welcome_message.h" // Welcome message
 
 // #include <mongoc/mongoc.h>

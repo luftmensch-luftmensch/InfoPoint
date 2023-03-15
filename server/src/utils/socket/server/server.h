@@ -6,10 +6,13 @@
 #include <sys/types.h>
 #include <strings.h>
 #include <arpa/inet.h>
-#include "../common/utils.h"
-#include "bits/types/struct_timeval.h"
-#include "client.h"
-#include "handler.h"
+// #include "bits/types/struct_timeval.h"
+
+// Personal headers
+#include "../../common/utils.h"
+#include "../payload.h"
+#include "../handler/handler.h"
+#include "../wrapper/wrapper.h"
 
   #define SOCKET_ERROR (-1)
   extern volatile sig_atomic_t persist;

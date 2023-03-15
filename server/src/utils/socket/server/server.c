@@ -16,9 +16,7 @@
 #include <stdlib.h>
 
 // Personal headers
-#include "handler.h"
 #include "server.h"
-#include "wrapper.h"
 
 #define _m(type, format, ...) _msgcategory(type, "SERVER", format, ##__VA_ARGS__)
 #define _mth(type, format, ...) _msgcategory(type, "SERV_TH", format, ##__VA_ARGS__)

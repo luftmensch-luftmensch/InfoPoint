@@ -4,6 +4,8 @@
   #include "sys/types.h"
   #include <sys/epoll.h>
   #include <stdbool.h>
+  #include "../../common/utils.h"
+
   #ifndef NO_TIMEOUT
 	  #define NO_TIMEOUT -1
   #endif

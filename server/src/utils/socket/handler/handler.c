@@ -4,9 +4,9 @@
 #include <errno.h>
 #include <time.h>
 
-#include "handler.h"
-#include "../common/utils.h"
 #include "sys/epoll.h"
+
+#include "handler.h"
 
 #define _m(type, format, ...) _msgcategory(type, "HANDLER", format, ##__VA_ARGS__)
 

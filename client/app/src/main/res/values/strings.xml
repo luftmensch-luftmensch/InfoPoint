@@ -131,4 +131,5 @@
     <!-- INTRO -->
     <string name="titleSlide1">Benvenuto su InfoPoint!</string>
     <string name="descriptionSlide1">Il supporto di cui avevi bisogno</string>
+    <string name="artwork_details">Dettaglio Opera</string>
 </resources>

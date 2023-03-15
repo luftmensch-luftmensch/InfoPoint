@@ -43,7 +43,7 @@
 
 
     /* Count the occurence of a given delimeter inside a given buffer */
-    static int count_occurence(const char*, const char*, bool overlap);
+    int count_occurence(const char*, const char*, bool);
 
     /* Strip a given delimeter from a given buffer */
     /* TODO: Change return type */
