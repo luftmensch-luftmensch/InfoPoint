@@ -12,8 +12,9 @@ services:
       - "9090:9090"
     expose:
       - "9090"
-      depends_on:
+    depends_on:
         - database
+            condition: service_healthy
 
   ### Database ###
   database:
@@ -35,3 +36,8 @@ services:
    environment:
      - MONGO_INITDB_ROOT_USERNAME=admin
      - MONGO_INITDB_ROOT_PASSWORD=password
+   healthcheck:
+     test: echo 'db.runCommand("ping").ok' | mongo mongodb://${MONGODB_INITDB_ROOT_USER}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:${27017} --quiet
+     interval: 30s
+     timeout: 10s
+     retries: 5

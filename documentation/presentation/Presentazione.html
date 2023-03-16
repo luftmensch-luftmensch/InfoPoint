@@ -172,22 +172,49 @@ alla connessione che viene eseguita dal server (Spring boot)
 </aside>
 
 <pre><code data-line-numbers data-trim data-noescape>
-version: '3'
+### InfoPoint microservice backend ###
+version: '3.9'
 services:
-  database:
-    image: 'postgres:latest'
 
-    container_name: 'pg_db'
-
-    volumes:
-      - ./db-data/:/var/lib/postgresql/data/
-
+  ### Server ###
+  server:
+    container_name: infopoint-server
+    build:
+      context: .
+      # Sfruttiamo un immagine minimale della distro ArchLinux per
+      # la compilazione ed esecuzione del server
+      dockerfile: Dockerfile
+    # Esponiamo il server sulla porta 9090 configurata per accettare traffico in entrata/uscita
     ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: database
+      - "9090:9090"
+    expose:
+      - "9090"
+    # Per un corretto funzionamento il server necessita del database NOSQL MongoDB
+    # Di consguenza per un corretto funzionamento attendiamo che il service database
+    # (che contiene l'istanza di mongodb sia attivo)
+    depends_on:
+        - database
+            condition: service_healthy
+
+  ### Database ###
+  database:
+    # Official Mongo image from DockerHub (latest)
+    image: mongo
+    container_name: infopoint-mongodb
+   ports:
+     - 27017:27017
+   expose:
+     - "27017"
+   # Variabili d'ambiente utilizzate dal database mongodb
+   environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=password
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongodb://${MONGODB_INITDB_ROOT_USER}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:${27017} --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
 </code></pre>
 </section>
 <section id="slide-Demo">
