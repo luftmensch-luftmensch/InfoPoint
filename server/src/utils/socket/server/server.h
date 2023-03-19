@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <strings.h>
 #include <arpa/inet.h>
+#include <pthread.h>
+
 // #include "bits/types/struct_timeval.h"
 
 // Personal headers
@@ -18,9 +20,6 @@
   extern volatile sig_atomic_t persist;
   extern pthread_cond_t cond1;
   extern pthread_mutex_t lock_condition;
-
-  /* Error handler for `socket`, `bind`, `listen`, `accept` e `read` functions (the return values in case of an error is always -1) */
-  int check(int expr, const char *msg);
 
   // Constants
   #ifndef DEFAULT_PORT
@@ -55,7 +54,10 @@
     // Handler
     handler* handler;
 
-    struct connection{
+    // Thread pool
+    pthread_t thread_pool;
+
+    struct connection {
       client* client;
       enum conn_status status;
       bool was_updated;
@@ -66,6 +68,7 @@
 
     // Communication buffer
     char communication_buf[SERV_COMM_BUFFER_SZ + 1];
+
   } server;
 
   // Server function

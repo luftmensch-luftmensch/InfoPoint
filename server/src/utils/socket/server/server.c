@@ -25,13 +25,7 @@ volatile sig_atomic_t persist = 1;
 pthread_cond_t cond1 = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock_condition = PTHREAD_MUTEX_INITIALIZER;
 
-int check(int expr, const char* msg){
-  if(expr == SOCKET_ERROR){
-    perror(msg);
-    exit(EXIT_FAILURE);
-  }
-  return expr;
-}
+void serve_disconnect(server* s, size_t* const index);
 
 void handle_interrupt(int sig){
 	(void)sig;
@@ -64,9 +58,7 @@ server* server_init(uint port){
   }
   _m(_msginfo, "Socket <%ld> created!", s ->socket);
 
-  // Socket options
-
-  /* Set socket as reusable */
+  /* Socket options (Set socket as reusable) */
   if(setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, (int[]) { 1 }, sizeof(int[1]))) {
     _m(_msgfatal, "Could not change socket settings"); perror("setsockopt: "); exit(errno);
   }
@@ -119,6 +111,10 @@ server* server_init(uint port){
 
   s->handler = handler_init(&s->socket, MAX_CLIENTS_ACCEPTANCE, SERVER_POLL_TIMER);
   s->conn_count = 0;
+
+  // Spawn threads
+  _mth(_msginfo, "Spawing threads helpers...");
+
 
   _mth(_msginfo, "Done!");
   _m(_msginfo, "Server ready, please use server_loop");
