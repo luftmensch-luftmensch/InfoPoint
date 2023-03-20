@@ -7,6 +7,6 @@
   \begin{itemize}
     \item La connessione viene aperta solo nel momento in cui devono essere \texttt{inviati/ricevuti} dati (Si evita in questo modo di tenere aperte connessioni in momenti in cui queste non vengono sfruttate);
     \item Si effettuano controlli di raggiungibilità del server lato client\footnotemark \footnotetext{Non ha senso infatti tenere aperta una connessione se non utilizzata, anzi si rischia anche di causare interruzione di servizio dovuti a timeout improvvisi};
-    \item Vengono controllati i dati \texttt{inviati/ricevuti} sempre prima di compiere operazioni che possano minare il corretto funzionamento di \hi{Server} e \hi{Client} \footnotemark \footnotetext{Questo avviene anche attraverso un particolare pattern di costruzione dei dati}
     \item Vengono effettuati controlli e gestione degli stati di tutte le operazioni lato \hi{Server};
+    \item Tutti i dati scambiati tra \hi{Server} e \hi{Client} vengono opportunamento controllati \footnotemark \footnotetext{Si fa uso infatti di \hi{TAG} per la parametrizzazione dei messaggi inviati/ricevuti per una maggiore sicurezza}, onde evitare operazioni che possano minare il corretto funzionamento dell'applicativo
   \end{itemize}

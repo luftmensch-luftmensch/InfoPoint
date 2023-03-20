@@ -12,3 +12,4 @@
 ### Server related
 /server/build/*
 /server/.direnv/*
+/server/.cache/
