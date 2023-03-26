@@ -2,25 +2,46 @@ set(sources
     # Main entry
     src/main.c
 
-    # Base utility fun
-    src/utils/common/utils.c
+    # Utility functions
+    src/common/logging/logging.c
+    src/common/utility/utility.c
 
-    # Socket utility
-    src/utils/socket/handler/handler.c
-    src/utils/socket/wrapper/wrapper.c
-    src/utils/socket/server/server.c
+    # Server related
+    src/core/server/server.c
+    src/core/handler/handler.c
 
-    # Database utilities
-    src/database/database.c
+    # Msg communication wrapper
+    src/core/message/message.c
+
+    # Workers related
+    src/core/pool/thread_pool.c
+    src/common/container/node/node.c
+    src/common/container/list/linked_list.c
+    src/common/container/list/queue.c
+
+    # Database Related
+    # src/core/database/database.c
 )
 
 set(headers
-    src/utils/common/welcome_message.h
-    src/utils/common/utils.h
 
-    src/utils/socket/wrapper/wrapper.h
-    src/utils/socket/handler/handler.h
-    src/utils/socket/server/server.h
+    # Utility functions
+    src/common/logging/logging.c
+    src/common/utility/utility.c
 
-    src/database/database.h
+    # Server related
+    src/core/server/server.h
+    src/core/handler/handler.h
+
+    # Msg communication wrapper
+    src/core/message/message.h
+
+    # Workers related
+    src/core/pool/thread_pool.h
+    src/common/container/node/node.h
+    src/common/container/list/linked_list.h
+    src/common/container/list/queue.h
+
+    # Database Related
+    # src/core/database/database.h
 )
