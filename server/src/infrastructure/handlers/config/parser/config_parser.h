@@ -12,6 +12,7 @@
 #ifndef _CONFIG_PARSER_H
 #define _CONFIG_PARSER_H
 
+  #include <stdio.h>
   #include <stdlib.h>
   #include <stdint.h>
   #include <stdbool.h>
@@ -94,45 +95,53 @@
 
 	  /* SAJ callback */
 	  parser_callback callback;
-	  void *userdata;
+	  void* userdata;
 
 	  /* parser state */
-	  uint8_t state;
-	  uint8_t save_state;
-	  uint8_t expecting_key;
-	  uint8_t utf8_multibyte_left;
-	  uint16_t unicode_multi;
+	  uint8_t   state;
+	  uint8_t   save_state;
+	  uint8_t   expecting_key;
+	  uint8_t   utf8_multibyte_left;
+	  uint16_t  unicode_multi;
 	  json_type type;
 
 	  /* state stack */
-	  uint8_t *stack;
+	  uint8_t* stack;
 	  uint32_t stack_offset;
 	  uint32_t stack_size;
 
 	  /* parse buffer */
-	  char *buffer;
+	  char*    buffer;
 	  uint32_t buffer_size;
 	  uint32_t buffer_offset;
   } parser;
 
   typedef struct printer {
 	  printer_callback callback;
-	  void *userdata;
+	  void* userdata;
 
-	  char *indentstr;
+	  char* indentstr;
 	  int indentlevel;
 	  int afterkey;
 	  int enter_object;
 	  int first;
   } printer;
 
-  /*
-   * Takes multiple types and pass them to the printer function
-   * array, object and constants doesn't take a string and length argument.
-   * int, float, key, string need to be followed by a pointer to char and then a length.
-   * if the length argument is -1, then the strlen function will use on the string argument.
-   * the function call should always be terminated by -1 */
-  int json_print_args(printer *, int (*f)(printer *, int, const char *, uint32_t), ...);
+  typedef struct json_val_elem {
+    char* key;
+    uint32_t key_length;
+    struct json_val* val;
+  } json_val_elem;
+
+  typedef struct json_val {
+    int type;
+    int length;
+    union {
+      char* data;
+      struct json_val** array;
+      struct json_val_elem** object;
+    } u;
+  } json_val_t;
 
   /** callback from the parser_dom callback to create object and array */
   typedef void * (*dom_create_structure)(int, int);
@@ -190,7 +199,7 @@
    * Append one single char to the parser
    * return 0 if everything went ok, a JSON_ERROR_* otherwise
   */
-  int parse_char(parser*, unsigned char);
+  //int parse_char(parser*, unsigned char);
 
   /* Return false is the parser isn't in a finish state otherwise true */
   int parser_is_done(parser*);
@@ -204,13 +213,13 @@
    * Free a printer context
    * doesn't do anything now, but in future print_init could allocate memory
   */
-  int destroy_printer(printer*);
+  //int destroy_printer(printer*);
 
   /* Pretty print the passed argument (type/data/length). */
-  int printer_pretty(printer*, int, const char*, uint32_t);
+  //int printer_pretty(printer*, int, const char*, uint32_t);
 
   /* Prints without eye candy the passed argument (type/data/length). */
-  int printer_raw(printer*, int, const char*, uint32_t);
+  //int printer_raw(printer*, int, const char*, uint32_t);
 
 
   // Function prototypes for dom
@@ -223,5 +232,16 @@
 
   /* helper to parser callback that arrange parsing events into comprehensive JSON data structure */
   int dom_callback(void*, int, const char*, uint32_t);
+
+  /* File related func */
+
+  /* Open requested filename */
+  FILE *open_filename(const char*, const char*, int);
+
+  /* Close requested filename */
+  void close_filename(const char*, FILE*);
+
+  /* Process file (Reading & Parsing) */
+  int process_file(parser*, FILE*, int*, int*);
 
 #endif

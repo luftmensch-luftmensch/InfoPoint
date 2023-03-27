@@ -90,7 +90,7 @@ function(set_project_build_flags project_name)
   if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     set(GCC_WARNINGS
       ${GCC_BUILD_FLAGS}
-      -g3                  # Produces debugging information (Useful w/ gdb)
+      -g                  # Produces debugging information (Useful w/ gdb)
       --print-gc-sections  # Diagnostic logs about sections
       )
   endif()

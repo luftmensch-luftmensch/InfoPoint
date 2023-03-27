@@ -7,6 +7,7 @@
   +  Dario Morace        (matr. )
   +  Lucia Brando        (matr. )
 */
+#include <errno.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -16,6 +17,23 @@
 #include "config_parser.h"
 #include "config_types.h"
 
+char *indent_string = NULL;
+
+static const char *string_of_errors[] = {
+  [JSON_ERROR_NO_MEMORY] = "out of memory",
+  [JSON_ERROR_BAD_CHAR] = "bad character",
+  [JSON_ERROR_POP_EMPTY] = "stack empty",
+  [JSON_ERROR_POP_UNEXPECTED_MODE] = "pop unexpected mode",
+  [JSON_ERROR_NESTING_LIMIT] = "nesting limit",
+  [JSON_ERROR_DATA_LIMIT] = "data limit",
+  [JSON_ERROR_COMMENT_NOT_ALLOWED] = "comment not allowed by config",
+  [JSON_ERROR_UNEXPECTED_CHAR] = "unexpected char",
+  [JSON_ERROR_UNICODE_MISSING_LOW_SURROGATE] = "missing unicode low surrogate",
+  [JSON_ERROR_UNICODE_UNEXPECTED_LOW_SURROGATE] = "unexpected unicode low surrogate",
+  [JSON_ERROR_COMMA_OUT_OF_STRUCTURE] = "error comma out of structure",
+  [JSON_ERROR_CALLBACK] = "error in a callback",
+  [JSON_ERROR_UTF8]     = "utf8 validation error"
+};
 
 static inline void *memory_realloc(void *(*realloc_fct)(void *, size_t), void *ptr, size_t size) {
 	return (realloc_fct) ? realloc_fct(ptr, size) : realloc(ptr, size);
@@ -403,7 +421,6 @@ int parse_string(parser* parser, const char* s, uint32_t length, uint32_t* proce
 
     next_state = state_transition_table[parser->state][next_class];
     buffer_policy = buffer_policy_table[parser->state][next_class];
-    //fprintf(stderr, "addchar %d (current-state=%d, next-state=%d, buf-policy=%d)\n", ch, parser->state, next_state, buffer_policy);
     if (next_state == STATE___) {
       ret = JSON_ERROR_UNEXPECTED_CHAR;
       break;
@@ -431,177 +448,6 @@ int parse_string(parser* parser, const char* s, uint32_t length, uint32_t* proce
   return ret;
 }
 
-/** json_parser_char append one single char to the parser
- * return 0 if everything went ok, a JSON_ERROR_* otherwise */
-int parse_char(parser* parser, unsigned char ch) {
-  return parse_string(parser, (char *) &ch, 1, NULL);
-}
-
-int init_printer(printer* printer, printer_callback callback, void *userdata) {
-  memset(printer, '\0', sizeof(*printer));
-  printer->callback = callback;
-  printer->userdata = userdata;
-
-  printer->indentstr = "\t";
-  printer->indentlevel = 0;
-  printer->enter_object = 1;
-  printer->first = 1;
-  return 0;
-}
-
-/** json_print_free free a printer context
- * doesn't do anything now, but in future print_init could allocate memory */
-int destroy_printer(printer *printer) {
-  memset(printer, '\0', sizeof(*printer));
-  return 0;
-}
-
-/* escape a C string to be a JSON valid string on the wire.
- * XXX: it doesn't do unicode verification. yet?. */
-static int print_string(printer *printer, const char *data, uint32_t length) {
-  uint32_t i;
-
-  printer->callback(printer->userdata, "\"", 1);
-  for (i = 0; i < length; i++) {
-    unsigned char c = data[i];
-    if (c < 36) {
-      char const *esc = character_escape[c];
-      printer->callback(printer->userdata, esc, strlen(esc));
-    } else if (c == '\\') {
-      printer->callback(printer->userdata, "\\\\", 2);
-    } else
-      printer->callback(printer->userdata, data + i, 1);
-  }
-  printer->callback(printer->userdata, "\"", 1);
-  return 0;
-}
-
-static int print_binary_string(printer *printer, const char *data, uint32_t length) {
-  uint32_t i;
-
-  printer->callback(printer->userdata, "\"", 1);
-  for (i = 0; i < length; i++) {
-    unsigned char c = data[i];
-    char const *esc = character_escape[c];
-    printer->callback(printer->userdata, esc, strlen(esc));
-  }
-  printer->callback(printer->userdata, "\"", 1);
-  return 0;
-}
-
-
-static int print_indent(printer *printer) {
-  int i;
-  printer->callback(printer->userdata, "\n", 1);
-  for (i = 0; i < printer->indentlevel; i++)
-    printer->callback(printer->userdata, printer->indentstr, strlen(printer->indentstr));
-  return 0;
-}
-
-static int json_print_mode(printer *printer, int type, const char *data, uint32_t length, int pretty) {
-  int enterobj = printer->enter_object;
-
-  if (!enterobj && !printer->afterkey && (type != JSON_ARRAY_END && type != JSON_OBJECT_END)) {
-    printer->callback(printer->userdata, ",", 1);
-    if (pretty) print_indent(printer);
-  }
-
-  if (pretty && (enterobj && !printer->first && (type != JSON_ARRAY_END && type != JSON_OBJECT_END))) {
-    print_indent(printer);
-  }
-
-  printer->first = 0;
-  printer->enter_object = 0;
-  printer->afterkey = 0;
-  switch (type) {
-  case JSON_ARRAY_BEGIN:
-    printer->callback(printer->userdata, "[", 1);
-    printer->indentlevel++;
-    printer->enter_object = 1;
-    break;
-  case JSON_OBJECT_BEGIN:
-    printer->callback(printer->userdata, "{", 1);
-    printer->indentlevel++;
-    printer->enter_object = 1;
-    break;
-  case JSON_ARRAY_END:
-  case JSON_OBJECT_END:
-    printer->indentlevel--;
-    if (pretty && !enterobj) print_indent(printer);
-    printer->callback(printer->userdata, (type == JSON_OBJECT_END) ? "}" : "]", 1);
-    break;
-  case JSON_INT: printer->callback(printer->userdata, data, length); break;
-  case JSON_FLOAT: printer->callback(printer->userdata, data, length); break;
-  case JSON_NULL: printer->callback(printer->userdata, "null", 4); break;
-  case JSON_TRUE: printer->callback(printer->userdata, "true", 4); break;
-  case JSON_FALSE: printer->callback(printer->userdata, "false", 5); break;
-  case JSON_KEY:
-    print_string(printer, data, length);
-    printer->callback(printer->userdata, ": ", (pretty) ? 2 : 1);
-    printer->afterkey = 1;
-    break;
-  case JSON_STRING:
-    print_string(printer, data, length);
-    break;
-  case JSON_BSTRING:
-    print_binary_string(printer, data, length);
-    break;
-  default:
-    break;
-  }
-
-  return 0;
-}
-
-/** json_print_pretty pretty print the passed argument (type/data/length). */
-int printer_pretty(printer* printer, int type, const char *data, uint32_t length) {
-  return json_print_mode(printer, type, data, length, 1);
-}
-
-/** json_print_raw prints without eye candy the passed argument (type/data/length). */
-int json_print_raw(printer* printer, int type, const char *data, uint32_t length) {
-  return json_print_mode(printer, type, data, length, 0);
-}
-
-/** json_print_args takes multiple types and pass them to the printer function */
-int json_print_args(printer *printer,
-		    int (*f)(struct printer*, int, const char *, uint32_t),
-		    ...) {
-  va_list ap;
-  char *data;
-  uint32_t length;
-  int type, ret;
-
-  ret = 0;
-  va_start(ap, f);
-  while ((type = va_arg(ap, int)) != -1) {
-    switch (type) {
-    case JSON_ARRAY_BEGIN:
-    case JSON_ARRAY_END:
-    case JSON_OBJECT_BEGIN:
-    case JSON_OBJECT_END:
-    case JSON_NULL:
-    case JSON_TRUE:
-    case JSON_FALSE:
-      ret = (*f)(printer, type, NULL, 0);
-      break;
-    case JSON_INT:
-    case JSON_FLOAT:
-    case JSON_KEY:
-    case JSON_STRING:
-      data = va_arg(ap, char *);
-      length = va_arg(ap, uint32_t);
-      if (length == -1)
-	length = strlen(data);
-      ret = (*f)(printer, type, data, length);
-      break;
-    }
-    if (ret)
-      break;
-  }
-  va_end(ap);
-  return ret;
-}
 
 static int dom_push(struct dom* ctx, void *val) {
   if (ctx->stack_offset == ctx->stack_size) {
@@ -691,4 +537,225 @@ int dom_callback(void *userdata, int type, const char *data, uint32_t length) {
     break;
   }
   return 0;
+}
+
+FILE *open_filename(const char *filename, const char *opt, int is_input) {
+  FILE *input;
+  if (strcmp(filename, "-") == 0)
+    input = (is_input) ? stdin : stdout;
+  else {
+    input = fopen(filename, opt);
+    if (!input) {
+      fprintf(stderr, "error: cannot open %s: %s", filename, strerror(errno));
+      return NULL;
+    }
+  }
+  return input;
+}
+
+void close_filename(const char *filename, FILE *file) {
+  if (strcmp(filename, "-") != 0)
+    fclose(file);
+}
+
+int process_file(parser* parser, FILE* input, int* retlines, int* retcols) {
+  char buffer[4096];
+  int ret = 0;
+  int32_t read;
+  int lines, col, i;
+
+  lines = 1;
+  col = 0;
+  while (1) {
+    uint32_t processed;
+    read = fread(buffer, 1, 4096, input);
+    if (read <= 0)
+      break;
+    ret = parse_string(parser, buffer, read, &processed);
+    for (i = 0; i < processed; i++) {
+      if (buffer[i] == '\n') { col = 0; lines++; } else col++;
+    }
+    if (ret)
+      break;
+  }
+  if (retlines) *retlines = lines;
+  if (retcols) *retcols = col;
+  return ret;
+}
+
+static void *tree_create_structure(int nesting, int is_object) {
+  json_val_t *v = malloc(sizeof(json_val_t));
+  if (v) {
+    /* instead of defining a new enum type, we abuse the
+     * meaning of the json enum type for array and object */
+    if (is_object) {
+      v->type = JSON_OBJECT_BEGIN;
+      v->u.object = NULL;
+    } else {
+      v->type = JSON_ARRAY_BEGIN;
+      v->u.array = NULL;
+    }
+    v->length = 0;
+  }
+  return v;
+}
+
+static char *memalloc_copy_length(const char *src, uint32_t n) {
+  char *dest;
+
+  dest = calloc(n + 1, sizeof(char));
+  if (dest)
+    memcpy(dest, src, n);
+  return dest;
+}
+
+static void *tree_create_data(int type, const char *data, uint32_t length) {
+  json_val_t *v;
+
+  v = malloc(sizeof(json_val_t));
+  if (v) {
+    v->type = type;
+    v->length = length;
+    v->u.data = memalloc_copy_length(data, length);
+    if (!v->u.data) {
+      free(v);
+      return NULL;
+    }
+  }
+  return v;
+}
+
+static int tree_append(void *structure, char *key, uint32_t key_length, void *obj) {
+  json_val_t *parent = structure;
+  if (key) {
+    struct json_val_elem *objelem;
+
+    if (parent->length == 0) {
+      parent->u.object = calloc(1 + 1, sizeof(json_val_t *)); /* +1 for null */
+      if (!parent->u.object)
+	return 1;
+    } else {
+      uint32_t newsize = parent->length + 1 + 1; /* +1 for null */
+      void *newptr;
+
+      newptr = realloc(parent->u.object, newsize * sizeof(json_val_t *));
+      if (!newptr)
+	return -1;
+      parent->u.object = newptr;
+    }
+
+    objelem = malloc(sizeof(struct json_val_elem));
+    if (!objelem)
+      return -1;
+
+    objelem->key = memalloc_copy_length(key, key_length);
+    objelem->key_length = key_length;
+    objelem->val = obj;
+    parent->u.object[parent->length++] = objelem;
+    parent->u.object[parent->length] = NULL;
+  } else {
+    if (parent->length == 0) {
+      parent->u.array = calloc(1 + 1, sizeof(json_val_t *)); /* +1 for null */
+      if (!parent->u.array)
+	return 1;
+    } else {
+      uint32_t newsize = parent->length + 1 + 1; /* +1 for null */
+      void *newptr;
+
+      newptr = realloc(parent->u.object, newsize * sizeof(json_val_t *));
+      if (!newptr)
+	return -1;
+      parent->u.array = newptr;
+    }
+    parent->u.array[parent->length++] = obj;
+    parent->u.array[parent->length] = NULL;
+  }
+  return 0;
+}
+
+static int do_tree(json_config *config, const char *filename, json_val_t **root_structure) {
+  FILE *input;
+  parser parser;
+  dom dom;
+  int ret;
+  int col, lines;
+
+  input = open_filename(filename, "r", 1);
+  if (!input)
+    return 2;
+
+  ret = init_dom(&dom, tree_create_structure, tree_create_data, tree_append);
+  if (ret) {
+    fprintf(stderr, "error: initializing helper failed: [code=%d] %s\n", ret, string_of_errors[ret]);
+    return ret;
+  }
+
+  ret = init_parser(&parser, config, dom_callback, &dom);
+  if (ret) {
+    fprintf(stderr, "error: initializing parser failed: [code=%d] %s\n", ret, string_of_errors[ret]);
+    return ret;
+  }
+
+  ret = process_file(&parser, input, &lines, &col);
+  if (ret) {
+    fprintf(stderr, "line %d, col %d: [code=%d] %s\n",
+	    lines, col, ret, string_of_errors[ret]);
+
+    return 1;
+  }
+
+  ret = parser_is_done(&parser);
+
+  if (!ret) {
+    fprintf(stderr, "syntax error\n");
+    return 1;
+  }
+
+  if (root_structure)
+    *root_structure = dom.root_structure;
+
+  /* cleanup */
+  destroy_parser(&parser);
+  close_filename(filename, input);
+  return 0;
+}
+
+json_val_t* retrieve_config_par(char* file_name) {
+  int ret = 0;
+  json_config cfg;
+  memset(&cfg, 0, sizeof(json_config));
+  cfg.max_nesting = 0;
+  cfg.max_data = 0;
+  cfg.allow_c_comments = 1;
+  cfg.allow_yaml_comments = 1;
+
+  json_val_t* profile;
+  ret = do_tree(&cfg, file_name, &profile);
+  if (ret)
+    exit(ret);
+  return profile;
+}
+
+#define typename(x) _Generic((x),        /* Get the name of a type */             \
+                                                                                  \
+        _Bool: "_Bool",                  unsigned char: "unsigned char",          \
+         char: "char",                     signed char: "signed char",            \
+    short int: "short int",         unsigned short int: "unsigned short int",     \
+          int: "int",                     unsigned int: "unsigned int",           \
+     long int: "long int",           unsigned long int: "unsigned long int",      \
+long long int: "long long int", unsigned long long int: "unsigned long long int", \
+        float: "float",                         double: "double",                 \
+  long double: "long double",                   char *: "pointer to char",        \
+       void *: "pointer to void",                int *: "pointer to int",         \
+      default: "other")
+ 
+
+int main(int argc, char** argv){
+  json_val_t* test = retrieve_config_par(argv[1]);
+
+  for (int i = 0; i < test->length; i++) {
+    printf("%s -> %s\n", test->u.object[i]->key, test->u.object[i]->val->u.data);
+  }
+  printf(typename(argv[1]));
+
 }

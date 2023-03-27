@@ -13,8 +13,6 @@
 #include <stdlib.h>
 
 #include "handler.h"
-#include "../../common/logging/logging.h"
-#include "sys/epoll.h"
 
 #define _m(type, format, ...) _msgcategory(type, "HANDLER", format, ##__VA_ARGS__)
 

@@ -11,7 +11,7 @@
 
 
 #include "core/server/server.h"
-#include "common/logging/welcome_message.h"
+#include "infrastructure/logging/welcome_message.h"
 
 int main(){
   // Welcome message

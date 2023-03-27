@@ -27,7 +27,7 @@
   #include "../handler/handler.h"
   #include "../message/message.h"
   #include "../payload/client/client.h"
-  #include "../../common/logging/logging.h"
+  #include "../../infrastructure/logging/logging.h"
 
   #ifndef DEFAULT_PORT
       #define DEFAULT_PORT 60020

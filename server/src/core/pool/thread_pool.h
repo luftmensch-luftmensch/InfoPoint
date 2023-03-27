@@ -20,8 +20,8 @@
   #include <stdlib.h>
   #include <pthread.h>
 
-  #include "../../common/container/list/queue.h"
-  #include "../../common/logging/logging.h"
+  #include "../../infrastructure/container/list/queue.h"
+  #include "../../infrastructure/logging/logging.h"
 
   typedef struct thread_job {
     // Func to be executed

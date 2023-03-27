@@ -3,8 +3,8 @@ set(sources
     src/main.c
 
     # Utility functions
-    src/common/logging/logging.c
-    src/common/utility/utility.c
+    src/infrastructure/logging/logging.c
+    src/infrastructure/utility/utility.c
 
     # Server related
     src/core/server/server.c
@@ -15,9 +15,9 @@ set(sources
 
     # Workers related
     src/core/pool/thread_pool.c
-    src/common/container/node/node.c
-    src/common/container/list/linked_list.c
-    src/common/container/list/queue.c
+    src/infrastructure/container/node/node.c
+    src/infrastructure/container/list/linked_list.c
+    src/infrastructure/container/list/queue.c
 
     # Database Related
     # src/core/database/database.c
@@ -26,8 +26,8 @@ set(sources
 set(headers
 
     # Utility functions
-    src/common/logging/logging.c
-    src/common/utility/utility.c
+    src/infrastructure/logging/logging.c
+    src/infrastructure/utility/utility.c
 
     # Server related
     src/core/server/server.h
@@ -38,9 +38,9 @@ set(headers
 
     # Workers related
     src/core/pool/thread_pool.h
-    src/common/container/node/node.h
-    src/common/container/list/linked_list.h
-    src/common/container/list/queue.h
+    src/infrastructure/container/node/node.h
+    src/infrastructure/container/list/linked_list.h
+    src/infrastructure/container/list/queue.h
 
     # Database Related
     # src/core/database/database.h
