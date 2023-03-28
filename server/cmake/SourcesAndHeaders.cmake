@@ -14,10 +14,7 @@ set(sources
     src/core/message/message.c
 
     # Workers related
-    src/core/pool/thread_pool.c
-    src/infrastructure/container/node/node.c
-    src/infrastructure/container/list/linked_list.c
-    src/infrastructure/container/list/queue.c
+    src/infrastructure/pool/thread_pool.c
 
     # Database Related
     # src/core/database/database.c
@@ -37,10 +34,7 @@ set(headers
     src/core/message/message.h
 
     # Workers related
-    src/core/pool/thread_pool.h
-    src/infrastructure/container/node/node.h
-    src/infrastructure/container/list/linked_list.h
-    src/infrastructure/container/list/queue.h
+    src/infrastructure/pool/thread_pool.c
 
     # Database Related
     # src/core/database/database.h

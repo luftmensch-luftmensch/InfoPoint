@@ -79,6 +79,10 @@ function(set_project_build_flags project_name)
       # With this option each functions gets its own section
       -ffunction-sections 
       #--gc-sections # Enable optimization using the linker gc
+
+      ### Threading support ###
+      # In some cases gcc could be compiled with thread support out of the box. For sake of sanity we are going to declare explictly
+      -pthread
   )
 
   if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)
@@ -90,7 +94,7 @@ function(set_project_build_flags project_name)
   if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     set(GCC_WARNINGS
       ${GCC_BUILD_FLAGS}
-      -g                  # Produces debugging information (Useful w/ gdb)
+      -g                   # Produces debugging information (Useful w/ gdb)
       --print-gc-sections  # Diagnostic logs about sections
       )
   endif()

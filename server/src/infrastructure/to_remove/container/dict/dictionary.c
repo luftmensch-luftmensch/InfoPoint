@@ -12,7 +12,6 @@
 #include "dictionary.h"
 #include "entry.h"
 #include <string.h>
-#include <type_traits>
 
 struct dict init_dict(int (*compare)(void* entry_one, void* entry_two)) {
   struct dict d;

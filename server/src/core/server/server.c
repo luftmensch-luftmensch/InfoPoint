@@ -21,6 +21,7 @@
 
 server* init_server(unsigned int port, const size_t max_workers){
   unsigned int use_port = !port ? DEFAULT_PORT : port;
+  _m(_msgevent, "%d", max_workers);
 
   // Allocate mem for the newly created server
   server* s = malloc(sizeof(struct server));
@@ -91,7 +92,6 @@ server* init_server(unsigned int port, const size_t max_workers){
   s->conn_count = 0;
 
   // Thread pool setup
-  s->pool = init_thread_pool(max_workers);
   
   _m(_msginfo, "Server ready!");
   return s;

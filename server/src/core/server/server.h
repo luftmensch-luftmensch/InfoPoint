@@ -23,7 +23,6 @@
   #include <arpa/inet.h>
   #include <netinet/in.h>
 
-  #include "../pool/thread_pool.h"
   #include "../handler/handler.h"
   #include "../message/message.h"
   #include "../payload/client/client.h"
@@ -83,7 +82,7 @@
     handler* handler;
 
     // pthread_t* pool;
-    struct thread_pool pool;
+    //struct thread_pool pool;
 
     struct connection {
       client* client;
