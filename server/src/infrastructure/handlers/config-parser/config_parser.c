@@ -17,8 +17,6 @@
 #include "config_parser.h"
 #include "config_types.h"
 
-char *indent_string = NULL;
-
 static const char *string_of_errors[] = {
   [JSON_ERROR_NO_MEMORY] = "out of memory",
   [JSON_ERROR_BAD_CHAR] = "bad character",
@@ -476,7 +474,8 @@ int init_dom(dom *dom, dom_create_structure create_structure, dom_create_data cr
   memset(dom, 0, sizeof(*dom));
   dom->stack_size = 1024;
   dom->stack_offset = 0;
-  dom->stack = memory_calloc(dom->user_calloc, dom->stack_size, sizeof(*(dom->stack)));
+  //dom->stack = memory_calloc(dom->user_calloc, dom->stack_size, sizeof(*(dom->stack)));
+  dom->stack = calloc(dom->stack_size, sizeof(*(dom->stack)));
   if (!dom->stack)
     return JSON_ERROR_NO_MEMORY;
   dom->append = append;
@@ -583,7 +582,7 @@ int process_file(parser* parser, FILE* input, int* retlines, int* retcols) {
   return ret;
 }
 
-static void *tree_create_structure(int nesting, int is_object) {
+static void* tree_create_structure(int nesting, int is_object) {
   json_val_t *v = malloc(sizeof(json_val_t));
   if (v) {
     /* instead of defining a new enum type, we abuse the
@@ -717,6 +716,7 @@ static int do_tree(json_config *config, const char *filename, json_val_t **root_
   /* cleanup */
   destroy_parser(&parser);
   close_filename(filename, input);
+  destroy_dom(&dom);
   return 0;
 }
 
@@ -734,21 +734,7 @@ json_val_t* retrieve_config_par(char* file_name) {
   if (ret)
     exit(ret);
   return profile;
-}
-
-#define typename(x) _Generic((x),        /* Get the name of a type */             \
-                                                                                  \
-        _Bool: "_Bool",                  unsigned char: "unsigned char",          \
-         char: "char",                     signed char: "signed char",            \
-    short int: "short int",         unsigned short int: "unsigned short int",     \
-          int: "int",                     unsigned int: "unsigned int",           \
-     long int: "long int",           unsigned long int: "unsigned long int",      \
-long long int: "long long int", unsigned long long int: "unsigned long long int", \
-        float: "float",                         double: "double",                 \
-  long double: "long double",                   char *: "pointer to char",        \
-       void *: "pointer to void",                int *: "pointer to int",         \
-      default: "other")
- 
+} 
 
 int main(int argc, char** argv){
   json_val_t* test = retrieve_config_par(argv[1]);
@@ -756,6 +742,5 @@ int main(int argc, char** argv){
   for (int i = 0; i < test->length; i++) {
     printf("%s -> %s\n", test->u.object[i]->key, test->u.object[i]->val->u.data);
   }
-  printf(typename(argv[1]));
 
 }
