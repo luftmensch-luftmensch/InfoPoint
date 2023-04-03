@@ -10,7 +10,7 @@
 :END:
 #+title: InfoPoint
 #+SUBTITLE:  Un nuovo modo per fare trekking
-#+author: Valentino Bocchetti - Mario Carofano
+#+author: Valentino Bocchetti - Dario Morace - Lucia Brando
 #+begin_export html
 <!-- Per ovviare alla customizzazione post export del file customizzo le impostazioni e inserisco un custom stylesheet -->
 <link rel="stylesheet" href="./theme.css" id="theme"/>
