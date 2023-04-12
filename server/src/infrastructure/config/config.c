@@ -17,36 +17,57 @@
 /***************************************************************************
 *                   CONFIGURATION STRUCTURE FUNCTIONS                      *
 ***************************************************************************/
+static config* provide_default_config() {
+  config* cfg = malloc(sizeof(struct config));
+  cfg->ns.host = "localhost";
+  cfg->ns.port = "9090";
+  cfg->cs.max_clients = "100";
+  cfg->cs.max_threads = "100";
+  cfg->ls.log_level = "debug";
+  cfg->ls.log_file = "stdout";
+
+  return cfg;
+}
+
+
 config* provide_config(const char* file_name) {
   ini_parser* ini = init_parser(file_name); // Parse the given file
 
-  config* cfg = malloc(sizeof(struct config));
+  config* cfg = provide_default_config();
 
   /* [Network] Retriving config options fields from the given config file */
-  char* host    = (char*) get_value(ini, "network", "host");
-  char* port    = (char*) get_value(ini, "network", "port");
-  char* timeout = (char*) get_value(ini, "network", "timeout");
+  const char* retrieved_host    = get_value(ini, "network", "host");
+  char* retrieved_port    = (char*) get_value(ini, "network", "port");
+  char* retrieved_timeout = (char*) get_value(ini, "network", "timeout");
 
   /* [Connections] Retriving config options fields from the given config file */
-  char* max_clients = (char*) get_value(ini, "connections", "max_clients");
-  char* max_threads = (char*) get_value(ini, "connections", "max_threads");
+  char* retrieved_max_clients = (char*) get_value(ini, "connections", "max_clients");
+  char* retrieved_max_threads = (char*) get_value(ini, "connections", "max_threads");
 
   /* [Logging] Retriving config options fields from the given config file */
-  char* log_level = (char*) get_value(ini, "logging", "log_level");
-  char* log_file = (char*) get_value(ini, "logging", "log_file");
+  char* retrieved_log_level = (char*) get_value(ini, "logging", "log_level");
+  char* retrieved_log_file = (char*) get_value(ini, "logging", "log_file");
 
   /* Update the network setting accordingly with the config file or set a default value */
-  cfg->ns.host = (host != NULL) ? host : "127.0.0.1";
-  cfg->ns.port = (port != NULL) ? port : "8080";
-  cfg->ns.timeout = (timeout != NULL) ? timeout : "0";
+
+  if (retrieved_host) {
+    //cfg->ns.host = retrieved_host;
+    //strcpy(cfg->ns.host, retrieved_host);
+    //strcpy(cfg->ns.host, retrieved_host);
+    //cfg->ns.host = strdup(retrieved_host);
+  }
+
+  //cfg->ns.host = (retrieved_host != NULL) ? retrieved_host : "127.0.0.1";
+  //cfg->ns.port = (retrieved_port != NULL) ? retrieved_port : "8080";
+  //cfg->ns.timeout = (retrieved_timeout != NULL) ? retrieved_timeout : "0";
 
   /* Update the connection setting accordingly with the config file or set a default value */
-  cfg->cs.max_clients = (max_clients != NULL) ? max_clients : "10";
-  cfg->cs.max_threads = (max_threads != NULL) ? max_threads : "10";
-  
+  //cfg->cs.max_clients = (retrieved_max_clients != NULL) ? retrieved_max_clients : "10";
+  //cfg->cs.max_threads = (retrieved_max_threads != NULL) ? retrieved_max_threads : "10";
+
   /* Update the logging setting accordingly with the config file or set a default value */
-  cfg->ls.log_level = (log_level != NULL) ? log_level : "normal";
-  cfg->ls.log_file = (log_file != NULL) ? log_file : "stderr";
+  //cfg->ls.log_level = (retrieved_log_level != NULL) ? retrieved_log_level : "normal";
+  //cfg->ls.log_file = (retrieved_log_file != NULL) ? retrieved_log_file : "stderr";
 
   // Destroy the parser (no more needed)
   destroy_parser(ini);
@@ -69,7 +90,7 @@ static void trim_back(ini_parser*, char*);
 // Helper function used to discard lines
 static char* discard_line(ini_parser*, char*);
 
-static char *unescape_quoted_value(ini_parser*, char*);
+static char* unescape_quoted_value(ini_parser*, char*);
 
 /*
  * Helper function used to split data in place into string containing

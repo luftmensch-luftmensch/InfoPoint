@@ -1,10 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 
+
 int main(int argc, char** argv) {
   config* cfg = provide_config(argv[1]);
+  //config* cfg = provide_default_config();
+  if (strcmp(cfg->ns.host, "localhost") == 0)  {
+    printf("All done\n");
+    printf("%s", cfg->ns.host);
+  }
   free(cfg);
 }
 
