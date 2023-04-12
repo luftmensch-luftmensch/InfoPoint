@@ -17,22 +17,39 @@
 /***************************************************************************
 *                   CONFIGURATION STRUCTURE FUNCTIONS                      *
 ***************************************************************************/
-config* provide_default_config() {
+config* provide_config(const char* file_name) {
+  ini_parser* ini = init_parser(file_name); // Parse the given file
+
   config* cfg = malloc(sizeof(struct config));
 
-  /* [Network] Initialization of default fields for the cfg */
-  cfg->ns.host    = "127.0.0.1";
-  cfg->ns.port    = "8080";
-  cfg->ns.timeout = "0";
+  /* [Network] Retriving config options fields from the given config file */
+  char* host    = (char*) get_value(ini, "network", "host");
+  char* port    = (char*) get_value(ini, "network", "port");
+  char* timeout = (char*) get_value(ini, "network", "timeout");
 
-  /* [Connections] Initialization of default fields for the cfg */
-  cfg->cs.max_clients = "10";
-  cfg->cs.max_threads = "10";
+  /* [Connections] Retriving config options fields from the given config file */
+  char* max_clients = (char*) get_value(ini, "connections", "max_clients");
+  char* max_threads = (char*) get_value(ini, "connections", "max_threads");
 
-  /* [Logging] Initialization of default fields for the cfg */
-  cfg->ls.log_level = "debug";
-  cfg->ls.log_file  = "stderr";
+  /* [Logging] Retriving config options fields from the given config file */
+  char* log_level = (char*) get_value(ini, "logging", "log_level");
+  char* log_file = (char*) get_value(ini, "logging", "log_file");
 
+  /* Update the network setting accordingly with the config file or set a default value */
+  cfg->ns.host = (host != NULL) ? host : "127.0.0.1";
+  cfg->ns.port = (port != NULL) ? port : "8080";
+  cfg->ns.timeout = (timeout != NULL) ? timeout : "0";
+
+  /* Update the connection setting accordingly with the config file or set a default value */
+  cfg->cs.max_clients = (max_clients != NULL) ? max_clients : "10";
+  cfg->cs.max_threads = (max_threads != NULL) ? max_threads : "10";
+  
+  /* Update the logging setting accordingly with the config file or set a default value */
+  cfg->ls.log_level = (log_level != NULL) ? log_level : "normal";
+  cfg->ls.log_file = (log_file != NULL) ? log_file : "stderr";
+
+  // Destroy the parser (no more needed)
+  destroy_parser(ini);
   return cfg;
 }
 

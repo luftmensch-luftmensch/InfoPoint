@@ -40,7 +40,10 @@
   } config;
 
   // Provide a default configuration in case something went wrong when loading the config file
-  config* provide_default_config();
+  //config* provide_default_config();
+
+  // Provide a config filled out with the given config file or a default one in case something went wrong when loading/parsing the config file
+  config* provide_config(const char*);
 
 
 
