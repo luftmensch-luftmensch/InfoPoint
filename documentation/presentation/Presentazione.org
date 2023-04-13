@@ -18,7 +18,7 @@
 
 
 <section id="sec-title-slide">
-  <h1><a href=""><img src="logo.png" alt="NaTour" width="10%" align="top"/></a>InfoPoint</h1>
+  <h1><a href=""><img src="logo.png" alt="InfoPoint" width="10%" align="top"/></a>InfoPoint</h1>
 
   <h3 class="subtitle">Educate Yourself</h3>
   <br>
@@ -68,7 +68,7 @@ Un backend, scritto in ~C~ che serve le richieste effettuate dai client
 #+ATTR_REVEAL: :frag (appear)
 Gli utenti hanno la possibilità di registrarsi:
 #+ATTR_REVEAL: :frag (appear)
-+ Utilizzando il ~form~ build-in utilizzando la classica combinazione ~username/password~;
++ Utilizzando il ~form~ built-in utilizzando la classica combinazione ~username/password~;
 + Accedendo in modalità sicura facendo uso del riconoscimento facciale =e/o= impronta digitale;
 
 #+ATTR_REVEAL: :frag (appear)
@@ -190,21 +190,19 @@ Di seguito riportiamo una breve demo che mostra in azione *InfoPoint* durante il
 #+begin_export html
 <div style="width: 40%; float:left">
   <ul>
-    <li><a href="https://natour2022.netlify.app/">NaTour sul web</a></li>
+    <li><a href="https://127.0.0.1">InfoPoint sul web</a></li>
     <li><a href="https://aws.amazon.com/it/">AWS</a></li>
     <li><a href="https://www.docker.com/">Docker</a></li>
-    <li><a href="https://spring.io/projects/spring-boot">Springboot</a></li>
-    <li><a href="https://wiki.openstreetmap.org/wiki/Main_Page">OpenStreetMap</a></li>
+    <li><a href="https://revealjs.com/">RevealJS</a></li>
   </ul>
 </div>
 
 <div style="width: 40%; float:right">
   <ul>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-    <li><a href="https://github.com/square/retrofit">Retrofit</a></li>
-    <li><a href="https://bumptech.github.io/glide/">Glide</a></li>
+    <li><a href="https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html">C</a></li>
+    <li><a href="https://developer.android.com/docs/">Android</a></li>
     <li><a href="https://m3.material.io/">Material Design 3</a></li>
-    <li><a href="https://revealjs.com/">RevealJS</a></li>
+    <li><a href="https://www.mongodb.com/docs/drivers/c/">MongoDB</a></li>
   </ul>
 </div>
 #+end_export
@@ -215,9 +213,9 @@ Di seguito riportiamo una breve demo che mostra in azione *InfoPoint* durante il
 #+begin_export html
 <div style="width: 35%; float:left">
 
-  <p><img src="./res/contributors/luftmensch-luftmensch.png" alt="Valentino" width="25%" align="center"/></p>
-  <p><img src="./res/contributors/goblino.png" alt="Dario" width="25%" align="center"/></p>
-  <p><img src="./res/contributors/lbrando.png" alt="Lucia" width="25%" align="center"/></p>
+  <p><img src="../../res/contributors/luftmensch-luftmensch.png" alt="Valentino" width="25%" align="center"/></p>
+  <p><img src="../../res/contributors/goblino.png" alt="Dario" width="25%" align="center"/></p>
+  <p><img src="../../res/contributors/lbrando.png" alt="Lucia" width="25%" align="center"/></p>
 </div>
 
 <div style="width: 65%; float:right">
