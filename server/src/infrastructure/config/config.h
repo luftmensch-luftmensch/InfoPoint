@@ -19,22 +19,28 @@
   typedef struct config {
     /* Configuration for network setting related */
     struct network_settings {
-      char* host;
-      char* port;
-      char* timeout;
-      //uint16_t port;
+      char* host;    // The host on which the server should run
+      char* port;    // The port that the server should use
+      char* timeout; // Timeout after which a connection should stop
     } ns;
 
     /* Configuration for connection setting related */
     struct connection_settings {
-      char* max_clients;
-      char* max_threads;
+      char* max_clients; // N° of clients that the server should accept
+      char* max_threads; // N° of threads that the server should use
     } cs;
+
+    /* Configuration for database setting related */
+    struct database_settings {
+      char* type; // Type of the specified database
+      char* host; // Host of the running database
+      char* port; // Port of the running database
+    } ds;
 
     /* Configuration for logging setting related */
     struct logging_settings {
-      char* log_level;
-      char* log_file;
+      char* log_level; // Logging level
+      char* log_file;  // File on which make logging operations
     } ls;
 
   } config;
