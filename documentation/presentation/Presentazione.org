@@ -15,6 +15,10 @@
 <!-- Per ovviare alla customizzazione post export del file customizzo le impostazioni e inserisco un custom stylesheet -->
 <link rel="stylesheet" href="./theme.css" id="theme"/>
 <link rel="stylesheet" href="plugins/highlight/monokai.css">
+<!--
+  <link rel="stylesheet" href="plugins/highlight/atelier-lakeside.dark.css">
+  <link rel="stylesheet" href="plugins/highlight/obsidian.css">
+-->
 
 
 <section id="sec-title-slide">
@@ -98,24 +102,19 @@ Con lo scopo di rendere sempre affidabile e sicura la piattaforma si è scelto d
 Una soluzione di questo tipo è stata possibile anche grazie all'utilizzo di un file configurazione che ci ha permesso in pochi secondi di spostarci da un ambiente di testing (in locale) al deploy di una versione release del nostro prodotto.
 
 #+BEGIN_NOTES
-(NOTE SUL FILE DOCKER-COMPOSE)
 Di seguito viene riportato il contenuto del file necessario a docker-compose per il deploy del container
 
 Definiamo '3' in quanto rappresenta l'ultima versione disponibile
 
 Docker Compose lavora con il concetto di `services` dove 1 service = 1 container
 
-Utilizziamo la keyword 'services' per la creazione del servizio necessario al deploy di un database PostGres
-
-Il nome del nostro service sarà "database" (è possibile ovviamente modificarlo)
-
-Selezionamo l'immagine docker ufficiale di Postgres da DockerHub (useremo l'ultima versione disponibile)
+Utilizziamo la keyword 'services' per la creazione del servizio necessario al deploy del nostro applicativo, costituito da:
++ Server (applicativo C)
++ Database (utilizzando l'immagine ufficiale di MongoDB (latest version))
 
 Definiamo un nome per il container (risulta comodo in situazioni in cui si vada a deployare `n` container diversi)
 
 Definiamo un volume necessario al container per il salvataggio dei dati
-
-Come default Postgres utilizza la porta 5432.
 
 Volendo accedere al database dall'esterno dobbiamo definire una porta di condivisione del tipo
 
@@ -123,11 +122,11 @@ Volendo accedere al database dall'esterno dobbiamo definire una porta di condivi
 
 Di seguito definiamo delle variabili di ambiente necessarie al database e
 
-alla connessione che viene eseguita dal server (Spring boot)
+alla connessione che viene eseguita dal server
 #+END_NOTES
 
 #+begin_export html
-<pre><code data-line-numbers data-trim data-noescape>
+<pre><code data-line-numbers data-trim data-noescape class="docker">
 ### InfoPoint microservice backend ###
 version: '3.9'
 services:

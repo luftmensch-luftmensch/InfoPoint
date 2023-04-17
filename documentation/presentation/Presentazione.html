@@ -20,6 +20,10 @@
 <!-- Per ovviare alla customizzazione post export del file customizzo le impostazioni e inserisco un custom stylesheet -->
 <link rel="stylesheet" href="./theme.css" id="theme"/>
 <link rel="stylesheet" href="plugins/highlight/monokai.css">
+<!--
+  <link rel="stylesheet" href="plugins/highlight/atelier-lakeside.dark.css">
+  <link rel="stylesheet" href="plugins/highlight/obsidian.css">
+-->
 
 
 <section id="sec-title-slide">
@@ -130,16 +134,13 @@ Docker Compose lavora con il concetto di `services` dove 1 service = 1 container
 </p>
 
 <p>
-Utilizziamo la keyword 'services' per la creazione del servizio necessario al deploy di un database PostGres
+Utilizziamo la keyword 'services' per la creazione del servizio necessario al deploy del nostro applicativo, costituito da:
 </p>
+<ul>
+<li>Server (applicativo C)</li>
+<li>Database (utilizzando l'immagine ufficiale di MongoDB (latest version))</li>
 
-<p>
-Il nome del nostro service sarà "database" (è possibile ovviamente modificarlo)
-</p>
-
-<p>
-Selezionamo l'immagine docker ufficiale di Postgres da DockerHub (useremo l'ultima versione disponibile)
-</p>
+</ul>
 
 <p>
 Definiamo un nome per il container (risulta comodo in situazioni in cui si vada a deployare `n` container diversi)
@@ -147,10 +148,6 @@ Definiamo un nome per il container (risulta comodo in situazioni in cui si vada 
 
 <p>
 Definiamo un volume necessario al container per il salvataggio dei dati
-</p>
-
-<p>
-Come default Postgres utilizza la porta 5432.
 </p>
 
 <p>
@@ -166,12 +163,12 @@ Di seguito definiamo delle variabili di ambiente necessarie al database e
 </p>
 
 <p>
-alla connessione che viene eseguita dal server (Spring boot)
+alla connessione che viene eseguita dal server
 </p>
 
 </aside>
 
-<pre><code data-line-numbers data-trim data-noescape>
+<pre><code data-line-numbers data-trim data-noescape class="docker">
 ### InfoPoint microservice backend ###
 version: '3.9'
 services:
