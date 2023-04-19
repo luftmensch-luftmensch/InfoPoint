@@ -8,8 +8,13 @@
   +  Lucia Brando        (matr. )
 */
 
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
+
 #include "utility.h"
-#include "bits/types/struct_timeval.h"
+
 
 #define _m(type, format, ...) _msgcategory(type, "UTILITY", format, ##__VA_ARGS__)
 
@@ -66,4 +71,51 @@ long long current_timestamp() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return (tv.tv_sec * 1000LL + tv.tv_usec / 1000);
+}
+
+static unsigned get_file_size (const char* file_name) { // off_t -> same as unsigned long long int
+  struct stat sb;
+  if (stat (file_name, & sb) != 0) {
+    fprintf (stderr, "'stat' failed for '%s': %s.\n", file_name, strerror (errno));
+    exit (EXIT_FAILURE);
+  }
+  return sb.st_size;
+}
+
+
+unsigned char* file_reader(const char* file_name) {
+  if (file_name == NULL) {
+    fprintf(stderr, "[%s] (%s) Failed to read the given file name (It's value is NULL!)", __FILE__, __func__);
+    return NULL;
+  }
+
+  unsigned size = get_file_size(file_name);
+  unsigned char* content;
+  FILE* fp;
+  size_t bytes_read;
+
+  if (!(content = malloc(size + 1))) {
+    fprintf(stderr, "[%s] (%s) Failed to allocate enought space to store the specified file name <%s>", __FILE__, __func__, file_name);
+    return NULL;
+  }
+
+
+  if(!(fp = fopen(file_name, "r"))) { // Try to open the file in read mode
+    fprintf(stderr, "[%s] (%s) Failed to open the given file name <%s> -> %s", __FILE__, __func__, file_name, strerror(errno));
+    return NULL;
+  }
+
+  // Try to read the given file
+  bytes_read = fread(content, sizeof(unsigned char), size, fp);
+
+  if (bytes_read != size) {
+    fprintf (stderr, "Short read of '%s': expected %d bytes " "but got %zu: %s.\n", file_name, size, bytes_read, strerror (errno));
+    return NULL;
+  }
+
+  if (fclose(fp) != 0){
+    fprintf (stderr, "Error closing '%s': %s.\n", file_name, strerror (errno));
+    return NULL;
+  }
+  return content;
 }

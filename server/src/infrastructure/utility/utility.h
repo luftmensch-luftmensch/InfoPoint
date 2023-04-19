@@ -67,4 +67,11 @@
     /* Return the current timestamp in milliseconds */
     long long current_timestamp();
 
+
+    /*
+     * Reads an entire file into a dynamically allocated memory buffer.
+     * The returned buffer needs to be free()d afterwards
+    */
+    unsigned char* file_reader(const char*);
+
 #endif

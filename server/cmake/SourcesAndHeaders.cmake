@@ -17,7 +17,8 @@ set(sources
     src/infrastructure/pool/thread_pool.c
 
     # Configuration parser with ini config file
-    src/infrastructure/config/config.c
+    src/infrastructure/config/config_parser.c
+    src/infrastructure/config/info_point_config.c
 
     # Database Related
     # src/core/database/database.c
@@ -26,8 +27,8 @@ set(sources
 set(headers
 
     # Utility functions
-    src/infrastructure/logging/logging.c
-    src/infrastructure/utility/utility.c
+    src/infrastructure/logging/logging.h
+    src/infrastructure/utility/utility.h
 
     # Server related
     src/core/server/server.h
@@ -37,10 +38,12 @@ set(headers
     src/core/message/message.h
 
     # Workers related
-    src/infrastructure/pool/thread_pool.c
+    src/infrastructure/pool/thread_pool.h
 
     # Configuration parser with ini config file
-    src/infrastructure/config/config.h
+    src/infrastructure/config/config_parser.h
+    src/infrastructure/config/info_point_config.h
+    src/infrastructure/config/sys_queue.h
 
     # Database Related
     # src/core/database/database.h

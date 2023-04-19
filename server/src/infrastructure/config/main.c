@@ -1,55 +1,79 @@
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 
-#include "config.h"
+// #include "config.h"
+#include "info_point_config.h"
 
+/* void test(char* val) { */
+
+/*   config* cfg = NULL; */
+/*   //double port; */
+/*   unsigned int port; */
+
+/*   if(read_file(val, &cfg) != CONFIG_OK) { */
+    
+/*     fprintf(stderr, "Failed to parse file_name"); */
+/*   } */
+/*   /\* print_config_settings(cfg, stdout); *\/ */
+
+/*   /\* print_config(cfg, stdout); *\/ */
+  
+/*   char s[1024]; */
+
+/*   read_str_from_cfg(cfg, "network", "host", s, sizeof(s), "127.0.0.1"); */
+
+/*   read_uint_from_cfg(cfg, "network", "port", &port, 8080); */
+
+/*   printf("Network: Host <%s>, Port -> <%d>\n", s, port); */
+
+/*   if(strcmp("localhost", s) == 0){ */
+/*     printf("ALL DONE"); */
+    
+/*   } */
+
+/*   destroy_config(cfg); */
+  
+/* } */
 
 int main(int argc, char** argv) {
-  config* cfg = provide_config(argv[1]);
-  //config* cfg = provide_default_config();
-  if (strcmp(cfg->ns.host, "localhost") == 0)  {
-    printf("All done\n");
-    printf("%s", cfg->ns.host);
-  }
-  free(cfg);
-}
+  info_point_config* cfg = provide_config(argv[1]);
 
-//int main(int argc, char** argv) {
-//  ini_parser* ini = init_parser(argv[1]); // Parse the given file
-//  config* cfg = malloc(sizeof(struct config));
-//
-//  /* Retrieve values form the parser */
-//
-//  // NETWORK
-//  char* host    = (char*) get_value(ini, "network", "host");
-//  char* port    = (char*) get_value(ini, "network", "port");
-//  char* timeout = (char*) get_value(ini, "network", "timeout");
-//
-//  // CONNECTIONS
-//  char* max_clients = (char*) get_value(ini, "connections", "max_clients");
-//  char* max_threads = (char*) get_value(ini, "connections", "max_threads");
-//
-//  // LOGGING
-//  char* log_level = (char*) get_value(ini, "logging", "log_level");
-//  char* log_file = (char*) get_value(ini, "logging", "log_file");
-//
-//  // Network configuration settings
-//  cfg->ns.host = (host != NULL) ? host : "127.0.0.1";
-//  cfg->ns.port = (port != NULL) ? port : "8080";
-//  cfg->ns.timeout = (timeout != NULL) ? timeout : "0";
-//
-//  //// Connections configuration settings
-//  cfg->cs.max_clients = (max_clients != NULL) ? max_clients : "10";
-//  cfg->cs.max_threads = (max_threads != NULL) ? max_threads : "10";
-//  //
-//  //// Logging configuration settings
-//  cfg->ls.log_level = (log_level != NULL) ? log_level : "normal";
-//  cfg->ls.log_file = (log_file != NULL) ? log_file : "stderr";
-//
-//  printf("%s\n", cfg->ls.log_file);
-//
-//  destroy_parser(ini);
-//
-//  free(cfg);
-//}
+  printf("[Network] Host -> <%s>, Port -> <%d>, Timeout -> <%d>\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
+  printf("[Connections] Max Clients -> <%d>, Max Threads -> <%d>\n\n", cfg->cs.max_clients, cfg->cs.max_threads);
+  printf("[Database] Type -> <%s>, Host -> <%s>, Port -> <%d>\n", cfg->ds.type, cfg->ds.host, cfg->ds.port);
+  printf("[Logging] Log Level -> <%s>, Log File -> <%s>\n\n", cfg->ls.log_level, cfg->ls.log_file);
+
+  free(cfg);
+  /* test(argv[1]); */
+
+  /* config* cfg = NULL; */
+  /* //double port; */
+  /* unsigned int port; */
+
+  /* if(read_file(argv[1], &cfg) != CONFIG_OK) { */
+    
+  /*   fprintf(stderr, "Failed to parse file_name"); */
+  /* } */
+  /* /\* print_config_settings(cfg, stdout); *\/ */
+
+  /* /\* print_config(cfg, stdout); *\/ */
+  
+  /* char s[1024]; */
+
+  /* read_str_from_cfg(cfg, "network", "host", s, sizeof(s), "127.0.0.1"); */
+
+  /* read_uint_from_cfg(cfg, "network", "port", &port, 8080); */
+
+  /* printf("Network: Host <%s>, Port -> <%d>\n", s, port); */
+
+  /* if(strcmp("localhost", s) == 0){ */
+  /*   printf("ALL DONE"); */
+    
+  /* } */
+
+  /* destroy_config(cfg); */
+  
+}
