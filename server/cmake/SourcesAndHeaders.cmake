@@ -16,9 +16,13 @@ set(sources
     # Workers related
     src/infrastructure/pool/thread_pool.c
 
+    # Command line flag parser
+    src/infrastructure/command_line_runner/command_line_runner.c
+
     # Configuration parser with ini config file
     src/infrastructure/config/config_parser.c
     src/infrastructure/config/info_point_config.c
+    
 
     # Database Related
     # src/core/database/database.c
@@ -39,6 +43,9 @@ set(headers
 
     # Workers related
     src/infrastructure/pool/thread_pool.h
+
+    # Command line flag parser
+    src/infrastructure/command_line_runner/command_line_runner.c
 
     # Configuration parser with ini config file
     src/infrastructure/config/config_parser.h
