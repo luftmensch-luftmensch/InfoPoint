@@ -716,7 +716,6 @@ config_status read_config(FILE* fp, config_parser** cfg) {
 	}
 
 	return status;
-	/* goto error; */
       }
     }
     else {
