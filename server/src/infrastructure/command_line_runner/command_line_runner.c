@@ -114,7 +114,8 @@ char* parse_command_line_arguments(int argc, char** argv){
 
 
   info_point_arguments arguments = {
-    .config_file = "undefined",
+    // .config_file = "undefined",
+    .config_file = NULL,
     .repeat_count = 1,
     .file_defined = false
   };
