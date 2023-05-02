@@ -5,8 +5,8 @@
 
   Authors:
   +  Valentino Bocchetti (matr. N86003405)
-  +  Dario Morace        (matr. )
-  +  Lucia Brando        (matr. )
+  +  Dario Morace        (matr. N86003778)
+  +  Lucia Brando        (matr. N86003382)
 */
 
 #ifndef WELCOME_MSG_H

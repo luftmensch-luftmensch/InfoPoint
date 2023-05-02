@@ -4,14 +4,12 @@
   ╩  ╝╚╝  ╚    ╚═╝    ╩    ╚═╝  ╩  ╝╚╝   ╩         ╚═╝  ╚═╝  ╝╚╝  ╚    ╩  ╚═╝
   Authors:
   +  Valentino Bocchetti (matr. N86003405)
-  +  Dario Morace        (matr. )
-  +  Lucia Brando        (matr. )
+  +  Dario Morace        (matr. N86003778)
+  +  Lucia Brando        (matr. N86003382)
 */
 
 #include <stdlib.h>
-
 #include "info_point_config.h"
-
 
 info_point_config* provide_config(const char* file_name) {
   info_point_config* info_point_cfg = malloc(sizeof(info_point_config));

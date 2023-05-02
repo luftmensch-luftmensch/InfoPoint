@@ -4,13 +4,12 @@
   ╩  ╝╚╝  ╚    ╚═╝    ╩    ╚═╝  ╩  ╝╚╝   ╩         ╚═╝  ╚═╝  ╝╚╝  ╚    ╩  ╚═╝
   Authors:
   +  Valentino Bocchetti (matr. N86003405)
-  +  Dario Morace        (matr. )
-  +  Lucia Brando        (matr. )
+  +  Dario Morace        (matr. N86003778)
+  +  Lucia Brando        (matr. N86003382)
 */
 
 #ifndef _INFO_POINT_CONFIG_H_
 #define _INFO_POINT_CONFIG_H_
-  #include <stdint.h>
   #include "config_parser.h"
 
   /***************************************************************************

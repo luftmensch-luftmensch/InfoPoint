@@ -5,11 +5,15 @@
 		  A wrapper around argp unix-style argument vector parser
   Authors:
   +  Valentino Bocchetti (matr. N86003405)
-  +  Dario Morace        (matr. )
-  +  Lucia Brando        (matr. )
+  +  Dario Morace        (matr. N86003778)
+  +  Lucia Brando        (matr. N86003382)
 */
 
+#include <argp.h>
+#include <stdlib.h>
+
 #include "command_line_runner.h"
+
 
 // Argp need to find a version string to customize its content
 const char *argp_program_version = "InfoPoint 1.0.0";
@@ -26,10 +30,6 @@ static char info_point_doc[] = {
   "\vFor additional documentation please refers to " 
   "<" ANSI_COLOR_BBLUE "https://TODO.com" ANSI_COLOR_RESET ">"
 };
-
-/* A description of the arguments we accept. */
-/* static char args_doc[] = "ARG1 [STRING...]"; */
-
 
 /* The options we understand. */
 static struct argp_option options[] = {
@@ -62,11 +62,18 @@ static error_t parse_opt(int key, char* arg, struct argp_state* state) {
       arguments->file_defined = true;
       break;
     case 'd':
-      arguments->file_defined = false;
+      arguments->use_default_cfg = true;
       break;
     default:
       return ARGP_ERR_UNKNOWN;
   }
+
+  if(arguments->file_defined && arguments->use_default_cfg) {
+    fprintf(stderr, ANSI_COLOR_RED "[%s] (%s) Cannot specify both a config file to use & use default config file!\n" ANSI_COLOR_RESET, __FILE_NAME__, __func__);
+    exit(EXIT_FAILURE);
+  }
+
+
   return 0;
 }
 

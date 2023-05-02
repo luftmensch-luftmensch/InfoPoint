@@ -1,9 +1,18 @@
+/*
+  ╔╦╗┌─┐┌┬┐┌─┐┌┐ ┌─┐┌─┐┌─┐
+   ║║├─┤ │ ├─┤├┴┐├─┤└─┐├┤ 
+  ═╩╝┴ ┴ ┴ ┴ ┴└─┘┴ ┴└─┘└─┘
+  Autori:
+  +  Valentino Bocchetti (matr. N86003405)
+  +  Dario Morace        (matr. N86003778)
+  +  Lucia Brando        (matr. N86003382)
+*/
 #ifndef _DATABASE_H_
 #define _DATABASE_H_
 
   #include <mongoc/mongoc.h>
 
-  #include "../../common/logging/logging.h"
+  #include "../../infrastructure/logging/logging.h"
 
   /** Global variables used to connect to the mongodb instance */
 

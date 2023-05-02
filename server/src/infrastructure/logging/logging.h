@@ -4,8 +4,8 @@
   ╩═╝  ╚═╝  ╚═╝  ╚═╝  ╩  ╝╚╝  ╚═╝
   Authors:
   +  Valentino Bocchetti (matr. N86003405)
-  +  Dario Morace        (matr. )
-  +  Lucia Brando        (matr. )
+  +  Dario Morace        (matr. N86003778)
+  +  Lucia Brando        (matr. N86003382)
 */
 
 #ifndef LOGGING_H_
@@ -27,6 +27,12 @@
   #ifndef DATETIME_FORMAT
       #define DATETIME_FORMAT "%2d/%02d at " TIME_FORMAT
   #endif
+
+
+  #ifndef __FILE_NAME__
+    #define __FILE_NAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+  #endif
+
 
   #define TIME_FORMAT_ARGS(tm) tm.tm_hour, tm.tm_min, tm.tm_sec
   #define DATETIME_FORMAT_ARGS(tm) tm.mday, tm.mon + 1, TIME_FORMAT_ARGS(tm)
