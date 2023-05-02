@@ -20,6 +20,7 @@
 #include "infrastructure/pool/thread_pool.h"
 #include "infrastructure/config/info_point_config.h"
 #include "infrastructure/command_line_runner/command_line_runner.h"
+#include "infrastructure/utility/utility.h"
 
 // void task(void *arg){
 //     printf("Thread #%u working on %d\n", (int)pthread_self(), (int)(uintptr_t) arg);
@@ -47,6 +48,15 @@ int main(int argc, char** argv){
 
   // Finally free the cfg, as we no more need it
   free(cfg);
+
+  //unsigned char* buff = file_reader(config_file);
+  unsigned char* buff = NULL;
+
+  buff = file_reader(config_file);
+
+  printf("%s\n", buff);
+
+  free(buff);
   
   //server* s = init_server(9090, 10);
 
