@@ -25,7 +25,7 @@ set(sources
     
 
     # Database Related
-    # src/core/database/database.c
+    src/core/database/database.c
 )
 
 set(headers
@@ -53,5 +53,5 @@ set(headers
     src/infrastructure/config/sys_queue.h
 
     # Database Related
-    # src/core/database/database.h
+    src/core/database/database.h
 )

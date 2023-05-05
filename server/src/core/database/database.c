@@ -13,82 +13,76 @@
 #include <stdlib.h>
 
 
-#define _m_d(type, format, ...) _msgcategory(type, "DATABASE", format, ##__VA_ARGS__)
-#define _m_d_h(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format, ##__VA_ARGS__)
+#define _m_db(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format, ##__VA_ARGS__)
 
+db_handler* init_db_handler(char* username, char* password, char* host, char* database_name) {
+  db_handler* handler = malloc(sizeof(struct db_handler));
 
-mongo_db* _database_setup(const char* uri){
-  mongo_db* db = malloc(sizeof(struct mongo_db));
-  bson_error_t error;
+  _m_db(_msginfo, "Initializing settings for the handler");
+
+  // Uri field initialization
+  snprintf(handler->settings->database_uri, sizeof(handler->settings->database_uri), "mongodb://%s:%s@%s", username, password, host); // mongodb://<username>:<password>@<host>
+
+  // Collections identifier field initialization
+  handler->settings->user_collection     = (char*) MONGO_DB_USER_COLLECTION_NAME;
+  handler->settings->art_work_collection = (char*) MONGO_DB_ARTWORK_COLLECTION_NAME;
+
+  handler->settings->database_name = database_name;
+
+  /* Required to initialize libmongoc's internals (It should be called only once!) */
+  _m_db(_msginfo, "Database Handler initialization");
+  mongoc_init();
+
+  // Initialization of mongo_db instance
+  handler->instance = malloc(sizeof(struct mongo_db));
 
   /* Safely create a MongoDB URI object from the given string */
-  _m_d(_msginfo, "Parsing mongodb endpoint <%s>\n", MONGO_DB_URI);
-  db -> uri = mongoc_uri_new_with_error(uri, &error);
-  if (!db->uri) {
-    _m_d(_msgfatal, "Failed to parse URI <%s>. Cause: <%s>", uri, error.message);
-    perror("Database connection initialization: ");
+
+  _m_db(_msginfo, "Parsing mongodb endpoint <%s>\n", handler->settings->database_uri);
+  handler->instance->uri = mongoc_uri_new(handler->settings->database_uri); // TODO: Substitute with `mongoc_uri_new_with_error`
+  if (!handler->instance->uri) {
+    _m_db(_msgfatal, "[%s] (%s) Failed to parse URI <%s>", __FILE_NAME__, __func__, handler->settings->database_uri);
     exit(errno);
   }
 
-  /* Client instance creation */
-  _m_d(_msginfo, "Database instance client setup");
-  db ->client = mongoc_client_new_from_uri(db -> uri);
-  if (!db->client) {
-    _m_d(_msgfatal, "Failed to create a new client instance");
-    perror("Client instance: ");
+  _m_db(_msginfo, "Database instance pool setup");
+  handler->instance->pool = mongoc_client_pool_new(handler->instance->uri);
+  if (!handler->instance->pool) {
+    _m_db(_msgfatal, "[%s] (%s) Failed to setup mongodb pool", __FILE_NAME__, __func__);
     exit(errno);
   }
+
+  _m_db(_msginfo, "Customizing options for the mongodb pool");
+
+  // Configure how the C Driver reports errors (See https://mongoc.org/libmongoc/1.14.0/errors.html#errors-error-api-version)
+  mongoc_client_pool_set_error_api (handler->instance->pool, 2);
+
   /*
    * Register the application name so we can track it in the profile logs
    * on the server. This can also be done from the URI (see other examples).
-  */
-  _m_d(_msginfo, "Registring application name: <%s>", MONGO_DB_APP_NAME);
-  mongoc_client_set_appname(db -> client, MONGO_DB_APP_NAME);
+   */
+  mongoc_client_pool_set_appname(handler->instance->pool, MONGO_DB_APP_NAME);
 
-  
-  _m_d(_msginfo, "Accessing to <%s> database", MONGO_DB_NAME);
-  db -> database = mongoc_client_get_database(db -> client, MONGO_DB_NAME);
-
-  _m_d(_msginfo, "Done!");
-
-  return db;  
-}
-
-// Specific Database Handler function
-
-db_handler* db_init(const char* uri){
-  db_handler* db = malloc(sizeof(struct db_handler));
-
-  /* Required to initialize libmongoc's internals (It should be called only once!) */
-  _m_d_h(_msginfo, "Database Handler initialization");
-  mongoc_init ();
-
-  db -> database = _database_setup(uri);
-  _m_d_h(_msginfo, "Database handler successfully created!");
-  return db;
+  _m_db(_msginfo, "Database handler successfully created!");
+  return handler;
 }
 
 
-void db_kill(db_handler * db){
-  _m_d_h(_msginfo, "Shutting down the database handler as requested");
+void destroy_db_handler(db_handler* handler) {
+
   // TODO: Handle close -> https://mongoc.org/libmongoc/current/tutorial.html
+  _m_db(_msginfo, "Shutting down the database handler as requested");
+
+  _m_db(_msginfo, "Destroying client handler: <%s>", handler->instance->pool);
+  mongoc_client_pool_destroy(handler->instance->pool);
+
   /* Release handlers and make clean up operation */
-  _m_d_h(_msginfo, "Destroying collections <%s>, <%s>", MONGO_DB_CLIENT_COLLECTION_NAME, MONGO_DB_ARTWORK_COLLECTION_NAME);
-  // TODO: Handle collections
-  
-  _m_d_h(_msginfo, "Destroying database handler: <%s>", MONGO_DB_NAME);
-  mongoc_database_destroy(db->database->database);
+  _m_db(_msginfo, "Destroying URI handler: <%s>", handler->instance->uri);
+  mongoc_uri_destroy(handler->instance->uri);
 
-  _m_d_h(_msginfo, "Destroying URI handler: <%s>", MONGO_DB_URI);
-  mongoc_uri_destroy(db ->database->uri);
-
-  _m_d_h(_msginfo, "Destroying client handler: <%s>", db->database->client);
-  mongoc_client_destroy(db ->database->client);
-
-  _m_d_h(_msghighlight, "Finishing cleanup");
+  _m_db(_msghighlight, "Finishing cleanup");
   mongoc_cleanup ();
 
-  _m_d_h(_msgevent, "Done!");
-  
-  free(db);
+  _m_db(_msgevent, "Done!");
+  free(handler);
 }

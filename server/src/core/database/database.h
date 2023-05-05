@@ -16,57 +16,51 @@
 
   /** Global variables used to connect to the mongodb instance */
 
-  /* Connection URI */
   #ifndef MONGO_DB_APP_NAME
       #define MONGO_DB_APP_NAME "InfoPoint App"
   #endif
 
-  #ifndef MONGO_DB_URI
-      #define MONGO_DB_URI "mongodb://localhost:27017"
-  #endif
-
   /* Database collection name */
-  #ifndef MONGO_DB_CLIENT_COLLECTION_NAME
-      #define MONGO_DB_CLIENT_COLLECTION_NAME "client"
+  #ifndef MONGO_DB_USER_COLLECTION_NAME
+      #define MONGO_DB_USER_COLLECTION_NAME "user"
   #endif
 
   #ifndef MONGO_DB_ARTWORK_COLLECTION_NAME
       #define MONGO_DB_ARTWORK_COLLECTION_NAME "artwork"
   #endif
 
-  /* Database name */
-  #ifndef MONGO_DB_NAME
-      #define MONGO_DB_NAME "info-point"
-  #endif
+  /**
+   * Structure representing information used to:
+   * Connect & authenticate to a given mongodb instance
+   * Do basic operation with the speciefied documents used by the service
+  */
+  typedef struct database_settings {
+    char* database_name;	/* Database name identifier */
+    char  database_uri[100];
 
-  /* Database user */
-  #ifndef MONGO_DB_USERNAME
-      #define MONGO_DB_USERNAME "admin"
-  #endif
-
-  /* Database password for the user */
-  #ifndef MONGO_DB_PASSWORD
-      #define MONGO_DB_PASSWORD "password"
-  #endif
+    char* user_collection; 	/* Identifier of the collection used to store & retrieve data of the users */
+    char* art_work_collection;	/* Identifier of the collection used to store & retrieve data of the artworks */
+  } database_settings;
 
   typedef struct mongo_db {
+    mongoc_client_pool_t* pool;
+    mongoc_client_t* client; // Client to the mongodb instance
     mongoc_uri_t* uri;
-    mongoc_database_t* database;
 
-    // Client to the mongodb instance
-    mongoc_client_t* client;
+    //mongoc_database_t* database;
   } mongo_db;
 
   typedef struct db_handler {
-    mongo_db* database;
-    mongoc_cursor_t* cursor;
-    bson_error_t error;
+    //mongoc_cursor_t* cursor;
+    //bson_error_t error;
+    database_settings* settings; /* Settings used to connect & communicate with the specified mongodb instance */
+    mongo_db* instance;
 
   } db_handler;
 
   // Database Handler functions
-  db_handler* db_init();
-  void db_kill(db_handler*);
+  db_handler* init_db_handler(char*, char*, char*, char*);
+  void destroy_db_handler(db_handler*);
   // TODO: Change return type
   void retrieve_single();
   void retrieve_all();
