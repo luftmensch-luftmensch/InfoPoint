@@ -228,7 +228,7 @@ Di seguito riportiamo una breve demo che mostra in azione *InfoPoint* durante il
   </p>
   <br>
   <p>
-    Con il mondo a portata di mano, Valentino Dario e Lucia, riescono a trovare il tempo tra gli studi per sviluppare e mostrare le loro applicazioni.
+    Con il mondo a portata di mano, Valentino, Dario e Lucia, riescono a trovare il tempo tra gli studi per sviluppare e mostrare le loro applicazioni.
   </p>
 </div>
 #+end_export
