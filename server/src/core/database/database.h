@@ -13,6 +13,7 @@
   #include <mongoc/mongoc.h>
 
   #include "../../infrastructure/logging/logging.h"
+  #include "../../infrastructure/utility/utility.h"
 
   /** Global variables used to connect to the mongodb instance */
 
@@ -29,32 +30,42 @@
       #define MONGO_DB_ARTWORK_COLLECTION_NAME "artwork"
   #endif
 
-  /**
-   * Structure representing information used to:
-   * Connect & authenticate to a given mongodb instance
-   * Do basic operation with the speciefied documents used by the service
-  */
-  typedef struct database_settings {
-    char* database_name;	/* Database name identifier */
-    char  database_uri[100];
+  //typedef struct mongo_db_settings {
+  //  char* database_name;	/* Database name identifier */
+  //  char  database_uri[100];
 
-    char* user_collection; 	/* Identifier of the collection used to store & retrieve data of the users */
-    char* art_work_collection;	/* Identifier of the collection used to store & retrieve data of the artworks */
-  } database_settings;
+  //  char* user_collection; 	/* Identifier of the collection used to store & retrieve data of the users */
+  //  char* art_work_collection;	/* Identifier of the collection used to store & retrieve data of the artworks */
+  //} mongo_db_settings;
 
-  typedef struct mongo_db {
-    mongoc_client_pool_t* pool;
-    mongoc_client_t* client; // Client to the mongodb instance
-    mongoc_uri_t* uri;
+  // typedef struct mongo_db {
+  //   mongoc_client_pool_t* pool;
+  //   mongoc_client_t* client; // Client to the mongodb instance
+  //   mongoc_uri_t* uri;
 
-    //mongoc_database_t* database;
-  } mongo_db;
+  //   //mongoc_cursor_t* cursor;
+  //   //bson_error_t error;
+  //   //mongoc_database_t* database;
+  // } mongo_db;
 
   typedef struct db_handler {
-    //mongoc_cursor_t* cursor;
-    //bson_error_t error;
-    database_settings* settings; /* Settings used to connect & communicate with the specified mongodb instance */
-    mongo_db* instance;
+    struct instance {
+      mongoc_client_pool_t* pool;
+      mongoc_client_t* client; // Client to the mongodb instance
+      mongoc_uri_t* uri;
+    } instance;
+
+    /**
+     * Structure representing information used to:
+     * Connect & authenticate to a given mongodb instance
+     * Do basic operation with the speciefied documents used by the service
+     */
+    struct mongo_db_settings {
+      char* database_name;		/* Database name identifier */
+      char  database_uri[100];		/* String used to connect to the mongodb instance */
+      char* user_collection;		/* Identifier of the collection used to store & retrieve data of the users */
+      char* art_work_collection;	/* Identifier of the collection used to store & retrieve data of the artworks */
+    } settings;
 
   } db_handler;
 

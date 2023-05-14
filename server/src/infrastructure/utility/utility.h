@@ -73,5 +73,23 @@
      * The returned buffer needs to be free()d afterwards
     */
     unsigned char* file_reader(const char*);
+    /*
+      Variadic function to concatenate any number of strings
+
+
+      Example usage:
+      ```
+	int main(int argc, char* argv[]) {
+	char *str;
+
+	str = concat(0);             printf("%s", str); free(str);
+	str = concat(1,"a");         printf("%s", str); free(str);
+	str = concat(2,"a","b");     printf("%s", str); free(str);
+
+	return 0;
+	}
+      ```
+    */
+    char* concatenate(int, ...);
 
 #endif
