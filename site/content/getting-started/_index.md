@@ -8,4 +8,4 @@ chapter: true
 ### Per Iniziare
 # Su InfoPoint
 
-Scopri i concetti chiave di **InfoPoint** e i suoi concetti chiave
+Scopri i concetti chiave di ***InfoPoint***

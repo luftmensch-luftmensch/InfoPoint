@@ -1,6 +1,6 @@
 ---
 title: Esecuzione del server
-weight: 10
+weight: 15
 ---
 
 I seguenti passi sono necessari per far si che la piattaforma possa funzionare correttamente
@@ -67,3 +67,19 @@ host = localhost
 ; Port on which the database is listening to
 port = 27017
 ```
+
+
+Una volta invocato il server [^1], questo:
+1. Effettuerà il parsing delle flag passate come argomento (si veda la sezione [inerente]({{< relref "server/structure/#commandlinerunner" >}}))
+
+    a. Nel caso in cui venga specificato un file di configurazione, il server setterà la sua configurazione basandosi sul contenuto del file;
+
+    b. In caso contrario, il server utilizzerà una configurazione di default;
+2. Una volta costruita la configurazione il programma gestirà l'inizializzazione di
+    - ***server***, il cuore di tutto l'applicativo (la cosìddetta `main entry point`);
+    - ***db_handler***, il gestore per la connessione/comunicazione con il database;
+    - ***thread_pool*** e ***handler***, le strutture di supporto alle funzionalità del server
+3. Infine il server si metterà in ascolto per le richieste in ingresso da parte dei client che proverrano a collegarsi.
+
+
+[^1]: Invocando il comando `./build/InfoPointServer` (e opzionalmente specificando il path del file di configurazione con `-f /path/to/the/config.ini`)
