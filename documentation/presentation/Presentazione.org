@@ -11,6 +11,7 @@
 #+title: InfoPoint
 #+SUBTITLE:  Un nuovo modo per fare trekking
 #+author: Valentino Bocchetti - Dario Morace - Lucia Brando
+#+STARTUP: overview hideblocks
 #+begin_export html
 <!-- Per ovviare alla customizzazione post export del file customizzo le impostazioni e inserisco un custom stylesheet -->
 <link rel="stylesheet" href="./theme.css" id="theme"/>
@@ -63,7 +64,7 @@ Un'applicazione ~Android~, scritta in ~Java~, che, una volta registrati, mette a
 
 #+REVEAL: split
 
-Un backend, scritto in ~C~ che serve le richieste effettuate dai client
+Un backend, scritto in ~C~ che serve le richieste effettuate dai client.
 #+ATTR_REVEAL: :frag (appear)
 ** Per registrarsi
 :PROPERTIES:
@@ -74,6 +75,14 @@ Gli utenti hanno la possibilità di registrarsi:
 #+ATTR_REVEAL: :frag (appear)
 + Utilizzando il ~form~ built-in utilizzando la classica combinazione ~username/password~;
 + Accedendo in modalità sicura facendo uso del riconoscimento facciale =e/o= impronta digitale;
+
+#+ATTR_REVEAL: :frag (appear)
+In seguito alla registrazione per accedere alla piattaforma dovranno scansionare un opportuno ~QR-Code~, generato giornalmente, utilizzato come chiave di autenticazione durante lo scambio di messaggi tra
+
+#+begin_export html
+<p class="fragment (appear)">
+<h4>Client &#x21C4; Server</h4>
+#+end_export
 
 #+ATTR_REVEAL: :frag (appear)
 ** Servizi offerti
@@ -91,12 +100,12 @@ Una volta registrati gli utenti avranno la possibilità di:
 :CUSTOM_ID: Tecnologie utilizzate
 :END:
 #+ATTR_REVEAL: :frag (appear)
-Con lo scopo di rendere sempre affidabile e sicura la piattaforma si è scelto di mettere in campo tutte le tecnologie conosciute durante le nostre esperienze lavorative. In particolare abbiamo fatto uso di:
+Con lo scopo di rendere sempre affidabile, portabile e sicura la piattaforma si è scelto di mettere in campo tutte le tecnologie conosciute durante le nostre esperienze lavorative. In particolare abbiamo fatto uso di:
 #+ATTR_REVEAL: :frag (appear)
 #+REVEAL: split
-+ Cloud services, offerto dal noto service provider /AWS/, di proprietà /Amazon Inc./, per la gestione dei dati degli utenti iscritti alla piattaforma e delle informazioni delle installazioni del museo;
++ Cloud services, messi a disposizione dal noto service provider /AWS/, di proprietà /Amazon Inc./, per la gestione dei dati degli utenti iscritti alla piattaforma e delle informazioni delle installazioni del museo;
 #+REVEAL: split
-+ Container docker, per la gestione dei dati affidabile nel tempo, che offre una soluzione plug & play svincolata dall'hardware utilizzato.
++ Container /docker/, per la gestione dei dati affidabile nel tempo, che offre una soluzione ~plug & play~ svincolata dall'hardware utilizzato.
 
 #+REVEAL: split
 Una soluzione di questo tipo è stata possibile anche grazie all'utilizzo di un file configurazione che ci ha permesso in pochi secondi di spostarci da un ambiente di testing (in locale) al deploy di una versione release del nostro prodotto.
@@ -175,7 +184,7 @@ services:
 :PROPERTIES:
 :CUSTOM_ID: Demo
 :END:
-Di seguito riportiamo una breve demo che mostra in azione *InfoPoint* durante il suo utilizzo:
+Di seguito riportiamo una breve demo che mostra in azione l'intera piattaforma =InfoPoint= durante il suo utilizzo:
 #+REVEAL: split
 
 #+begin_export html
