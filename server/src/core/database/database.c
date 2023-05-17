@@ -17,6 +17,7 @@
 
 db_handler* init_db_handler(char* username, char* password, char* host, char* database_name) {
   db_handler* handler = malloc(sizeof(struct db_handler));
+  bson_error_t error; // Error handler
 
   _m_db(_msginfo, "Initializing settings for the handler");
 
@@ -39,13 +40,13 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   /* Safely create a MongoDB URI object from the given string */
 
   _m_db(_msginfo, "Parsing mongodb endpoint <%s>\n", handler->settings.database_uri);
-  handler->instance.uri = mongoc_uri_new(handler->settings.database_uri); // TODO: Substitute with `mongoc_uri_new_with_error`
+  handler->instance.uri = mongoc_uri_new_with_error(handler->settings.database_uri, &error); // TODO: Substitute with `mongoc_uri_new_with_error`
   if (!handler->instance.uri) {
-    _m_db(_msgfatal, "[%s] (%s) Failed to parse URI <%s>", __FILE_NAME__, __func__, handler->settings.database_uri);
+    _m_db(_msgfatal, "[%s] (%s) Failed to parse URI <%s> Cause: %s\n", __FILE_NAME__, __func__, handler->settings.database_uri, error.message);
     exit(errno);
   }
 
-  // printf("Auth source: %s\n", mongoc_uri_get_auth_mechanism(handler->instance.uri));
+  printf("Auth source: %s\n", mongoc_uri_get_auth_mechanism(handler->instance.uri));
 
   _m_db(_msginfo, "Database instance pool setup");
   handler->instance.pool = mongoc_client_pool_new(handler->instance.uri);
