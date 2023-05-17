@@ -38,19 +38,15 @@ function(set_project_build_flags project_name)
       -Wextra				# reasonable and standard
       -Wshadow				# warn the user if a variable declaration shadows one from a
 					# parent context
-      -Wnon-virtual-dtor		# warn the user if a class with virtual functions has a
-					# non-virtual destructor. This helps catch hard to
-					# track down memory errors
       -Wno-implicit-fallthrough		# Warn when a switch case falls through
       -Wmaybe-uninitialized		# For an object with automatic or allocated storage duration, if there exists a path from the function entry
 					# to a use of the object that is initialized, but there exist some other paths for which the object is not initialized,
 					# the compiler emits a warning if it cannot prove the uninitialized paths are not executed at run time.
+
       -Wno-missing-field-initializers	# Warn if a structure’s initializer has some fields missing
-      -Wold-style-cast			# warn for c-style casts
       -Wcast-align			# warn for potential performance problem casts
       -Wunused				# warn on anything being unused
-      -Woverloaded-virtual		# warn if you overload (not override) a virtual
-					# function
+
       -Wpedantic			# warn if non-standard C++ is used
       -Wsign-conversion			# warn on sign conversions
       -Wnull-dereference		# warn if a null dereference is detected
@@ -62,25 +58,47 @@ function(set_project_build_flags project_name)
   # Full list here -> https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html
   set(GCC_BUILD_FLAGS
       ### BASICS ###
-      -Wall			# Enables a base set of warnings generally agreed upon as being useful and easy to fix
-      -Wextra			# Enables an additional set of flags not covered by -Wall
-      -Wshadow			# Shadowing variables at the very least makes code difficult to read and often can be indicative of a bug because the code is not operating on the value the programmer expects
-      -Wwrite-strings		# Find at compile time code that can try to write into a string constant.
-      -Wdouble-promotion	# C type float and double are not the same! (When using floating point numbers in a project, it’s quite easy to unintentionally use a double, so don't forget the f after a float number)
+      -Wall				# Enables a base set of warnings generally agreed upon as being useful and easy to fix
+      -Wextra				# Enables an additional set of flags not covered by -Wall
+      -Wunused				# warn on anything being unused
 
-      # -Wconversion		# warn on type conversions that may lose data (this enabled also the -Wsign-conversion
-				# that warns for implicit conversions that may change the sign of an integer value)
-				### Formatter checks ###
-      -Wformat=2		# Warn on security issues around functions that format output (ie printf)
-      -Wformat-truncation	# The options are able to detect various types of buffer overflows and truncation that could arise when using routines such as sprintf and snprintf respectively
+      -Wshadow				# Shadowing variables at the very least makes code difficult to read and often can be indicative of a bug
+					# because the code is not operating on the value the programmer expects
+					# Avoid this warning the user if a variable declaration shadows one from a parent context
+
+      -Wwrite-strings			# Find at compile time code that can try to write into a string constant.
+
+      -Wdouble-promotion		# C type float and double are not the same! (When using floating point numbers in a project,
+					#it’s quite easy to unintentionally use a double, so don't forget the f after a float number)
+
+      -Wno-implicit-fallthrough		# Warn when a switch case falls through
+
+      -Wmaybe-uninitialized		# For an object with automatic or allocated storage duration, if there exists a path from the function entry
+					# to a use of the object that is initialized, but there exist some other paths for which the object is not initialized,
+					# the compiler emits a warning if it cannot prove the uninitialized paths are not executed at run time.
+
+      -Wno-missing-field-initializers	# Warn if a structure’s initializer has some fields missing
+      -Wcast-align			# warn for potential performance problem casts
+
+      -Wpedantic			# warn if non-standard C++ is used
+      -Wsign-conversion			# warn on sign conversions
+      -Wnull-dereference		# warn if a null dereference is detected
+
+      # -Wconversion		        # warn on type conversions that may lose data (this enabled also the -Wsign-conversion
+					# that warns for implicit conversions that may change the sign of an integer value)
+      ### Formatter checks ###
+
+      -Wformat=2			# Warn on security issues around functions that format output (ie printf)
+      -Wformat-truncation		# The options are able to detect various types of buffer overflows and truncation that could arise when using
+					# routines such as sprintf and snprintf respectively
       -Wformat-overflow
-      -Wundef			# A classic bug in C code is an undefined macro silently evaluating as 0 and causing unexpected behavior
-				# (In general, it’s advisable to use #ifdef sparingly in a project for these reasons.)
-      -Wmisleading-indentation	# warn if indentation implies blocks where blocks do not exist
+      -Wundef				# A classic bug in C code is an undefined macro silently evaluating as 0 and causing unexpected behavior
+					# (In general, it’s advisable to use #ifdef sparingly in a project for these reasons.)
+      -Wmisleading-indentation		# warn if indentation implies blocks where blocks do not exist
       
-      -Wduplicated-cond		# Warn if if / else chain has duplicated conditions
-      -Wduplicated-branches	# Warn if if / else branches have duplicated code
-      -Wlogical-op		# Warn about suspicious uses of logical operators in expressions
+      -Wduplicated-cond			# Warn if if / else chain has duplicated conditions
+      -Wduplicated-branches		# Warn if if / else branches have duplicated code
+      -Wlogical-op			# Warn about suspicious uses of logical operators in expressions
 
       ### Optimization & Sections ###
       -O2
@@ -95,8 +113,8 @@ function(set_project_build_flags project_name)
   )
 
   if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)
-    # set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -Werror -fsanitize=address)
-    set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -fno-omit-frame-pointer)
+    # Be as strict as possibile on error acceptance!
+    set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -fno-omit-frame-pointer) # -Werror
     set(CLANG_BUILD_FLAGS ${CLANG_BUILD_FLAGS} -Werror)
     set(MSVC_BUILD_FLAG   ${MSVC_BUILD_FLAG} /WX)
   endif()
