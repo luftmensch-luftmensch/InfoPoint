@@ -47,10 +47,6 @@ endif()
 # Create library, setup header and source files
 #
 
-# Find driver needed for mongodb connection
-#include(cmake/DatabaseSettings.cmake)
-
-
 # Find all headers and implementation files
 include(cmake/SourcesAndHeaders.cmake)
 
@@ -71,6 +67,7 @@ add_executable(${PROJECT_EXECUTABLE})
 #   2. bear -- make
 # DONE!
 
+# Find driver needed for mongodb connection
 find_package(mongoc-1.0 1.7 REQUIRED)
 target_link_libraries(${PROJECT_EXECUTABLE} PRIVATE mongo::mongoc_shared)
 
