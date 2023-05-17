@@ -22,7 +22,7 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   _m_db(_msginfo, "Initializing settings for the handler");
 
   // Uri field initialization
-  snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s/?authMechanism=PLAIN", username, password, host); // mongodb://<username>:<password>@<host>
+  snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s/authMechanism=SCRAM-SHA-256&authSource=admin", username, password, host); // mongodb://<username>:<password>@<host>
 
   // Collections identifier field initialization
   handler->settings.user_collection     = (char*) MONGO_DB_USER_COLLECTION_NAME;
@@ -30,6 +30,8 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
 
   // Database name field initialization
   handler->settings.database_name = database_name;
+
+  
 
   _m_db(_msginfo, "Database Handler initialization");
   mongoc_init(); /* Required to initialize libmongoc's internals (It should be called only once!) */
@@ -56,7 +58,7 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
 
   _m_db(_msginfo, "Customizing options for the mongodb pool");
 
-  // Configure how the C Driver reports errors (See https://mongoc.org/libmongoc/1.14.0/errors.html#errors-error-api-version)
+  // Configure how the C Driver reports errors (See https://mongoc.org/libmongoc/current/errors.html#errors-error-api-version)
   mongoc_client_pool_set_error_api(handler->instance.pool, 2);
 
   /*

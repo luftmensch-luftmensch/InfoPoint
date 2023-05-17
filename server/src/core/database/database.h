@@ -33,7 +33,7 @@
   typedef struct db_handler {
     struct instance {
       mongoc_client_pool_t* pool;	/* Connection pool for multi-threaded programs */
-      mongoc_client_t* client;		/* Client to the mongodb instance */
+      /* mongoc_client_t* client;		/\* Client to the mongodb instance *\/ */
       mongoc_uri_t* uri;		/* Abstraction on top of the MongoDB connection URI format */
 
       //mongoc_cursor_t* cursor;

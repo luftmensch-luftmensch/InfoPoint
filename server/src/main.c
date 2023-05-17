@@ -91,7 +91,7 @@ int main(){
 
   db_handler* database = init_db_handler("admin", "password", "localhost:27017", "noesys");
 
-  // printf("%s %s %s\n", database->settings.user_collection, database->settings.art_work_collection, database->settings.database_name);
+  printf("%s %s %s\n", database->settings.user_collection, database->settings.art_work_collection, database->settings.database_name);
 
 
   destroy_db_handler(database);
