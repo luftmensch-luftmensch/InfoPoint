@@ -28,7 +28,7 @@ src ------------------------------------------- Root del progetto
 │       ├── server.c
 │       └── server.h
 ├── info_point.ini ---------------------------- File di configurazione
-├── infrastructure ---------------------------- Strutture di supporto
+├── helpers ----------------------------------- Strutture di supporto
 │   ├── base ---------------------------------- Definizione di tipi e funzioni di supporto
 │   │   └── types_definition.h
 │   ├── command_line_runner ------------------- Wrapper per il passaggio dei parametri al programma
@@ -78,7 +78,7 @@ Contiene delle funzioni wrapper utili alla comunicazione tramite socket (di cui 
 ### `Payload`
 Prendendo ispirazione dal protocollo `HTTP` facciamo uso del concetto di Payload, oggetto che rappresenta informazioni (su Utenti e Opere) che i client e il server si scambieranno.
 
-## `Infrastructure`
+## `Helpers`
 Contiene le componenti necessarie alla definizione dell'infrastruttura.
 
 ### `Base`

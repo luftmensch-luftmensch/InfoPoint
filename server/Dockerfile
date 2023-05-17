@@ -1,4 +1,4 @@
-### Dockerfile ###
+### InfoPoint Dockerfile ###
 
 # To build it -> docker build -t <TAG> . --no-cache=true
 

@@ -68,11 +68,11 @@ url = "/showcase"
 weight = 11
 
 ## Link to documentation
-[[menu.shortcuts]]
-name = "<i class='fas fa-bookmark'></i> Documentation"
-identifier = "hugodoc"
-url = "https://gohugo.io/"
-weight = 20
+# [[menu.shortcuts]]
+# name = "<i class='fas fa-bookmark'></i> Documentation"
+# identifier = "hugodoc"
+# url = "https://gohugo.io/"
+# weight = 20
 
 ## Credits
 [[menu.shortcuts]]
