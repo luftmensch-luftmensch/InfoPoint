@@ -22,7 +22,7 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   _m_db(_msginfo, "Initializing settings for the handler");
 
   // Uri field initialization
-  snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s", username, password, host); // mongodb://<username>:<password>@<host>
+  snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s/?authMechanism=PLAIN", username, password, host); // mongodb://<username>:<password>@<host>
 
   // Collections identifier field initialization
   handler->settings.user_collection     = (char*) MONGO_DB_USER_COLLECTION_NAME;
@@ -31,22 +31,21 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   // Database name field initialization
   handler->settings.database_name = database_name;
 
-  /* Required to initialize libmongoc's internals (It should be called only once!) */
   _m_db(_msginfo, "Database Handler initialization");
-  mongoc_init();
+  mongoc_init(); /* Required to initialize libmongoc's internals (It should be called only once!) */
 
   /// Initialization of mongo_db instance
 
   /* Safely create a MongoDB URI object from the given string */
 
   _m_db(_msginfo, "Parsing mongodb endpoint <%s>\n", handler->settings.database_uri);
-  handler->instance.uri = mongoc_uri_new_with_error(handler->settings.database_uri, &error); // TODO: Substitute with `mongoc_uri_new_with_error`
+  handler->instance.uri = mongoc_uri_new_with_error(handler->settings.database_uri, &error);
   if (!handler->instance.uri) {
     _m_db(_msgfatal, "[%s] (%s) Failed to parse URI <%s> Cause: %s\n", __FILE_NAME__, __func__, handler->settings.database_uri, error.message);
     exit(errno);
   }
 
-  printf("Auth source: %s\n", mongoc_uri_get_auth_mechanism(handler->instance.uri));
+  printf("Auth source %s - Auth mechanism: %s\n", mongoc_uri_get_auth_source(handler->instance.uri), mongoc_uri_get_auth_mechanism(handler->instance.uri));
 
   _m_db(_msginfo, "Database instance pool setup");
   handler->instance.pool = mongoc_client_pool_new(handler->instance.uri);

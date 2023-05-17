@@ -30,29 +30,15 @@
       #define MONGO_DB_ARTWORK_COLLECTION_NAME "artwork"
   #endif
 
-  //typedef struct mongo_db_settings {
-  //  char* database_name;	/* Database name identifier */
-  //  char  database_uri[100];
-
-  //  char* user_collection; 	/* Identifier of the collection used to store & retrieve data of the users */
-  //  char* art_work_collection;	/* Identifier of the collection used to store & retrieve data of the artworks */
-  //} mongo_db_settings;
-
-  // typedef struct mongo_db {
-  //   mongoc_client_pool_t* pool;
-  //   mongoc_client_t* client; // Client to the mongodb instance
-  //   mongoc_uri_t* uri;
-
-  //   //mongoc_cursor_t* cursor;
-  //   //bson_error_t error;
-  //   //mongoc_database_t* database;
-  // } mongo_db;
-
   typedef struct db_handler {
     struct instance {
-      mongoc_client_pool_t* pool;
-      mongoc_client_t* client; // Client to the mongodb instance
-      mongoc_uri_t* uri;
+      mongoc_client_pool_t* pool;	/* Connection pool for multi-threaded programs */
+      mongoc_client_t* client;		/* Client to the mongodb instance */
+      mongoc_uri_t* uri;		/* Abstraction on top of the MongoDB connection URI format */
+
+      //mongoc_cursor_t* cursor;
+      //bson_error_t error;
+      //mongoc_database_t* database;
     } instance;
 
     /**

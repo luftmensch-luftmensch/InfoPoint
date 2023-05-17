@@ -17,12 +17,13 @@
 
       mongo-driver = pkgs.stdenv.mkDerivation rec {
         pname = "mongo-c-driver";
-        version = "1.23.1";
+        # version = "1.23.1";
+        version = "1.23.4";
 
         src = pkgs.fetchzip {
           url = "https://github.com/mongodb/${pname}/releases/download/${version}/mongo-c-driver-${version}.tar.gz";
-          sha256 = "sha256-K51NxcEa7giTKoZkejban0lC0GCZNuTooXtOKkpfn98=";
-          #sha256 = "sha256-TjrkJLV/yTw5xrCtXk60pm3GBnqocY3GaFcZVAvrZyM=";
+          # sha256 = "sha256-K51NxcEa7giTKoZkejban0lC0GCZNuTooXtOKkpfn98=";
+          sha256 = "sha256-mJBaRaX0hphvMdTII79DVn1g2uBmpRlObMiJ673Ijpw=";
         };
 
         preFixup = ''rm -rf "$(pwd)" '';
