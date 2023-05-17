@@ -73,7 +73,7 @@ Mette a dispozione delle API per le operazioni basilari (inserimento, retrieval,
 È il cuore dell'applicativo. Svolge il compito di *orchestratore* di tutto il programma.
 
 ### `Message`
-Contiene delle funzion wrapper utili alla comunicazione tramite socket (di cui l'applicativo fa largo uso)
+Contiene delle funzioni wrapper utili alla comunicazione tramite socket (di cui l'applicativo fa largo uso)
 
 ### `Payload`
 Prendendo ispirazione dal protocollo `HTTP` facciamo uso del concetto di Payload, oggetto che rappresenta informazioni (su Utenti e Opere) che i client e il server si scambieranno.

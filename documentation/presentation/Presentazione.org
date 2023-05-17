@@ -77,7 +77,7 @@ Gli utenti hanno la possibilità di registrarsi:
 + Accedendo in modalità sicura facendo uso del riconoscimento facciale =e/o= impronta digitale;
 
 #+ATTR_REVEAL: :frag (appear)
-In seguito alla registrazione per accedere alla piattaforma dovranno scansionare un opportuno ~QR-Code~, generato giornalmente, utilizzato come chiave di autenticazione durante lo scambio di messaggi tra
+In seguito alla registrazione per accedere alla piattaforma dovranno scansionare un opportuno ~QR-Code~, generato con cadenza giornaliera sfruttando l'utility [[https://github.com/fukuchi/libqrencode][qrencode]], utilizzato come chiave di autenticazione durante lo scambio di messaggi tra
 
 #+begin_export html
 <p class="fragment (appear)">

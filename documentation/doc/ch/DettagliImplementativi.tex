@@ -43,6 +43,13 @@
           before computing xy={l=25pt},
         }
         [\folder{src}
+          [{\folder[customOrange4]{core}}
+            [{\folder[customPurple4]{database}}]
+            [{\folder[customPurple4]{handler}}]
+            [{\folder[customPurple4]{message}}]
+            [{\folder[customPurple4]{payload}} [{\folder[customPink5]{artwork}}] [{\folder[customPink5]{artwork}}]]
+            [{\folder[customPurple4]{server}}]
+          ]
           [{\folder[customOrange5]{helpers}}
             [{\folder[customPurple4]{base}}]
             [{\folder[customPurple4]{cmr}}]
@@ -51,20 +58,47 @@
             [{\folder[customPurple4]{pool}}]
             [{\folder[customPurple4]{utility}}]
           ]
-          [{\folder[customOrange4]{core}}
-            [{\folder[customPurple4]{database}}]
-            [{\folder[customPurple4]{handler}}]
-            [{\folder[customPurple4]{message}}]
-            [{\folder[customPurple4]{payload}} [{\folder[customPink5]{artwork}}] [{\folder[customPink5]{artwork}}]]
-            [{\folder[customPurple4]{server}}]
-          ]
         ]
       \end{forest}
     \end{minipage}
     \hfill%
     \hspace{1 cm}
     \begin{minipage}{0.45\textwidth}
-      <TODO>: Copiare descrizione da site
+      % Core
+      \begin{center}
+        {\Huge Core}
+
+        (Contiene le componenti fondamentali alla definizione del progetto)
+      \end{center}
+      \vspace{0.5cm}
+
+      \begin{itemize}
+        \setlength\itemsep{1em}
+        \item \hi{server} \rightarrow È il cuore dell’applicativo. Svolge il compito di orchestratore di tutto il programma;
+        \item \hi{database} \rightarrow Contiene la struttura e la logica del gestore (handler) che ha il compito di comunicare con l’istanza del Database NOSQL MongoDB;
+        \item \hi{message} \rightarrow Contiene delle funzioni wrapper utili alla comunicazione tramite socket (di cui l’applicativo fa largo uso);
+        \item \hi{payload} \rightarrow Prendendo ispirazione dal protocollo HTTP facciamo uso del concetto di Payload, oggetto che rappresenta informazioni (su Utenti e Opere) che i client e il server si scambieranno.
+      \end{itemize}
+
+      \vspace{1cm}
+
+      % Helpers
+      \begin{center}
+        {\Huge Helpers}
+
+        (Contiene le componenti necessarie alla definizione dell’infrastruttura)
+      \end{center}
+      \vspace{0.5cm}
+
+      \begin{itemize}
+        \setlength\itemsep{1em}
+        \item \hi{base} \rightarrow Contiene la definizione di \begin{itemize} \item Alias di tipi comuni (sfruttando la keyword typedef) per una più facile modifica nel tempo; \item Macro per operazioni elementari; \end{itemize}
+
+        \item \hi{cmr} (command\_line\_runner) \rightarrow Fa da wrapper alla libreria argp.h per il parsing dei parametri passati all’eseguibile prodotto in fase di compilazione;
+        \item \hi{config} \rightarrow Ha il compito di recuperare le informazioni presenti all’interno del file di configurazione (in formato ini) messo a dispozione per il settaggio delle opzioni necessarie all’esecuzione del server;
+        \item \hi{pool} \rightarrow Thread-Pool utilizzata dal server per soddisfare le richieste in ingresso;
+        \item \hi{utility} \rightarrow Contiene la definizione di funzioni per \begin{itemize} \item Lettura e recupero informazioni di file; \item Definizione di Regex utilizzate dal programma; \item Manipolazione di buffer (trimming e concatenazione). \end{itemize}
+      \end{itemize}
 
     \end{minipage}
 

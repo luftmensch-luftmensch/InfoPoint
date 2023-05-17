@@ -5,7 +5,7 @@ weight: 10
 
 I seguenti passi sono necessari per far si che la piattaforma possa funzionare correttamente
 
-## Prima di inziare
+## Prima di iniziare
 
 Per far si che tutto funzioni correttamente è necessario soddisfare le seguenti dipendenze:
 

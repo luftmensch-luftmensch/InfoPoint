@@ -5,7 +5,7 @@ weight: 15
 
 I seguenti passi sono necessari per far si che la piattaforma possa funzionare correttamente
 
-## Prima di inziare
+## Prima di iniziare
 
 
 {{% notice note %}}
