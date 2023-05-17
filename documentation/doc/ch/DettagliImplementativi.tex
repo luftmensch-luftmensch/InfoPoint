@@ -12,6 +12,62 @@
       \item Analisi e controllo delle principali system call per la gestione del Database utilizzato.
     \end{itemize}
 
+    \subsection{Struttura del server}
+    La struttura del server è così strutturata:
+
+
+    \begin{minipage}{0.45\textwidth}
+      \begin{forest}
+        for tree={
+          font=\sffamily,
+          minimum height=0.75cm,
+          rounded corners=4pt,
+          grow'=0,
+          inner ysep=8pt,
+          child anchor=west,
+          parent anchor=south,
+          anchor=west,
+          calign=first,
+          edge={rounded corners},
+          edge path={
+            \noexpand\path [draw, \forestoption{edge}]
+            (!u.south west) +(12.5pt,0) |- (.child anchor)\forestoption{edge label};
+          },
+          before typesetting nodes={
+            if n=1
+            {insert before={[,phantom,minimum height=18pt]}}
+            {}
+          },
+          fit=band,
+          s sep=12pt,
+          before computing xy={l=25pt},
+        }
+        [\folder{src}
+          [{\folder[customOrange5]{helpers}}
+            [{\folder[customPurple4]{base}}]
+            [{\folder[customPurple4]{cmr}}]
+            [{\folder[customPurple4]{config}}]
+            [{\folder[customPurple4]{logging}}]
+            [{\folder[customPurple4]{pool}}]
+            [{\folder[customPurple4]{utility}}]
+          ]
+          [{\folder[customOrange4]{core}}
+            [{\folder[customPurple4]{database}}]
+            [{\folder[customPurple4]{handler}}]
+            [{\folder[customPurple4]{message}}]
+            [{\folder[customPurple4]{payload}} [{\folder[customPink5]{artwork}}] [{\folder[customPink5]{artwork}}]]
+            [{\folder[customPurple4]{server}}]
+          ]
+        ]
+      \end{forest}
+    \end{minipage}
+    \hfill%
+    \hspace{1 cm}
+    \begin{minipage}{0.45\textwidth}
+      <TODO>: Copiare descrizione da site
+
+    \end{minipage}
+
     \newpage
   \section{Client}
     Di seguito riportiamo alcuni dettagli implementativi della struttura del Client.

@@ -8,6 +8,7 @@
 \RequirePackage{graphicx}										% Load images
 \RequirePackage{geometry}										% Page layout
 \RequirePackage{tikz}												% Drawings
+\RequirePackage{forest}
 \RequirePackage{afterpage}									% Macro to run after the page has ended
 \RequirePackage[compatV3]{fancyhdr}					% Page headers and footers
 \RequirePackage[no-math]{fontspec}					% font family
@@ -42,6 +43,72 @@
 \definecolor{violet}{HTML}{47007D}
 \definecolor{pink}{HTML}{FF69B4}
 \definecolor{neutral}{HTML}{888888}
+
+% Azure
+\definecolor{customAzure1}{HTML}{B1E7E1}
+\definecolor{customAzure2}{HTML}{A1E2DB}
+\definecolor{customAzure3}{HTML}{92DDD6}
+\definecolor{customAzure4}{HTML}{83D8CF}
+\definecolor{customAzure5}{HTML}{73D3C9}
+\definecolor{customAzure6}{HTML}{64CEC3}
+
+% Pink
+\definecolor{customPink1}{HTML}{ECD7D5}
+\definecolor{customPink2}{HTML}{E6C9C7}
+\definecolor{customPink3}{HTML}{DFBBB9}
+\definecolor{customPink4}{HTML}{D8ADAB}
+\definecolor{customPink5}{HTML}{D2A09D}
+\definecolor{customPink6}{HTML}{CC928F}
+
+% Purple
+\definecolor{customPurple1}{HTML}{C5C2EB} % Lavanda
+\definecolor{customPurple2}{HTML}{B5B2E6}
+\definecolor{customPurple3}{HTML}{A6A3E1}
+\definecolor{customPurple4}{HTML}{9793DC}
+\definecolor{customPurple5}{HTML}{8884D7}
+\definecolor{customPurple6}{HTML}{7974D2}
+
+% Yellow
+\definecolor{customYellow1}{HTML}{EDE8AB}
+\definecolor{customYellow2}{HTML}{EAE39A}
+\definecolor{customYellow3}{HTML}{EAE39A}
+\definecolor{customYellow4}{HTML}{E3DA78}
+\definecolor{customYellow5}{HTML}{E0D667}
+\definecolor{customYellow6}{HTML}{DCD156}
+
+% Red
+\definecolor{customRed1}{HTML}{FF7073}
+\definecolor{customRed2}{HTML}{FF5C5F}
+\definecolor{customRed3}{HTML}{FF474A}
+\definecolor{customRed4}{HTML}{FF3336}
+\definecolor{customRed5}{HTML}{FF1F22}
+\definecolor{customRed6}{HTML}{FF0A0E}
+
+% Orange
+\definecolor{customOrange1}{HTML}{FABE75}
+\definecolor{customOrange2}{HTML}{F9B562}
+\definecolor{customOrange3}{HTML}{F9AC4E}
+\definecolor{customOrange4}{HTML}{F8A23A}
+\definecolor{customOrange5}{HTML}{F79926}
+\definecolor{customOrange6}{HTML}{F69013}
+
+% Brown
+\definecolor{customBrown1}{HTML}{BCA576}
+\definecolor{customBrown2}{HTML}{B59C69}
+\definecolor{customBrown3}{HTML}{AE925B}
+\definecolor{customBrown4}{HTML}{A48851}
+\definecolor{customBrown5}{HTML}{967D4A}
+\definecolor{customBrown6}{HTML}{897243}
+
+% Green
+\definecolor{customGreen1}{HTML}{D4E5B3}
+\definecolor{customGreen2}{HTML}{CCE0A4}
+\definecolor{customGreen3}{HTML}{C3DB95}
+\definecolor{customGreen4}{HTML}{B9D585}
+\definecolor{customGreen5}{HTML}{B1D076}
+\definecolor{customGreen6}{HTML}{A8CB67}
+
+
 
 % Define icons
 % TODO: Add icons
@@ -432,10 +499,10 @@
 			\node at ($(0,0)!0.5!(1,1)$) [align=center, anchor=center, inner sep=0pt, outer sep=0pt] 
 				{{\color{primary!85!white}\Gobold\fontsize{72}{0}\selectfont Info}{\color{primary!70!white}\Gobold\fontsize{50}{0}\selectfont Point}};
 
-			\node at ([yshift=-0.31cm, xshift=-0.170cm]0.77, 0.40) [align=center, anchor=north east, inner sep=0pt, outer sep=0pt]
-				{\color{primary!10!black}\itshape\fontsize{18}{12}\selectfont\Gobold ID Gruppo: <TODO>};
-			\node at ([yshift=-0.25cm, xshift=-0.125cm]0.77, 0.40) [align=center, anchor=north east, inner sep=0pt, outer sep=0pt]
-				{\color{primary!85!white}\itshape\fontsize{18}{12}\selectfont\Gobold ID Gruppo: <TODO>};
+			% \node at ([yshift=-0.31cm, xshift=-0.170cm]0.77, 0.40) [align=center, anchor=north east, inner sep=0pt, outer sep=0pt]
+			% 	{\color{primary!10!black}\itshape\fontsize{18}{12}\selectfont\Gobold ID Gruppo: <TODO>};
+			% \node at ([yshift=-0.25cm, xshift=-0.125cm]0.77, 0.40) [align=center, anchor=north east, inner sep=0pt, outer sep=0pt]
+			% 	{\color{primary!85!white}\itshape\fontsize{18}{12}\selectfont\Gobold ID Gruppo: <TODO>};
 
 			%% Authors
 			% Author 1
@@ -568,6 +635,20 @@
 
 		\end{scope}
 	\end{tikzpicture}\restoregeometry\newpage}
+
+\newcommand\folder[2][customAzure5]{%
+  \begin{tikzpicture}[overlay]
+    \begin{scope}[xshift=20pt]
+      \filldraw[rounded corners=1pt,fill=#1,draw=white,double=black]
+      (-23pt,10pt) -- ++(3pt,5pt) -- ++(18pt,0pt) -- ++(40:3pt) -- ++(9pt,0pt) -- ++(-40:3pt)
+      -- (20pt,15pt) -- (23pt,10pt) -- cycle;
+      \filldraw[rounded corners,draw=white,double=black,top color=#1,bottom color=#1!30]
+      (-22pt,-12pt) -- ++(44pt,0pt) -- (25pt,12pt) coordinate (topr) -- ++(-50pt,0pt) coordinate (topl) -- cycle;
+    \end{scope}
+  \end{tikzpicture}%
+  \makebox[35pt]{\raisebox{-3pt}{{\ttfamily#2}}}%
+}
+
 
 % LstListing
 \makeatletter
