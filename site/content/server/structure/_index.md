@@ -3,7 +3,7 @@ title: Struttura del progetto
 weight: 10
 ---
 
-La struttura del progetto è così suddivisa:
+La struttura del server è così strutturata:
 
 ```bash
 src ------------------------------------------- Root del progetto

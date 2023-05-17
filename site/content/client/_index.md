@@ -8,8 +8,6 @@ chapter: true
 ### Per Iniziare
 # Educate Yourself!
 
-Scopri cosa offre InfoPoint ai suoi **utenti**!
-
-{{% notice info %}}
+{{%expand "Scopri cosa offre InfoPoint ai suoi utenti" %}}
 Al momento l'applicazione è disponibile solo su piattaforma [Android](https://www.android.com/intl/it_it/)
-{{% /notice %}}
+{{% /expand%}}
