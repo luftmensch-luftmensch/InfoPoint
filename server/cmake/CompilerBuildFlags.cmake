@@ -96,6 +96,7 @@ function(set_project_build_flags project_name)
 
   if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)
     # set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -Werror -fsanitize=address)
+    set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -fno-omit-frame-pointer)
     set(CLANG_BUILD_FLAGS ${CLANG_BUILD_FLAGS} -Werror)
     set(MSVC_BUILD_FLAG   ${MSVC_BUILD_FLAG} /WX)
   endif()

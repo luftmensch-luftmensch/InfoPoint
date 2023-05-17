@@ -41,8 +41,17 @@
         buildInputs = [mongo-driver];
 
         shellHook = ''
-                echo "Ready to cry c:"
-              '';
+          echo -e "\t\t\t\t\t\e[1;34m Useful commands: \e[0m\n"
+          echo -e "\e[1;33mDebugging:\e[0m\n"
+          echo -e "\t\tUsing valgrind: \e[1;32mvalgrind -v -s --keep-debuginfo=yes --leak-check=full --track-origins=yes --suppressions=valgrind.suppressions <EXECUTABLE> \e[0m"
+          echo -e "\t\tUsing gdb:      \e[1;32mgdb -tui <EXECUTABLE> \e[0m"
+          echo -e "\e[1;33mCompilation:\e[0m\n"
+          echo -e "\t\t(Generate sources) -> \e[1;32m cmake -S . -B build/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \e[0m"
+          echo -e "\t\t(Generate build artifacts) -> \e[1;32m cmake --build build/ \e[0m"
+          echo -e "\t\t(Remove build artifacts) -> \e[1;32m cmake --build build/ --target clean\e[0m"
+
+          echo -e "\n\n\e[1;31mReady to cry? c:\e[0m"
+        '';
       };
     });
 }

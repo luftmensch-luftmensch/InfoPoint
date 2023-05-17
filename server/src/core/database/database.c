@@ -30,7 +30,6 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
 
   // Database name field initialization
   handler->settings.database_name = database_name;
-
   
 
   _m_db(_msginfo, "Database Handler initialization");
@@ -89,6 +88,33 @@ void destroy_db_handler(db_handler* handler) {
   _m_db(_msginfo, "Destroying URI handler: <%s>", handler->instance.uri);
   mongoc_uri_destroy(handler->instance.uri);
 
+  /*
+    From: https://jira.mongodb.org/browse/CDRIVER-549
+
+    Valgrind and OpenSSL are known for not getting very well along.
+
+    The specific block that is causing the "still reachable" above
+    can we resolved by your application – but is not something we can
+    do in mongoc automatically as it can be "dangerous" to do without
+    knowing what exactly your application will do next (or even
+    how/why you are calling mongoc_cleanup()).
+
+    If you want to resolve this at your application level, you can
+    call use the cleanup routines Jason mentions – but even so, it
+    might not catch 100% of OpenSSL reachable blocks (even though the
+    one above would go away, another one might show up).
+    Due to the nature of OpenSSL being very security sensitive, we
+    would prefer not to aggressively attempt to cleanup every last
+    byte which OpenSSL itself does not cleanup in normal
+    circumstances. Doing so could easily cause more harm then good.
+
+    We provide our own valgrind suppression file which we use for our
+    testing.
+    These are things that there isn't actually anything we can do to
+    fix.
+    See:
+    https://github.com/mongodb/mongo-c-driver/blob/master/valgrind.suppressions
+  */
   mongoc_cleanup();
   _m_db(_msghighlight, "Finishing cleanup");
 
