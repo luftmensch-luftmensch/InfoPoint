@@ -3,8 +3,8 @@ set(sources
     src/main.c
 
     # Utility functions
-    src/infrastructure/logging/logging.c
-    src/infrastructure/utility/utility.c
+    src/helpers/logging/logging.c
+    src/helpers/utility/utility.c
 
     # Server related
     src/core/server/server.c
@@ -14,14 +14,14 @@ set(sources
     src/core/message/message.c
 
     # Workers related
-    src/infrastructure/pool/thread_pool.c
+    src/helpers/pool/thread_pool.c
 
     # Command line flag parser
-    src/infrastructure/command_line_runner/command_line_runner.c
+    src/helpers/command_line_runner/command_line_runner.c
 
     # Configuration parser with ini config file
-    src/infrastructure/config/config_parser.c
-    src/infrastructure/config/info_point_config.c
+    src/helpers/config/config_parser.c
+    src/helpers/config/info_point_config.c
     
 
     # Database Related
@@ -31,8 +31,8 @@ set(sources
 set(headers
 
     # Utility functions
-    src/infrastructure/logging/logging.h
-    src/infrastructure/utility/utility.h
+    src/helpers/logging/logging.h
+    src/helpers/utility/utility.h
 
     # Server related
     src/core/server/server.h
@@ -42,15 +42,15 @@ set(headers
     src/core/message/message.h
 
     # Workers related
-    src/infrastructure/pool/thread_pool.h
+    src/helpers/pool/thread_pool.h
 
     # Command line flag parser
-    src/infrastructure/command_line_runner/command_line_runner.c
+    src/helpers/command_line_runner/command_line_runner.c
 
     # Configuration parser with ini config file
-    src/infrastructure/config/config_parser.h
-    src/infrastructure/config/info_point_config.h
-    src/infrastructure/config/sys_queue.h
+    src/helpers/config/config_parser.h
+    src/helpers/config/info_point_config.h
+    src/helpers/config/sys_queue.h
 
     # Database Related
     src/core/database/database.h

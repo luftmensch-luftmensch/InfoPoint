@@ -14,13 +14,13 @@
 #include <stdio.h>
 
 #include "core/server/server.h"
-#include "infrastructure/logging/logging.h"
-#include "infrastructure/logging/welcome_message.h"
+#include "helpers/logging/logging.h"
+#include "helpers/logging/welcome_message.h"
 
-#include "infrastructure/pool/thread_pool.h"
-#include "infrastructure/config/info_point_config.h"
-#include "infrastructure/command_line_runner/command_line_runner.h"
-#include "infrastructure/utility/utility.h"
+#include "helpers/pool/thread_pool.h"
+#include "helpers/config/info_point_config.h"
+#include "helpers/command_line_runner/command_line_runner.h"
+#include "helpers/utility/utility.h"
 #include "core/database/database.h"
 
 // void task(void *arg){
@@ -31,7 +31,8 @@
 
 int main(){
   // Welcome message
-  printf(ANSI_COLOR_BMAGENTA "%s\n" ANSI_COLOR_RESET, welcome_msg);
+  fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
+  
 
   // Parsing command line arguments
   /* char* config_file = parse_command_line_arguments(argc, argv); */

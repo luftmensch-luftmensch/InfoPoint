@@ -15,7 +15,7 @@
   #include <sys/epoll.h>
   #include <sys/types.h>
 
-  #include "../../infrastructure/logging/logging.h"
+  #include "../../helpers/logging/logging.h"
 
   #ifdef NO_TIMEOUT
     #define NO_TIMEOUT

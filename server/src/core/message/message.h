@@ -14,7 +14,7 @@
   #include <sys/socket.h>
   #include <string.h>
 
-  #include "../../infrastructure/logging/logging.h"
+  #include "../../helpers/logging/logging.h"
 
   ssize_t msg_send(int, const void* const, size_t, int);
   ssize_t msg_recv(int, void*, ssize_t, int, bool* const);

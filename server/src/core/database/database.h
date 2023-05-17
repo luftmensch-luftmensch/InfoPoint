@@ -12,8 +12,8 @@
 
   #include <mongoc/mongoc.h>
 
-  #include "../../infrastructure/logging/logging.h"
-  #include "../../infrastructure/utility/utility.h"
+  #include "../../helpers/logging/logging.h"
+  #include "../../helpers/utility/utility.h"
 
   /** Global variables used to connect to the mongodb instance */
 

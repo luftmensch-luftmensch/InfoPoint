@@ -19,6 +19,9 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   db_handler* handler = malloc(sizeof(struct db_handler));
   bson_error_t error; // Error handler
 
+  // TODO: Use customized assert macro in order to customize error message!
+  assert((strlen(username) + strlen(password) + strlen(host)) < sizeof(handler->settings.database_uri));
+
   _m_db(_msginfo, "Initializing settings for the handler");
 
   // Uri field initialization
