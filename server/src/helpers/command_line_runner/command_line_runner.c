@@ -70,7 +70,7 @@ static error_t parse_opt(int key, char* arg, struct argp_state* state) {
   }
 
   if(arguments->file_defined && arguments->use_default_cfg) {
-    fprintf(stderr, ANSI_COLOR_RED "[%s] (%s) Cannot specify both a config file to use & use default config file!\n" ANSI_COLOR_RESET, __FILE_NAME__, __func__);
+    fprintf(stderr, ANSI_COLOR_RED "[%s] (%s) Cannot specify both a config file to use & use default config file!" ANSI_COLOR_RESET "\n", __FILE_NAME__, __func__);
     exit(EXIT_FAILURE);
   }
 
@@ -115,12 +115,8 @@ static struct argp argp = {
   NULL
 };
 
-
 /* Our argp parser. */
-
 char* parse_command_line_arguments(int argc, char** argv){
-
-
   info_point_arguments arguments = {
     // .config_file = "undefined",
     .config_file = NULL,

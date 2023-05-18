@@ -16,13 +16,17 @@
   *                        CONFIGURATION STRUCTURE                           *
   ***************************************************************************/
 
+  #ifndef INFO_POINT_MAX_BUFF
+    #define INFO_POINT_MAX_BUFF 100
+  #endif
+
   /* Structure used to hold configuration borrowed from the config file */
   typedef struct info_point_config {
     /* Configuration for network setting related */
     struct network_settings {
-      char host[100];		// The host on which the server should run
-      unsigned int port;	// The port that the server should use
-      unsigned int timeout;	// Timeout after which a connection should stop
+      char host[INFO_POINT_MAX_BUFF];	// The host on which the server should run
+      unsigned int port;		// The port that the server should use
+      unsigned int timeout;		// Timeout after which a connection should stop
     } ns;
 
     /* Configuration for connection setting related */
@@ -31,23 +35,23 @@
       unsigned int max_threads; // N° of threads that the server should use
     } cs;
 
-    /* /\* Configuration for database setting related *\/ */
+    /* Configuration for database setting related */
     struct database_settings {
-      char type[100];	 // Type of the specified database
-      char host[100];    // Host of the running database
-      unsigned int port; // Port of the running database
+      char type[INFO_POINT_MAX_BUFF];		// Type of the specified database
+      char host[INFO_POINT_MAX_BUFF];		// Host of the running database
+      char auth_mechanism[INFO_POINT_MAX_BUFF]; // Auth mechanism used during connection negotiation
+      unsigned int port;			// Port of the running database
     } ds;
 
-    /* /\* Configuration for logging setting related *\/ */
+    /* Configuration for logging setting related */
     struct logging_settings {
-      char log_level[100]; // Logging level
-      char log_file[100];  // File on which make logging operations
+      char log_level[INFO_POINT_MAX_BUFF];	// Logging level
+      char log_file[INFO_POINT_MAX_BUFF];	// File on which make logging operations
     } ls;
 
   } info_point_config;
 
   // Provide a config filled out with the given config file or a default one in case something went wrong when loading/parsing the config file
   info_point_config* provide_config(const char*);
-
 
 #endif

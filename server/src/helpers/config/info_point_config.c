@@ -36,6 +36,7 @@ info_point_config* provide_config(const char* file_name) {
   /* [Database] Retriving config options fields from the given config file */
   read_str_from_cfg(parser, "database", "type", info_point_cfg->ds.type, sizeof(info_point_cfg->ds.type), "undefined");
   read_str_from_cfg(parser, "database", "host", info_point_cfg->ds.host, sizeof(info_point_cfg->ds.host), "undefined");
+  read_str_from_cfg(parser, "database", "auth_mechanism", info_point_cfg->ds.auth_mechanism, sizeof(info_point_cfg->ds.auth_mechanism), "undefined");
 
   read_uint_from_cfg(parser, "database", "port", &info_point_cfg->ds.port, 1234);
 
