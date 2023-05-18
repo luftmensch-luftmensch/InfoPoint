@@ -140,7 +140,7 @@ char* concatenate(int count, ...) {
   va_end(ap);
 
   // Allocate memory to concat strings
-  char *merged = calloc(sizeof(char),len);
+  char* merged = calloc(sizeof(char), len);
   int null_pos = 0;
 
   // Actually concatenate strings

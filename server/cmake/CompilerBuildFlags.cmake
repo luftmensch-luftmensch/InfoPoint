@@ -81,7 +81,7 @@ function(set_project_build_flags project_name)
       -Wcast-align			# warn for potential performance problem casts
 
       -Wpedantic			# warn if non-standard C++ is used
-      -Wsign-conversion			# warn on sign conversions
+      # -Wsign-conversion			# warn on sign conversions
       -Wnull-dereference		# warn if a null dereference is detected
 
       # -Wconversion		        # warn on type conversions that may lose data (this enabled also the -Wsign-conversion
