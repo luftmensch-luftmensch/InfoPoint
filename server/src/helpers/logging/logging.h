@@ -29,11 +29,6 @@
   #endif
 
 
-  #ifndef __FILE_NAME__
-    #define __FILE_NAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
-  #endif
-
-
   #define TIME_FORMAT_ARGS(tm) tm.tm_hour, tm.tm_min, tm.tm_sec
   #define DATETIME_FORMAT_ARGS(tm) tm.mday, tm.mon + 1, TIME_FORMAT_ARGS(tm)
 
@@ -41,10 +36,6 @@
       #define IPV4_ADDRESS_FORMAT "%d.%d.%d.%d"
   #endif
 
-  static inline struct tm get_time(){
-    time_t t = time(NULL);
-    return *localtime(&t);
-  }
 
   // Color definition
   #define ANSI_COLOR_RED      "\x1b[31m"

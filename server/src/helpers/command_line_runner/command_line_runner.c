@@ -12,6 +12,7 @@
 #include <argp.h>
 #include <stdlib.h>
 
+#include "../base/macros.h"
 #include "command_line_runner.h"
 
 

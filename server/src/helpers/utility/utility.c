@@ -14,6 +14,8 @@
 #include <sys/stat.h>
 #include <stdarg.h>
 
+#include "../base/macros.h"
+
 #include "utility.h"
 
 #define _m(type, format, ...) _msgcategory(type, "UTILITY", format, ##__VA_ARGS__)

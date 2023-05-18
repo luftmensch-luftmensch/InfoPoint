@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../helpers/base/macros.h"
 #include "database.h"
 
 #define _m_db(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format, ##__VA_ARGS__)
