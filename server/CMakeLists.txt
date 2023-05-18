@@ -19,16 +19,21 @@ project("SERVER"
 # If enabled, generates a compile_commands.json file containing the exact compiler calls for all translation units of the project in machine-readable form
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#
-# Set project options
-#
 
 include(cmake/StandardSettings.cmake)
 include(cmake/Utils.cmake)
+include(cmake/SourcesAndHeaders.cmake)
+include(cmake/CompilerBuildFlags.cmake)
+include(cmake/Colors.cmake)
+include(GNUInstallDirs)
+
+#
+# Set project options
+#
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
-message(STATUS "Started CMake for ${PROJECT_NAME} v${PROJECT_VERSION}...\n")
+message(STATUS "${magenta} Started CMake for ${PROJECT_NAME} v${PROJECT_VERSION}...${reset}\n")
 
 if (UNIX)
     add_compile_options("$<$<CONFIG:DEBUG>:-D_DEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
@@ -48,11 +53,17 @@ endif()
 #
 
 # Find all headers and implementation files
-include(cmake/SourcesAndHeaders.cmake)
 
 ## Logging sources & headers file
-#verbose_message("Found the following sources:")
-verbose_message_info(${sources} ${headers})
+message("${green}Found the following sources: ${reset}")
+foreach(source ${sources})
+  message(STATUS "* ${blue} ${source} ${reset}")
+endforeach()
+
+message("\n${green}Found the following headers: ${reset}")
+foreach(header ${headers})
+  message(STATUS "* ${blue} ${header} ${reset}")
+endforeach()
 
 add_executable(${PROJECT_EXECUTABLE})
 
@@ -74,10 +85,14 @@ target_link_libraries(${PROJECT_EXECUTABLE} PRIVATE mongo::mongoc_shared)
 
 target_sources(${PROJECT_EXECUTABLE} PRIVATE ${sources} ${headers})
 
-include(cmake/CompilerBuildFlags.cmake)
+#
+# Set the project standard and warnings
+#
+# TODO: Set CMAKE_C_STANDARD
+message("\nApplied compiler warnings. Using standard ${CMAKE_C_STANDARD}.\n")
+
 set_project_build_flags(${PROJECT_EXECUTABLE})
 
-include(GNUInstallDirs)
 install(TARGETS ${PROJECT_EXECUTABLE})
 
 #
@@ -92,9 +107,3 @@ install(TARGETS ${PROJECT_EXECUTABLE})
 #)
 
 message(STATUS "Added all header and implementation files.\n")
-
-#
-# Set the project standard and warnings
-#
-
-verbose_message("Applied compiler warnings. Using standard ${CMAKE_CXX_STANDARD}.\n")
