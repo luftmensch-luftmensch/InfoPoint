@@ -29,16 +29,16 @@ static volatile int _on_hold;
 /* ========================== Workers ============================ */
 
 /* Helper function to initialize a worker in the thread pool */
-static int  init_worker(thread_pool* thpool_p, struct worker** thread_p, int id);
+static int init_worker(thread_pool* thpool_p, struct worker** thread_p, int id);
 
 /* Routine passed to each worker */
 static void* worker_routine(struct worker* thread_p);
 
 /* Set the calling thread in a state of hold */
-static void  hold_worker(int sig_id);
+static void hold_worker(int sig_id);
 
 /* Destructor for a single worker */
-static void  destroy_worker(struct worker* thread_p);
+static void destroy_worker(struct worker* thread_p);
 
 /* ========================== Queue ============================ */
 
@@ -273,9 +273,9 @@ static void* worker_routine(struct worker* w) {
   sigemptyset(&sig_a.sa_mask);
 
   /*
-    TODO: Many virtual machines, including Go VM, depend on signals using SA_ONSTACK.
-	  This flag allows a thread to define a new alternate signal stack.
-	  Many argue that SA_ONSTACK should be a default, but it's not the case
+    Many virtual machines, including Go VM, depend on signals using SA_ONSTACK.
+    This flag allows a thread to define a new alternate signal stack.
+    Many argue that SA_ONSTACK should be a default, but it's not the case
   */
   sig_a.sa_flags = 0; // SA_ONSTACK -> 0
   sig_a.sa_handler = hold_worker;
@@ -335,7 +335,6 @@ static void* worker_routine(struct worker* w) {
 
 
 static void destroy_worker(worker* thread_p) {
-  // TODO: Add a basic control before freeing
   free(thread_p);
 }
 
