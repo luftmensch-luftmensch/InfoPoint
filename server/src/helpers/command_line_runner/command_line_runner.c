@@ -116,7 +116,7 @@ static struct argp argp = {
 };
 
 /* Our argp parser. */
-char* parse_command_line_arguments(int argc, char** argv){
+char* parse_command_line_arguments(int argc, char** argv) {
   info_point_arguments arguments = {
     // .config_file = "undefined",
     .config_file = NULL,

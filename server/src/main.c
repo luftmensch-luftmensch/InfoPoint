@@ -31,22 +31,18 @@ int main(int argc, char** argv){
   // Welcome message
   fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
   
-
-  // Parsing command line arguments
+  // Parse command line arguments
   char* config_file = parse_command_line_arguments(argc, argv);
 
-  // Check if the user gives use a config file -> Otherwise use the default one
-  if (config_file != NULL)
-    printf("%s\n", config_file);
-
-  // Provide the configuration from the given config file
-  info_point_config* cfg = provide_config(config_file); // provide_config(argv[1]);
+  /*
+   Initialize the configuration structure based on how the user invoke the server:
+     + If no config file is passed (server invoked with the -d flag) -> Populate the configuration using a default one
+     + If a config file is passed (server invoked with the -c <FILE>) -> Populate the configuration using the given <FILE>
+  */
+  info_point_config* cfg = (config_file != NULL) ? provide_config(config_file) : provide_default_config();
 
   // Show the settings getted from the file
-  printf("[Network] Host -> <%s>, Port -> <%d>, Timeout -> <%d>\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
-  printf("[Connections] Max Clients -> <%d>, Max Threads -> <%d>\n", cfg->cs.max_clients, cfg->cs.max_threads);
-  printf("[Database] Type -> <%s>, Host -> <%s> Auth Mechanism-> <%s>, Port -> <%d>\n", cfg->ds.type, cfg->ds.host, cfg->ds.auth_mechanism, cfg->ds.port);
-  printf("[Logging] Log Level -> <%s>, Log File -> <%s>\n", cfg->ls.log_level, cfg->ls.log_file);
+  cfg_pretty_print(cfg, stdout);
 
   /* // Finally free the cfg, as we no more need it */
   free(cfg);

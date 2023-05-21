@@ -51,7 +51,13 @@
 
   } info_point_config;
 
-  // Provide a config filled out with the given config file or a default one in case something went wrong when loading/parsing the config file
+  // Provide a config filled out with the given config file
   info_point_config* provide_config(const char*);
+
+  // Provide a default configuration if no specified config_file is given
+  info_point_config* provide_default_config();
+
+  // Provide a function in order to print to a specified FILE the given configuration
+  void cfg_pretty_print(const info_point_config*, FILE*);
 
 #endif

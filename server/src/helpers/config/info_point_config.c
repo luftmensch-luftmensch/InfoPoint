@@ -9,6 +9,7 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include "info_point_config.h"
 
 info_point_config* provide_config(const char* file_name) {
@@ -42,4 +43,38 @@ info_point_config* provide_config(const char* file_name) {
 
   destroy_config(parser);
   return info_point_cfg;
+}
+
+info_point_config* provide_default_config() {
+  info_point_config __default_cfg = {
+    .ns = {
+      .host = "localhost",
+      .port = 9090,
+      .timeout = 10,
+    },
+    .cs = {
+      .max_clients = 100,
+      .max_threads = 100,
+    },
+    .ds = {
+      .type = "mongodb",
+      .host = "localhost",
+      .port = 27017,
+    },
+    .ls = {
+      .log_level = "warning",
+      .log_file = "stdout",
+    }
+  };
+
+  info_point_config* cfg = malloc(sizeof(info_point_config));
+  memcpy((void*) cfg, (void*) &__default_cfg, sizeof(__default_cfg));
+  return cfg;
+}
+
+void cfg_pretty_print(const info_point_config* cfg, FILE* file) {
+  fprintf(file, "### Networking\n\tHost -> %s, Port -> %d, Timeout -> %d\n\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
+  fprintf(file, "### Connections\n\tMax Clients -> %d, Max Threads ->  %d\n\n", cfg->cs.max_clients, cfg->cs.max_threads);
+  fprintf(file, "### Database\n\tType -> %s, Host -> %s Auth Mechanism-> %s, Port -> %d\n\n", cfg->ds.type, cfg->ds.host, cfg->ds.auth_mechanism, cfg->ds.port);
+  fprintf(file, "### Logging\n\tLog Level - %s, Log File - %s\n\n", cfg->ls.log_level, cfg->ls.log_file);
 }

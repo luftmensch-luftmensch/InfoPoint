@@ -86,9 +86,6 @@ server* init_server(unsigned int port, const size_t max_workers){
   }
   _m(_msgevent, "Server ready and it is listening for new clients on port: %d!", use_port);
 
-  // Handler setup
-  s->handler = init_handler(&s->socket, MAX_CLIENTS_ACCEPTANCE, SERVER_POLL_TIMER);
-
   s->conn_count = 0;
 
   // Thread pool setup
@@ -110,10 +107,6 @@ void destroy_server(server* s) {
   }
 
   close(s->socket);
-  // Destroying and closing handler
-  destroy_handler(s->handler);
-  free(s->handler);
-
   // Stopping and destroying the thread pool
 
   _m(_msgevent, "Goodbye!");
