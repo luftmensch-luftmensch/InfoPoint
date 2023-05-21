@@ -21,7 +21,7 @@
       #define MONGO_DB_APP_NAME "InfoPoint App"
   #endif
 
-  /* Database collection name */
+  /* Database collections name */
   #ifndef MONGO_DB_USER_COLLECTION_NAME
       #define MONGO_DB_USER_COLLECTION_NAME "user"
   #endif
@@ -33,7 +33,7 @@
   typedef struct db_handler {
     struct instance {
       mongoc_client_pool_t* pool;	/* Connection pool for multi-threaded programs */
-      /* mongoc_client_t* client;		/\* Client to the mongodb instance *\/ */
+      // mongoc_client_t* client;	/* Client to the mongodb instance  */
       mongoc_uri_t* uri;		/* Abstraction on top of the MongoDB connection URI format */
 
       //mongoc_cursor_t* cursor;
@@ -58,6 +58,7 @@
   // Database Handler functions
   db_handler* init_db_handler(char*, char*, char*, char*);
   void destroy_db_handler(db_handler*);
+
   // TODO: Change return type
   void retrieve_single();
   void retrieve_all();

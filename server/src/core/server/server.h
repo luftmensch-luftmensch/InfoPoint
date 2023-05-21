@@ -23,7 +23,6 @@
   #include <arpa/inet.h>
   #include <netinet/in.h>
 
-  #include "../handler/handler.h"
   #include "../message/message.h"
   #include "../payload/client/client.h"
   #include "../../helpers/logging/logging.h"
@@ -77,9 +76,6 @@
     // Server details
     ssize_t socket;
     struct sockaddr_in transport;
-
-    // Handler
-    handler* handler;
 
     // pthread_t* pool;
     //struct thread_pool pool;
