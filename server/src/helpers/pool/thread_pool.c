@@ -387,7 +387,7 @@ static void push_into_job_queue(job_queue* queue, struct job* new_job) {
       queue->rear = new_job;
   }
 
-  // Increase the lenght accordingly
+  // Increase the length accordingly
   queue->len++;
 
   push_sem_to_single(queue->has_jobs);

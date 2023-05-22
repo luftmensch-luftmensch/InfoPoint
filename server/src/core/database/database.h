@@ -14,6 +14,7 @@
 
   #include "../../helpers/logging/logging.h"
   #include "../../helpers/utility/utility.h"
+  #include "../payload/payload.h"
 
   /** Global variables used to connect to the mongodb instance */
 
@@ -45,7 +46,7 @@
      * Structure representing information used to:
      * Connect & authenticate to a given mongodb instance
      * Do basic operation with the speciefied documents used by the service
-     */
+    */
     struct mongo_db_settings {
       char* database_name;		/* Database name identifier */
       char  database_uri[100];		/* String used to connect to the mongodb instance */
@@ -55,19 +56,24 @@
 
   } db_handler;
 
-  // Database Handler functions
+  // Database Handler related functions
   db_handler* init_db_handler(char*, char*, char*, char*);
   void destroy_db_handler(db_handler*);
 
-  // TODO: Change return type
-  void retrieve_single();
-  void retrieve_all();
-  void fillCollection();
-  void retrieve_key();
+  /* Collection population */
+  bool populate_collection();
 
-  // Client data related
-  void add_client();
-  void remove_client();
-  void update_client();
+  /* Retrieve a single document in a form of a payload */
+  payload_t* retrieve_single();
+
+  /* Insert a single document in a given collection */
+  bool insert_single(payload_t*, char*);
+  /* Update a single document in a given collection */
+  bool update_single(payload_t*, char*);
+
+  /* Remove a single document from a given collection */
+  bool delete_single(char*, char*);
+  /* Bulk remove from a given collection with a matching strategy */
+  bool bulk_delete(char*, char*);
 
 #endif

@@ -39,22 +39,4 @@
   typedef u8  b8;
   typedef u32 b32;
 
-  // Basic operations using macros
-  #define Min(a,b) (((a)<(b))?(a):(b))
-  #define Max(a,b) (((a)>(b))?(a):(b))
-
-  #define Clamp(a,x,b) (((x)<(a))?(a):((b)<(x))?(b):(x))
-  #define ClampTop(a,b) Min(a,b)
-  #define ClampBot(a,b) Max(a,b)
-  #define ReverseClamp(a,x,b) (((x)<(a))?(b):((b)<(x))?(a):(x))
-
-  #define Wrap(a,x,b) ReverseClamp(a,x,b)
-
-  #define MemoryCopy(d,s,z) memmove((d), (s), (z))
-  #define MemoryCopyStruct(d,s) MemoryCopy((d),(s), Min(sizeof(*(d)) , sizeof(*(s))))
-  #define MemoryZero(d,z) memset((d), 0, (z))
-  #define MemoryZeroStruct(d,s) MemoryZero((d),sizeof(s))
-
-  #define ArrayCount(a) (sizeof(a) / sizeof(a[0]))
-
 #endif

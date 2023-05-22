@@ -24,7 +24,6 @@
   #include <netinet/in.h>
 
   #include "../message/message.h"
-  #include "../payload/client/client.h"
   #include "../../helpers/logging/logging.h"
 
   #ifndef DEFAULT_PORT
@@ -80,12 +79,12 @@
     // pthread_t* pool;
     //struct thread_pool pool;
 
-    struct connection {
-      client* client;
-      connection_status status;
-      bool was_updated;
-      struct timeval tm;
-    } connections[MAX_CLIENTS_ACCEPTANCE];
+    // struct connection {
+    //   client* client;
+    //   connection_status status;
+    //   bool was_updated;
+    //   struct timeval tm;
+    // } connections[MAX_CLIENTS_ACCEPTANCE];
 
     size_t conn_count;
   } server;

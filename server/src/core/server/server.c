@@ -98,12 +98,12 @@ server* init_server(unsigned int port, const size_t max_workers){
 void destroy_server(server* s) {
   _m(_msginfo, "Shutting down the server as requested");
 
-  static char msg_notice[] = "\n[SERVER] Server is shutting down... Goodbye!\n";
+  // static char msg_notice[] = "\n[SERVER] Server is shutting down... Goodbye!\n";
   while(s->conn_count--) {
     s->conn_count--;
     _m(_msgdebug, "Disconnecting client %ld", s->conn_count);
-    msg_send(s->connections[s->conn_count].client->fd, msg_notice, strlen(msg_notice), 0);
-    free(s->connections[s->conn_count].client);
+    // msg_send(s->connections[s->conn_count].client->fd, msg_notice, strlen(msg_notice), 0);
+    // free(s->connections[s->conn_count].client);
   }
 
   close(s->socket);

@@ -10,9 +10,13 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <errno.h>
 #include <sys/stat.h>
 #include <stdarg.h>
+#include <regex.h>
+#include <sys/time.h>
+#include <time.h>
 
 #include "../base/macros.h"
 

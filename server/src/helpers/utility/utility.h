@@ -11,44 +11,7 @@
 #ifndef _UTILITY_H_
 #define _UTILITY_H_
 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <stdbool.h>
-    #include <string.h>
-    #include <unistd.h>
-    #include <errno.h>
-    #include <assert.h>
-    #include <ctype.h>
-    #include <sys/time.h>
-
-    #include <time.h>
-    #include <signal.h>
-    #include <pthread.h>
-
-    #include <regex.h>
     #include "../logging/logging.h"
-
-    // Used for Login/Registration
-    #ifndef REGEX_NICKNAME
-	    // Has to start with an alphanumeric
-	    // At least two characters 
-	    // Has to end with an alphanumeric
-	    #define REGEX_NICKNAME "^[a-zA-Z0-9]+[_@#]?[a-zA-Z0-9]+$"
-    #endif
-
-    #define typename(x) _Generic((x),        /* Get the name of a type */             \
-										      \
-	    _Bool: "_Bool",                  unsigned char: "unsigned char",          \
-	     char: "char",                     signed char: "signed char",            \
-	short int: "short int",         unsigned short int: "unsigned short int",     \
-	      int: "int",                     unsigned int: "unsigned int",           \
-	 long int: "long int",           unsigned long int: "unsigned long int",      \
-    long long int: "long long int", unsigned long long int: "unsigned long long int", \
-	    float: "float",                         double: "double",                 \
-      long double: "long double",                   char *: "pointer to char",        \
-	   void *: "pointer to void",                int *: "pointer to int",         \
-	  default: "other")
-
 
     // Buffer manipulation
     char* ltrim(char *s);
