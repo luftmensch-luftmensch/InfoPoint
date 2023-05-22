@@ -27,6 +27,10 @@
 //     printf("Thread #%u working on %d\n", (int)pthread_self(), (int)(uintptr_t) arg);
 // }
 
+#define _tmp(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
+
+#define _m(type, format, ...) _msgcategory(type, "SERVER", format, ##__VA_ARGS__)
+
 int main(int argc, char** argv){
   // Welcome message
   fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
@@ -47,9 +51,9 @@ int main(int argc, char** argv){
   /* // Finally free the cfg, as we no more need it */
   free(cfg);
 
-  //server* s = init_server(9090, 10);
+  server* s = init_server(9090, 10);
 
-  //printf("%lu\n", s->conn_count);
+  destroy_server(s);
   /* puts("Making threadpool with 4 threads"); */
   /* struct thread_pool* thpool = init_thread_pool(4); */
 
@@ -72,4 +76,8 @@ int main(int argc, char** argv){
 
 
   /* destroy_db_handler(database); */
+  log_debug(ANSI_COLOR_RED "%s %s %d %d" ANSI_COLOR_RESET "\n" , __FILE__, __func__, 5, 7);
+
+  _tmp(_msgevent, "%d\n", 10);
+  _tmp(_msgevent, "Goodbye!", );
 }

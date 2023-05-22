@@ -26,3 +26,13 @@ void ftime_print(const char* format, ...) {
   vprintf(format, args);
   va_end(args);
 }
+
+void log_format(const char* tag, const char* message, va_list args) {
+  struct tm tm = get_time();
+  printf(TIME_FORMAT "%s", TIME_FORMAT_ARGS(tm), tag);
+  vprintf(message, args);
+}
+
+void log_error(const char* message, ...) {  va_list args;   va_start(args, message);    log_format("error", message, args);   va_end(args); }
+void log_info(const char* message, ...)  {  va_list args;   va_start(args, message);    log_format("info", message, args);    va_end(args); }
+void log_debug(const char* message, ...) {  va_list args;   va_start(args, message);    log_format("debug", message, args);   va_end(args); }

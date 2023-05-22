@@ -77,5 +77,10 @@
       #define _msgdebug(format, ...)
       #define _msgsetting(format, ...)
   #endif
+  void log_format(const char* tag, const char* message, va_list args);
+  void log_error(const char* message, ...);
+  void log_info(const char* message, ...);
+  void log_debug(const char* message, ...);
+
 
 #endif

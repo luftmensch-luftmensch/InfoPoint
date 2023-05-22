@@ -14,10 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define _m(type, format, ...) _msgcategory(type, "SERVER", format, ##__VA_ARGS__)
-
-
-//static int load_server_config(char* file_name);
+#define _m(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
 
 server* init_server(unsigned int port, const size_t max_workers){
   unsigned int use_port = !port ? DEFAULT_PORT : port;
@@ -36,7 +33,7 @@ server* init_server(unsigned int port, const size_t max_workers){
   s->socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
   if (s->socket < 0) { // Check if the call socket was sussesfull
-    _m(_msgfatal, "Failed to connect socket!");
+    _m(_msgfatal, "Failed to connect socket! Cause: %s", strerror(errno));
     perror("socket: ");
     exit(errno);
   }
@@ -44,7 +41,9 @@ server* init_server(unsigned int port, const size_t max_workers){
 
   /* Socket options (Set socket as reusable) */
   if(setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, (int[]) { 1 }, sizeof(int[1]))) {
-    _m(_msgfatal, "Could not change socket settings"); perror("setsockopt: "); exit(errno);
+    _m(_msgfatal, "Could not change socket settings! Cause: %s", strerror(errno));
+    perror("setsockopt: ");
+    exit(errno);
   }
   _m(_msginfo, "Socket <%ld> set as resuable!", s->socket);
 
@@ -76,13 +75,16 @@ server* init_server(unsigned int port, const size_t max_workers){
      and not just localhost.
   */
   if(bind(s->socket,(struct sockaddr*)&s->transport, sizeof(s->transport)) != 0) {
-    _m(_msgfatal, "Could not bind the server!"); perror("bind: "); exit(errno);
+    _m(_msgfatal, "Could not bind the server! Cause: %s", strerror(errno));
+    perror("bind: ");
   }
   _m(_msginfo, "[SERVER] Server binded to socket <%d>!", s->socket);
 
   // Socket listening
   if(listen(s->socket, MAX_CLIENTS_IN_QUEUE) != 0){
-    _m(_msgfatal, "[SERVER] Could not start listening"); perror("listen: "); exit(errno); 
+    _m(_msgfatal, "[SERVER] Could not start listening! Cause: %s", strerror(errno));
+    perror("listen: ");
+    exit(errno); 
   }
   _m(_msgevent, "Server ready and it is listening for new clients on port: %d!", use_port);
 
@@ -90,13 +92,12 @@ server* init_server(unsigned int port, const size_t max_workers){
 
   // Thread pool setup
   
-  _m(_msginfo, "Server ready!");
   return s;
 }
 
 
 void destroy_server(server* s) {
-  _m(_msginfo, "Shutting down the server as requested");
+  _m(_msginfo, "Shutting down the server <%ld> as requested", s->socket);
 
   // static char msg_notice[] = "\n[SERVER] Server is shutting down... Goodbye!\n";
   while(s->conn_count--) {
@@ -109,6 +110,6 @@ void destroy_server(server* s) {
   close(s->socket);
   // Stopping and destroying the thread pool
 
-  _m(_msgevent, "Goodbye!");
+  _m(_msgevent, "Goodbye!", );
   free(s);
 }
