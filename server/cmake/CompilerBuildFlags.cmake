@@ -105,7 +105,6 @@ function(set_project_build_flags project_name)
       # By default the linker will place all functions in an object within the same linker “section”. This becomes very clear when examining the mapfile and seeing a bunch of symbols in the .text section.
       # With this option each functions gets its own section
       -ffunction-sections 
-      #--gc-sections # Enable optimization using the linker gc
 
       ### Threading support ###
       # In some cases gcc could be compiled with thread support out of the box. For sake of sanity we are going to declare explictly
@@ -121,10 +120,11 @@ function(set_project_build_flags project_name)
   endif()
 
   if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    set(GCC_WARNINGS
+    set(GCC_BUILD_FLAGS
       ${GCC_BUILD_FLAGS}
-      -g                   # Produces debugging information (Useful w/ gdb)
-      --print-gc-sections  # Diagnostic logs about sections
+      -g                # Produces debugging information (Useful w/ gdb)
+      -ggdb3            # Produces debugging information (Useful w/ gdb)
+      # --gc-sections	# Diagnostic logs about sections
       )
   endif()
 
