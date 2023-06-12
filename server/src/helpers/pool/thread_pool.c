@@ -1,6 +1,6 @@
 /*
-  ╔╦╗  ╦ ╦  ╦═╗  ╔═╗  ╔═╗  ╔╦╗      ╔═╗  ╔═╗  ╔═╗  ╦  
-   ║   ╠═╣  ╠╦╝  ║╣   ╠═╣   ║║      ╠═╝  ║ ║  ║ ║  ║  
+  ╔╦╗  ╦ ╦  ╦═╗  ╔═╗  ╔═╗  ╔╦╗      ╔═╗  ╔═╗  ╔═╗  ╦
+   ║   ╠═╣  ╠╦╝  ║╣   ╠═╣   ║║      ╠═╝  ║ ║  ║ ║  ║
    ╩   ╩ ╩  ╩╚═  ╚═╝  ╩ ╩  ═╩╝      ╩    ╚═╝  ╚═╝  ╩═╝
   Authors:
   +  Valentino Bocchetti (matr. N86003405)
@@ -8,466 +8,155 @@
   +  Lucia Brando        (matr. N86003382)
 */
 
-#include <unistd.h>
-#include <signal.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
 #include <errno.h>
-#include <time.h>
-#include <sys/prctl.h>
+#include <string.h>
 
 #include "thread_pool.h"
+#include "../handler/signal_handler.h"
+#include "../logging/logging.h"
 
-#define _m(type, format, ...) _msgcategory(type, "THREAD_POOL", format, ##__VA_ARGS__)
+#define _m(type, format, ...) _msgcategory(type, "THREAD_POOL", format __VA_OPT__(,) __VA_ARGS__)
 
-static volatile int _keep_alive;
-static volatile int _on_hold;
+void destroy_task(task_t* task_to_destroy);
 
-/* =================================== Internal Function Prototyes ======================================= */
+/* Retrieve the number of core/processors of the machine */
+static size_t retrieve_proc_num() { return sysconf(_SC_NPROCESSORS_ONLN); }
 
-/* ========================== Workers ============================ */
+void* execute_task(void* arg) {
+  thread_pool_t* pool = (thread_pool_t*) arg;
+  task_t* task_to_execute;
 
-/* Helper function to initialize a worker in the thread pool */
-static int init_worker(thread_pool* thpool_p, struct worker** thread_p, int id);
+  while(persist) {
+    /* ==== [Start of critical section] ==== */
+    pthread_mutex_lock(&(pool->lock));
+    // wait for the condition: a non-empty queue
+    while(is_empty(pool->queue)) {
+      pthread_cond_wait(&(pool->signal), &(pool->lock));
+    }
 
-/* Routine passed to each worker */
-static void* worker_routine(struct worker* thread_p);
+    task_to_execute = (task_t*) dequeue(pool->queue);
+    pthread_mutex_unlock(&(pool->lock));
+    /* ==== [End of critical section] ==== */
 
-/* Set the calling thread in a state of hold */
-static void hold_worker(int sig_id);
-
-/* Destructor for a single worker */
-static void destroy_worker(struct worker* thread_p);
-
-/* ========================== Queue ============================ */
-
-/* Helper function used to initialize a job_queue */
-static int   init_job_queue(job_queue* jobqueue_p);
-
-/* Helper function used to clear a job_queue */
-static void  clear_job_queue(job_queue* jobqueue_p);
-
-/* Add a job to the job_queue */
-static void  push_into_job_queue(job_queue* jobqueue_p, struct job* newjob_p);
-
-/* Peek a job to the job_queue */
-static struct job* pull_from_job_queue(job_queue* jobqueue_p);
-
-/* Destructor of the job_queue */
-static void  destroy_job_queue(job_queue* jobqueue_p);
-
-/* ========================== Semaphore ============================ */
-
-/* Helper function to initialize the semaphore (NB: Possible values -> 0 or 1) */
-static void init_semaphore(struct semaphore*, int);
-
-/* Helper function to reset the semaphore (set to 0) */
-static void reset_semaphore(struct semaphore*);
-
-/* Helper function to push the semaphore at least on a single thread */
-static void push_sem_to_single(struct semaphore*);
-
-/* Helper function to push the semaphore to all threads */
-static void push_sem_to_all(struct semaphore*);
-
-/* Wait on semaphore util its value=0 */
-static void wait_on_semaphore(struct semaphore*);
-
-
-struct thread_pool* init_thread_pool(int thread_n) {
-  _on_hold   = 0;
-  _keep_alive = 1;
-
-  if (thread_n < 0){
-    thread_n = 0;
+    printf("Pulled task n° %p\n", task_to_execute->arg);
   }
+  return NULL;
+}
 
-  /* Allocate mem for the newly thread_pool */
-  thread_pool* pool = (struct thread_pool*) malloc(sizeof(struct thread_pool));
-  if (pool == NULL){
-    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool!", __FILE__, __func__);
+thread_pool_t* init_thread_pool(size_t amount) {
+  /**
+     If 0 is passed as parameter we are going to define the
+     number of threads based on the specifics of the machine
+     on which the pool is currently running
+  */
+  if (amount == 0)
+	amount = retrieve_proc_num();
+
+  thread_pool_t* pool = malloc(sizeof(struct thread_pool));
+
+  if (pool == NULL) {
+    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool!", __FILE_NAME__, __func__);
     return NULL;
   }
 
-  /* Initialize thread_pool fields */
-  pool->threads_alive   = 0;
-  pool->threads_working = 0;
+  /* Thread Pool field initialization */
+  pool->threads_alive = amount;
 
-  /* Initialize thread_pool->queue  */
-  if (init_job_queue(&pool->jobqueue) == -1){
-    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->queue!", __FILE__, __func__);
+  _m(_msginfo, "[%s] (%s) Initialized thread_pool", __FILE_NAME__, __func__);
+
+  /* Thread Pool queue initialization */
+  if ((pool->queue = init_queue()) == NULL) { /* On failure deallocate the space of the pool to avoid leaks */
+    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->queue!", __FILE_NAME__, __func__);
     free(pool);
     return NULL;
   }
 
-  /* Allocate space for the threads */
-  pool->threads = (struct worker**)malloc(thread_n * sizeof(struct worker *));
-  if (pool->threads == NULL){
-    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->threads!", __FILE__, __func__);
-    destroy_job_queue(&pool->jobqueue);
+  _m(_msginfo, "[%s] (%s) Initialized thread_pool->queue\n", __FILE_NAME__, __func__);
+
+  /* Thread Pool threads initialization */
+  if ((pool->threads = malloc(sizeof(pthread_t[amount]))) == NULL) { /* On failure deallocate the space of the pool & pool->queue to avoid leaks */
+    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->threads!\n", __FILE_NAME__, __func__);
+    destroy_queue(pool->queue);
     free(pool);
-    return NULL;
   }
+
+  _m(_msginfo, "[%s] (%s) Initialized thread_pool->threads\n", __FILE_NAME__, __func__);
+
+  for (size_t i = 0; i < amount; i++) {
+    if (pthread_create(&pool->threads[i], NULL, execute_task, pool) != 0) {
+      _m(_msgfatal, "[%s] (%s) Failed to spawn thread n° %zu! Cause: %s\n", __FILE_NAME__, __func__, i, strerror(errno));
+      perror("pthread_create: ");
+      exit(errno);
+    }
+  }
+
+  _m(_msginfo, "[%s] (%s) Initialized thread_pool->thread->routine\n", __FILE_NAME__, __func__);
 
   /* Initialize thread_pool mutex & cond */
   pthread_mutex_init(&(pool->lock), NULL);
-  pthread_cond_init(&pool->cond, NULL);
-
-  /* Thread initialization */
-  for (int i = 0; i <thread_n; i++){
-    init_worker(pool, &pool->threads[i], i);
-  }
-
-  /* Wait until all the threads are initialized */
-  while (pool->threads_alive != thread_n) {}
+  printf("Intialized thread_pool->lock\n");
+  pthread_cond_init(&(pool->signal), NULL);
+  printf("Intialized thread_pool->signal\n");
 
   return pool;
 }
 
-int add_work_to_thread_pool(struct thread_pool* thpool_p, void (*function_p)(void*), void* arg_p) {
-  job* new_job =(struct job*)malloc(sizeof(struct job));
-  if (new_job==NULL){
-    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for a new job!", __FILE__, __func__);
-    return -1;
-  }
+void destroy_thread_pool(thread_pool_t* pool_to_destroy) {
+  // pool_to_destroy->active = false; /* Disable the active control switch */
 
-  /* Initialize fields for the new job*/
-  new_job->function = function_p;
-  new_job->arg      = arg_p;
+  printf("Signaling thread_pool->threads\n");
+  /* Signal all threads in the thread pool that it's going to shutdown */
+  pthread_cond_broadcast(&(pool_to_destroy->signal));
 
-  /* Finally push the job to the queue */
-  push_into_job_queue(&thpool_p->jobqueue, new_job);
+  /* Wait to end signaling before joining */
+  for (size_t i = 0; i < pool_to_destroy->threads_alive; i++)
+    pthread_join(pool_to_destroy->threads[i], NULL);
 
-  return 0;
-}
+  /* Finally deallocate space occupied by the threads */
+  free(pool_to_destroy->threads);
 
-void await_thread_pool(thread_pool* pool) {
-  /* Lock the mutex as request by pthread_cond_wait */
-  pthread_mutex_lock(&pool->lock);
+  /* Deallocate the queue used by the threads */
+  destroy_queue(pool_to_destroy->queue);
 
-  while (pool->jobqueue.len || pool->threads_working) {
-    pthread_cond_wait(&pool->cond, &pool->lock);
-  }
-  /* Unlock the mutex */
-  pthread_mutex_unlock(&pool->lock);
-}
-
-void pause_thread_pool(struct thread_pool* pool) {
-  for (int n = 0; n < pool->threads_alive; n++){
-    pthread_kill(pool->threads[n]->thread, SIGUSR1);
-  }
-}
-
-void resume_thread_pool(thread_pool* pool) {
-  // TODO: Complete it
-  (void)pool;
-
-  _on_hold = 0;
-}
-
-void destroy_thread_pool(thread_pool* pool) {
-  /* If NULL there is no need to destroy it */
-  if (pool == NULL) return;
-
-  volatile int total = pool->threads_alive;
-
-  /* End each single thread routine */
-  _keep_alive = 0;
-
-  /* Define a timeout for every thread in idle */
-  double timeout = 1.0, elapsed = 0.0;
-  time_t started, ended;
-
-  time (&started);
-
-  while (elapsed < timeout && pool->threads_alive) {
-    push_sem_to_all(pool->jobqueue.has_jobs);
-    time (&ended);
-    elapsed = difftime(ended,started);
-  }
-
-  /* Polling remaining threads (running) */
-  while (pool->threads_alive) {
-    push_sem_to_all(pool->jobqueue.has_jobs);
-    sleep(1);
-  }
-
-  /* Clean up the job_queue */
-  destroy_job_queue(&pool->jobqueue);
-
-  /* Free threads */
-  for (int i = 0; i < total; i++){
-    destroy_worker(pool->threads[i]);
-  }
-
-  /* Free others fields */
-  free(pool->threads);
-  free(pool);
+  free(pool_to_destroy);
 }
 
 
-int currently_working_threads(thread_pool* pool){
-  return pool->threads_working;
+bool submit_task(thread_pool_t* pool, task_t* task) {
+  /* ==== Start of critical section ==== */
+  pthread_mutex_lock(&(pool->lock));
+
+  bool status = enqueue(pool->queue, task);
+
+  /* Inform the threads that some task was added to the queue */
+  pthread_cond_signal(&(pool->signal));
+  pthread_mutex_unlock(&(pool->lock));
+  /* ==== End of critical section ==== */
+
+  return status;
+}
+
+task_t* init_task(void* (*task_func)(void*), void* task_arg) {
+  task_t* new_task = malloc(sizeof(struct task));
+  if (new_task == NULL)
+    return NULL;
+
+  /* Task field initialization */
+  new_task->func = task_func;
+  new_task->arg = task_arg;
+
+  return new_task;
+}
+
+void destroy_task(task_t* task_to_destroy) {
+  free(task_to_destroy);
 }
 
 
-/* ============================ WORKERS ============================== */
-
-static int init_worker(thread_pool* p, struct worker** w, int id) {
-
-  *w = (struct worker*) malloc(sizeof(struct worker));
-  if (*w == NULL){
-    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread!", __FILE__, __func__);
-    return -1;
-  }
-
-  /* Initialize worker fields */
-  (*w)->pool = p;
-  (*w)->id   = id;
-
-  if(pthread_create(&(*w)->thread, NULL,  (void* (*)(void *)) worker_routine, (*w)) != 0) {
-    _m(_msgfatal, "[%s] (%s) Failed to create a new thread!", __FILE__, __func__);
-    perror("pthread_create: ");
-    exit(errno);
-  }
-
-  /*
-    Mark the thread identified by thread as detachad. In this way
-    when a detached thread terminates, its resources are automatically
-    released back to the system without the need for another thread
-    to join with the terminated thread
-  */
-  if(pthread_detach((*w)->thread) != 0) {
-    _m(_msgfatal, "[%s] (%s) Failed to mark the thread <%d> as detachable!", __FILE__, __func__, (*w)->id);
-    perror("pthread_detach: ");
-    exit(errno);
-  }
-  return 0;
-}
-
-
-static void hold_worker(int sig) {
-  (void) sig;
-
-  _on_hold = 1;
-
-  while(_on_hold) {
-    sleep(1);
-  }
-}
-
-static void* worker_routine(struct worker* w) {
-  // Setup profiling (helps on debugging)
-  char thread_name[16] = {0};
-  snprintf(thread_name, 16, "thpool-%d", w->id);
-
-  /* Thread manipulation with prctl (avoid _GNU_SOURCE flag & implicit declaration) */
-  prctl(PR_SET_NAME, thread_name);
-
-  /* Assert all threads have been created before starting serving */
-  thread_pool* pool = w->pool;
-
-  /* Signal handler registration */
-  struct sigaction sig_a;
-  sigemptyset(&sig_a.sa_mask);
-
-  /*
-    Many virtual machines, including Go VM, depend on signals using SA_ONSTACK.
-    This flag allows a thread to define a new alternate signal stack.
-    Many argue that SA_ONSTACK should be a default, but it's not the case
-  */
-  sig_a.sa_flags = 0; // SA_ONSTACK -> 0
-  sig_a.sa_handler = hold_worker;
-  if (sigaction(SIGUSR1, &sig_a, NULL) == -1) {
-    _m(_msgfatal, "[%s] (%s) Failed to handle SIGUSR1 signal!", __FILE__, __func__);
-  }
-
-  /* Mark thread as active */
-  pthread_mutex_lock(&pool->lock);
-  pool->threads_alive += 1; // Increase the n° of threads alive accordingly
-  pthread_mutex_unlock(&pool->lock);
-
-  while(_keep_alive){
-
-    /* Mark the thread as in work */
-    wait_on_semaphore(pool->jobqueue.has_jobs);
-
-    if (_keep_alive){
-
-      pthread_mutex_lock(&pool->lock);
-      pool->threads_working++; // Increase the n° of threads working accordingly
-      pthread_mutex_unlock(&pool->lock);
-
-      /* Read the job from the queue and execute it */
-
-      void (*func_buff)(void*);
-      void*  arg_buff;
-      job* job_p = pull_from_job_queue(&pool->jobqueue);
-
-      if (job_p) {
-	func_buff = job_p->function;
-	arg_buff  = job_p->arg;
-	func_buff(arg_buff);
-	free(job_p);
-      }
-
-      /* Once the job has terminated update the pool accordingly */
-      pthread_mutex_lock(&pool->lock);
-      pool->threads_working--;
-
-      /* Check if there are no threads working left */
-      if (!pool->threads_working) {
-	pthread_cond_signal(&pool->cond);
-      }
-      pthread_mutex_unlock(&pool->lock);
-
-    }
-  }
-
-  /* Update the pool accordingly once the thread is not more alive (decrease the counter) */
-  pthread_mutex_lock(&pool->lock);
-  pool->threads_alive --;
-  pthread_mutex_unlock(&pool->lock);
-
-  return NULL;
-}
-
-
-static void destroy_worker(worker* thread_p) {
-  free(thread_p);
-}
-
-/* ============================ JOB QUEUE =========================== */
-
-static int init_job_queue(job_queue* queue) {
-  /* Initialize job_queue fields */
-  queue->len = 0;
-  queue->front = NULL;
-  queue->rear  = NULL;
-
-  queue->has_jobs = (struct semaphore*) malloc(sizeof(struct semaphore));
-  if (queue->has_jobs == NULL){
-    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the queue->has_jobs (semaphore)!", __FILE__, __func__);
-    return -1;
-  }
-
-  pthread_mutex_init(&(queue->r_w_mutex), NULL);
-  init_semaphore(queue->has_jobs, 0);
-
-  return 0;
-}
-
-static void clear_job_queue(job_queue* queue) {
-  while(queue->len){
-    free(pull_from_job_queue(queue));
-  }
-
-  // "Reset" queue fields
-  queue->front = NULL;
-  queue->rear  = NULL;
-  reset_semaphore(queue->has_jobs);
-  queue->len = 0;
-}
-
-
-static void push_into_job_queue(job_queue* queue, struct job* new_job) {
-
-  pthread_mutex_lock(&queue->r_w_mutex);
-  new_job->prev = NULL;
-
-  switch(queue->len) {
-    case 0:  /* No jobs in queue */
-      queue->front = new_job;
-      queue->rear  = new_job;
-      break;
-
-    default: /* At least one job in the queue */
-      queue->rear->prev = new_job;
-      queue->rear = new_job;
-  }
-
-  // Increase the length accordingly
-  queue->len++;
-
-  push_sem_to_single(queue->has_jobs);
-  pthread_mutex_unlock(&queue->r_w_mutex);
-}
-
-
-static struct job* pull_from_job_queue(job_queue* queue) {
-
-  pthread_mutex_lock(&queue->r_w_mutex);
-  job* job_p = queue->front;
-
-  switch(queue->len){
-  case 0:  /* No jobs in the queue */
-    break;
-
-  case 1:  /* There is only one job left in the queue */
-    queue->front = NULL;
-    queue->rear  = NULL;
-    queue->len = 0;
-    break;
-
-  default: /* More then a single job in the queue */
-    queue->front = job_p->prev;
-    queue->len--;
-    push_sem_to_single(queue->has_jobs);
-  }
-
-  pthread_mutex_unlock(&queue->r_w_mutex);
-  return job_p;
-}
-
-
-static void destroy_job_queue(job_queue* to_destroy) {
-  /* Return resources back to the system */
-  clear_job_queue(to_destroy);
-  free(to_destroy->has_jobs);
-}
-
-
-/* ======================== SEMAPHORE ========================= */
-
-static void init_semaphore(semaphore* sem, int val) {
-  if (val < 0 || val > 1) {
-    _m(_msgfatal, "[%s] (%s) Failed to instantiate semaphore: The given value <%d> is not valid! (Accepted values are 0 or 1)", __FILE__, __func__, val);
-    exit(1);
-  }
-
-  pthread_mutex_init(&(sem->mutex), NULL);
-  pthread_cond_init(&(sem->cond), NULL);
-  sem->v = val;
-}
-
-
-static void reset_semaphore(semaphore* sem) {
-  init_semaphore(sem, 0);
-}
-
-
-static void push_sem_to_single(semaphore* sem) {
-  pthread_mutex_lock(&sem->mutex);
-  sem->v = 1;
-  pthread_cond_signal(&sem->cond);
-  pthread_mutex_unlock(&sem->mutex);
-}
-
-
-static void push_sem_to_all(semaphore* sem) {
-  pthread_mutex_lock(&sem->mutex);
-  sem->v = 1;
-  pthread_cond_broadcast(&sem->cond);
-  pthread_mutex_unlock(&sem->mutex);
-}
-
-
-static void wait_on_semaphore(semaphore* sem) {
-  pthread_mutex_lock(&sem->mutex);
-  while (sem->v != 1) {
-    pthread_cond_wait(&sem->cond, &sem->mutex);
-  }
-  sem->v = 0;
-  pthread_mutex_unlock(&sem->mutex);
+void await_thread_pool(thread_pool_t* pool) {
+  pthread_mutex_lock(&(pool->lock));
+  while(pool->queue->size) 
+    pthread_cond_wait(&(pool->signal), &(pool->lock));
+  pthread_mutex_unlock(&(pool->lock));
 }

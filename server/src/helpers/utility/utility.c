@@ -18,11 +18,9 @@
 #include <sys/time.h>
 #include <time.h>
 
-#include "../base/macros.h"
-
 #include "utility.h"
 
-#define _m(type, format, ...) _msgcategory(type, "UTILITY", format, ##__VA_ARGS__)
+#define _m(type, format, ...) _msgcategory(type, " UTILITY ", format __VA_OPT__(,) __VA_ARGS__)
 
 // Buffer manipulation
 char *ltrim(char *s) {

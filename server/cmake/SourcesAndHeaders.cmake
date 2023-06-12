@@ -8,13 +8,14 @@ set(sources
 
     # Server related
     src/core/server/server.c
-    src/core/handler/handler.c
 
     # Msg communication wrapper
     src/core/message/message.c
 
     # Workers related
     src/helpers/pool/thread_pool.c
+    src/helpers/container/queue.c
+    src/helpers/handler/signal_handler.c
 
     # Command line flag parser
     src/helpers/command_line_runner/command_line_runner.c
@@ -36,13 +37,14 @@ set(headers
 
     # Server related
     src/core/server/server.h
-    src/core/handler/handler.h
 
     # Msg communication wrapper
     src/core/message/message.h
 
     # Workers related
     src/helpers/pool/thread_pool.h
+    src/helpers/container/queue.h
+    src/helpers/handler/signal_handler.h
 
     # Command line flag parser
     src/helpers/command_line_runner/command_line_runner.c

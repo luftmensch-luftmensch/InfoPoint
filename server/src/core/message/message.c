@@ -8,10 +8,13 @@
   +  Lucia Brando        (matr. N86003382)
 */
 
+#include <stdio.h>
+#include <sys/socket.h>
+#include <string.h>
+
 #include "message.h"
 
-#define _m(type, format, ...) _msgcategory(type, "MSG", format, ##__VA_ARGS__)
-
+#define _m(type, format, ...) _msgcategory(type, "MSG", format __VA_OPT__(,) __VA_ARGS__)
 
 ssize_t msg_send(int sock_fd, const void* const buf, size_t len, int flags) {
   char copy[len + 1];
@@ -44,7 +47,7 @@ ssize_t msg_recv(int sock_fd, void* buf, ssize_t len, int flags, bool* const rea
   do {
     c_read = recv(sock_fd, &((char*) buf)[c_total], len - c_total, flags);
     if (c_read == -1){
-      _m(_msgwarn, "Got an error while reciving msg");
+      _m(_msgwarn, "[%s] (%s) Got an error while reciving msg", __FILE_NAME__, __func__);
       perror("recv: ");
       *read_again = false;
       return c_read;

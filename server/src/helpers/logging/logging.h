@@ -20,6 +20,9 @@
   #include <errno.h>
   #include <signal.h>
 
+  #include "../base/macros.h"
+
+
   #ifndef TIME_FORMAT
       #define TIME_FORMAT "%02d:%02d:%02d "
   #endif
@@ -70,17 +73,17 @@
   #define _msgcategory(type, category, format, ...) type("[%*s] " format, MSG_CATEGORY_SIZE, category, ##__VA_ARGS__)
 
   // These functions will output only if SHUTUP was not defined, in debug.
-  #if defined(DEBUG) && !defined(SHUTUP)
+  #if defined(DEBUG) && !defined(IN_PRODUCTION)
       #define _msgdebug(format, ...)   _msgsystem(ANSI_COLOR_GREEN "(DEBUG): " format ANSI_COLOR_RESET, ##__VA_ARGS__)
       #define _msgsetting(format, ...) _msgsystem(ANSI_COLOR_MAGENTA "(SETUP): " format ANSI_COLOR_RESET, ##__VA_ARGS__)
   #else
       #define _msgdebug(format, ...)
       #define _msgsetting(format, ...)
   #endif
+
   void log_format(const char* tag, const char* message, va_list args);
   void log_error(const char* message, ...);
   void log_info(const char* message, ...);
   void log_debug(const char* message, ...);
-
 
 #endif

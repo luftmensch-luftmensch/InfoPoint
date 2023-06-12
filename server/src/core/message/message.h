@@ -10,9 +10,6 @@
 
 #ifndef _MESSAGE_H_
 #define _MESSAGE_H_
-  #include <stdio.h>
-  #include <sys/socket.h>
-  #include <string.h>
 
   #include "../../helpers/logging/logging.h"
 

@@ -11,10 +11,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../helpers/base/macros.h"
 #include "database.h"
 
-#define _m_db(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format, ##__VA_ARGS__)
+#define _m(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format __VA_OPT__(,) __VA_ARGS__)
 
 db_handler* init_db_handler(char* username, char* password, char* host, char* database_name) {
   db_handler* handler = malloc(sizeof(struct db_handler));
@@ -22,7 +21,7 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
 
   assert((strlen(username) + strlen(password) + strlen(host)) < sizeof(handler->settings.database_uri));
 
-  _m_db(_msginfo, "Initializing settings for the handler");
+  _m(_msginfo, "[%s] (%s) Initializing settings for the handler", __FILE_NAME__, __func__);
 
   // Uri field initialization
   snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s/authMechanism=SCRAM-SHA-256&authSource=admin", username, password, host); // mongodb://<username>:<password>@<host>
@@ -35,30 +34,30 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   handler->settings.database_name = database_name;
   
 
-  _m_db(_msginfo, "Database Handler initialization");
+  _m(_msginfo, "[%s] (%s) Database Handler initialization", __FILE_NAME__, __func__);
   mongoc_init(); /* Required to initialize libmongoc's internals (It should be called only once!) */
 
   /// Initialization of mongo_db instance
 
   /* Safely create a MongoDB URI object from the given string */
 
-  _m_db(_msginfo, "Parsing mongodb endpoint <%s>\n", handler->settings.database_uri);
+  _m(_msginfo, "[%s] (%s) Parsing mongodb endpoint <%s>\n", __FILE_NAME__, __func__, handler->settings.database_uri);
   handler->instance.uri = mongoc_uri_new_with_error(handler->settings.database_uri, &error);
   if (!handler->instance.uri) {
-    _m_db(_msgfatal, "[%s] (%s) Failed to parse URI <%s> Cause: %s\n", __FILE_NAME__, __func__, handler->settings.database_uri, error.message);
+    _m(_msgfatal, "[%s] (%s) Failed to parse URI <%s> Cause: %s\n", __FILE_NAME__, __func__, handler->settings.database_uri, error.message);
     exit(errno);
   }
 
   printf("Auth source %s - Auth mechanism: %s\n", mongoc_uri_get_auth_source(handler->instance.uri), mongoc_uri_get_auth_mechanism(handler->instance.uri));
 
-  _m_db(_msginfo, "Database instance pool setup");
+  _m(_msginfo, "[%s] (%s) Database instance pool setup", __FILE_NAME__, __func__);
   handler->instance.pool = mongoc_client_pool_new(handler->instance.uri);
   if (!handler->instance.pool) {
-    _m_db(_msgfatal, "[%s] (%s) Failed to setup mongodb pool", __FILE_NAME__, __func__);
+    _m(_msgfatal, "[%s] (%s) Failed to setup mongodb pool", __FILE_NAME__, __func__);
     exit(errno);
   }
 
-  _m_db(_msginfo, "Customizing options for the mongodb pool");
+  _m(_msginfo, "[%s] (%s) Customizing options for the mongodb pool", __FILE_NAME__, __func__);
 
   // Configure how the C Driver reports errors (See https://mongoc.org/libmongoc/current/errors.html#errors-error-api-version)
   mongoc_client_pool_set_error_api(handler->instance.pool, 2);
@@ -69,7 +68,7 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
    */
   mongoc_client_pool_set_appname(handler->instance.pool, MONGO_DB_APP_NAME);
 
-  _m_db(_msginfo, "Database handler successfully created!");
+  _m(_msginfo, "[%s] (%s) Database handler successfully destroyed!", __FILE_NAME__, __func__);
   return handler;
 }
 
@@ -82,13 +81,13 @@ void destroy_db_handler(db_handler* handler) {
     See https://github.com/mongodb/mongo-c-driver/blob/master/valgrind.suppressions
   */
 
-  _m_db(_msginfo, "Shutting down the database handler as requested");
+  _m(_msginfo, "[%s] (%s) Shutting down the database handler as requested", __FILE_NAME__, __func__);
 
-  _m_db(_msginfo, "Destroying client handler: <%s>", handler->instance.pool);
+  _m(_msginfo, "[%s] (%s) Destroying client handler: <%s>", __FILE_NAME__, __func__, handler->instance.pool);
   mongoc_client_pool_destroy(handler->instance.pool);
 
   /* Release handlers and make clean up operation */
-  _m_db(_msginfo, "Destroying URI handler: <%s>", handler->instance.uri);
+  _m(_msginfo, "[%s] (%s) Destroying URI handler: <%s>", __FILE_NAME__, __func__, handler->instance.uri);
   mongoc_uri_destroy(handler->instance.uri);
 
   /*
@@ -119,8 +118,8 @@ void destroy_db_handler(db_handler* handler) {
     https://github.com/mongodb/mongo-c-driver/blob/master/valgrind.suppressions
   */
   mongoc_cleanup();
-  _m_db(_msghighlight, "Finishing cleanup");
+  _m(_msghighlight, "[%s] (%s) Finishing mongoc cleanup", __FILE_NAME__, __func__);
 
-  _m_db(_msgevent, "Done!");
+  _m(_msgevent, "[%s] (%s) Done!", __FILE_NAME__, __func__);
   free(handler);
 }

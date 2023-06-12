@@ -187,12 +187,6 @@
   config_status add_uint_to_cfg(config_parser*, const char*, const char*, unsigned int);
 
   /*
-   * Add the specific <key,value (float)> pair to the specified parser
-   * It returns CONFIG_RET_OK if the operation is successful, otherwise an error is returned
-  */
-  // config_status add_float_to_cfg(config_parser*, const char*, const char*, float);
-
-  /*
    * Add the specific <key,value (double)> pair to the specified parser
    * It returns CONFIG_RET_OK if the operation is successful, otherwise an error is returned
   */

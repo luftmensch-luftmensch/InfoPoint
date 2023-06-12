@@ -23,10 +23,6 @@
 #include "helpers/utility/utility.h"
 #include "core/database/database.h"
 
-// void task(void *arg){
-//     printf("Thread #%u working on %d\n", (int)pthread_self(), (int)(uintptr_t) arg);
-// }
-
 int main(int argc, char** argv){
   // Welcome message
   fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
@@ -44,33 +40,15 @@ int main(int argc, char** argv){
   // Show the settings getted from the file
   cfg_pretty_print(cfg, stdout);
 
-  /* // Finally free the cfg, as we no more need it */
+
+  server* s = init_server(cfg->ns.port, cfg->cs.max_clients);
+
+  /* Finally free the cfg, as we no more need it */
   free(cfg);
 
-  server* s = init_server(9090, 10);
-
   destroy_server(s);
-  /* puts("Making threadpool with 4 threads"); */
-  /* struct thread_pool* thpool = init_thread_pool(4); */
-
-  /* puts("Adding 40 tasks to threadpool"); */
-  /* int i; */
-  /* for (i=0; i<40; i++){ */
-  /*   add_work_to_thread_pool(thpool, task, (void*)(uintptr_t)i); */
-  /* }; */
-
-  /* await_thread_pool(thpool); */
-  /* puts("Killing threadpool"); */
-  /* destroy_thread_pool(thpool); */
-
-
-  /* printf("%s\n", buff); */
 
   /* db_handler* database = init_db_handler("admin", "password", "localhost:27017", "noesys"); */
-
   /* printf("%s %s %s\n", database->settings.user_collection, database->settings.art_work_collection, database->settings.database_name); */
-
-
   /* destroy_db_handler(database); */
-  log_debug(ANSI_COLOR_RED "%s %s %d %d" ANSI_COLOR_RESET "\n" , __FILE__, __func__, 5, 7);
 }

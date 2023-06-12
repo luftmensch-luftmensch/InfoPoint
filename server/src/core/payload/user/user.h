@@ -8,8 +8,8 @@
   +  Lucia Brando        (matr. N86003382)
 */
 
-#ifndef _CLIENT_H_
-#define _CLIENT_H_
+#ifndef _USER_H_
+#define _USER_H_
   #include <stdlib.h>
   #include <netinet/in.h>
 

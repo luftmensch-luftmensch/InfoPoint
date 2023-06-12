@@ -11,20 +11,9 @@
 #ifndef _SERVER_H_
 #define _SERVER_H_
 
-  #include <stdio.h>
-  #include <stdbool.h>
-  #include <strings.h>
-  #include <errno.h>
-
   #include <sys/socket.h>
-  #include <sys/time.h>
-  #include <sys/types.h>
-
   #include <arpa/inet.h>
-  #include <netinet/in.h>
 
-  #include "../message/message.h"
-  #include "../../helpers/logging/logging.h"
 
   #ifndef DEFAULT_PORT
       #define DEFAULT_PORT 60020

@@ -8,19 +8,28 @@
   +  Lucia Brando        (matr. N86003382)
 */
 
-#include "server.h"
-#include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
+#include <strings.h>
+#include <errno.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+
+
+#include "server.h"
+
+#include "../message/message.h"
+#include "../../helpers/logging/logging.h"
+
 
 #define _m(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
 
 server* init_server(unsigned int port, const size_t max_workers){
   unsigned int use_port = !port ? DEFAULT_PORT : port;
-  _m(_msgevent, "%d", max_workers);
 
-  // Allocate mem for the newly created server
+  // Allocate memory for the newly created server
   server* s = malloc(sizeof(struct server));
 
   // Define type of socket
@@ -33,11 +42,11 @@ server* init_server(unsigned int port, const size_t max_workers){
   s->socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
   if (s->socket < 0) { // Check if the call socket was sussesfull
-    _m(_msgfatal, "Failed to connect socket! Cause: %s", strerror(errno));
+    _m(_msgfatal, "[%s] (%s) Failed to connect socket! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     perror("socket: ");
     exit(errno);
   }
-  _m(_msginfo, "Socket <%ld> created!", s ->socket);
+  _m(_msginfo, "[%s] (%s) Socket <%ld> created!", __FILE_NAME__, __func__, s ->socket);
 
   /* Socket options (Set socket as reusable) */
   if(setsockopt(s->socket, SOL_SOCKET, SO_REUSEADDR, (int[]) { 1 }, sizeof(int[1]))) {
@@ -45,9 +54,8 @@ server* init_server(unsigned int port, const size_t max_workers){
     perror("setsockopt: ");
     exit(errno);
   }
-  _m(_msginfo, "Socket <%ld> set as resuable!", s->socket);
+  _m(_msginfo, "[%s] (%s) Socket <%ld> set as reusable!", __FILE_NAME__, __func__, s->socket);
 
-  /* Binding */
   // Zeroing the transport as suggested by IEEE (https://pubs.opengroup.org/onlinepubs/000095399/basedefs/netinet/in.h.html) using memset
   memset(&s->transport, 0, sizeof(s->transport));
 
@@ -75,18 +83,18 @@ server* init_server(unsigned int port, const size_t max_workers){
      and not just localhost.
   */
   if(bind(s->socket,(struct sockaddr*)&s->transport, sizeof(s->transport)) != 0) {
-    _m(_msgfatal, "Could not bind the server! Cause: %s", strerror(errno));
+    _m(_msgfatal, "[%s] (%s) Could not bind the server! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     perror("bind: ");
   }
-  _m(_msginfo, "[SERVER] Server binded to socket <%d>!", s->socket);
+  _m(_msginfo, "[%s] (%s) Server binded to socket <%d>!", __FILE_NAME__, __func__, s->socket);
 
   // Socket listening
-  if(listen(s->socket, MAX_CLIENTS_IN_QUEUE) != 0){
-    _m(_msgfatal, "[SERVER] Could not start listening! Cause: %s", strerror(errno));
+  if(listen(s->socket, max_workers) != 0){
+    _m(_msgfatal, "[%s] (%s) Could not start listening! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     perror("listen: ");
     exit(errno); 
   }
-  _m(_msgevent, "Server ready and it is listening for new clients on port: %d!", use_port);
+  _m(_msgevent, "[%s] (%s) Server ready and it is listening for new clients on port: %d!", __FILE_NAME__, __func__, use_port);
 
   s->conn_count = 0;
 
@@ -97,12 +105,12 @@ server* init_server(unsigned int port, const size_t max_workers){
 
 
 void destroy_server(server* s) {
-  _m(_msginfo, "Shutting down the server <%ld> as requested", s->socket);
+  _m(_msginfo, "[%s] (%s) Shutting down the server <%ld> as requested", __FILE_NAME__, __func__, s->socket);
 
   // static char msg_notice[] = "\n[SERVER] Server is shutting down... Goodbye!\n";
   while(s->conn_count--) {
     s->conn_count--;
-    _m(_msgdebug, "Disconnecting client %ld", s->conn_count);
+    _m(_msgdebug, "[%s] (%s) Disconnecting client %ld", __FILE_NAME__, __func__, s->conn_count);
     // msg_send(s->connections[s->conn_count].client->fd, msg_notice, strlen(msg_notice), 0);
     // free(s->connections[s->conn_count].client);
   }
@@ -110,6 +118,6 @@ void destroy_server(server* s) {
   close(s->socket);
   // Stopping and destroying the thread pool
 
-  _m(_msgevent, "Goodbye!", );
+  _m(_msgevent, "[%s] (%s) Goodbye!", __FILE_NAME__, __func__);
   free(s);
 }
