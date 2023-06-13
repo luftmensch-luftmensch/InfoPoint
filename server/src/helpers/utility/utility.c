@@ -88,7 +88,7 @@ static off_t get_file_size (const char * file_name) { // off_t -> same as unsign
 
 unsigned char* file_reader(const char* file_name) {
   if (file_name == NULL) {
-    fprintf(stderr, "[%s] (%s) Invalid file_name!", __FILE__, __func__);
+    fprintf(stderr, "[%s] (%s) Invalid file_name!", __FILE_NAME__, __func__);
     return NULL;
   }
 
@@ -100,12 +100,12 @@ unsigned char* file_reader(const char* file_name) {
   off_t size = get_file_size(file_name);
 
   if (!(buffer = malloc(size + 1))) { // Check if we can allocate enought space to put the content of the file in the buffer
-    fprintf(stderr, "[%s] (%s) Failed to allocate enought space to store the specified file name <%s>", __FILE__, __func__, file_name);
+    fprintf(stderr, "[%s] (%s) Failed to allocate enought space to store the specified file name <%s>", __FILE_NAME__, __func__, file_name);
     exit (EXIT_FAILURE);
   }
 
   if (!(fp = fopen(file_name, "r"))) { // Try to open the file in read mode
-    fprintf(stderr, "[%s] (%s) Failed to open the given file name <%s> -> %s", __FILE__, __func__, file_name, strerror(errno));
+    fprintf(stderr, "[%s] (%s) Failed to open the given file name <%s> -> %s", __FILE_NAME__, __func__, file_name, strerror(errno));
     return NULL;
   }
 
@@ -114,7 +114,7 @@ unsigned char* file_reader(const char* file_name) {
 
   // Check if the bytes read matches the size of the specified file
   if (bytes_read != size) {
-    fprintf(stderr, "[%s] (%s) Short read of <%s>: Expected %ld bytes, but got %zu: %s", __FILE__, __func__, file_name, size, bytes_read, strerror(errno));
+    fprintf(stderr, "[%s] (%s) Short read of <%s>: Expected %ld bytes, but got %zu: %s", __FILE_NAME__, __func__, file_name, size, bytes_read, strerror(errno));
     return NULL;
   }
 

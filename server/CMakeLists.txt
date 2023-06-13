@@ -76,6 +76,7 @@ add_executable(${PROJECT_EXECUTABLE})
 # 2. In the build folder run
 #   1. make clean
 #   2. bear -- make
+# 3. cmake --build build
 # DONE!
 
 # Find driver needed for mongodb connection
@@ -94,16 +95,5 @@ message("\nApplied compiler warnings. Using standard ${CMAKE_C_STANDARD}.\n")
 set_project_build_flags(${PROJECT_EXECUTABLE})
 
 install(TARGETS ${PROJECT_EXECUTABLE})
-
-#
-# Target properties
-#
-#set_target_properties(
-#  ${PROJECT_NAME}
-#  PROPERTIES
-#  ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/${CMAKE_BUILD_TYPE}"
-#  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/${CMAKE_BUILD_TYPE}"
-#  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}"
-#)
 
 message(STATUS "Added all header and implementation files.\n")

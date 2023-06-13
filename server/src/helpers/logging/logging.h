@@ -72,7 +72,7 @@
   #define _msghighlight(format, ...) _msgsystem(ANSI_COLOR_CYAN "(LOOK):  " format ANSI_COLOR_RESET, ##__VA_ARGS__) 
   #define _msgcategory(type, category, format, ...) type("[%*s] " format, MSG_CATEGORY_SIZE, category, ##__VA_ARGS__)
 
-  // These functions will output only if SHUTUP was not defined, in debug.
+  // These functions will output only if IN_PRODUCTION was not defined, in debug.
   #if defined(DEBUG) && !defined(IN_PRODUCTION)
       #define _msgdebug(format, ...)   _msgsystem(ANSI_COLOR_GREEN "(DEBUG): " format ANSI_COLOR_RESET, ##__VA_ARGS__)
       #define _msgsetting(format, ...) _msgsystem(ANSI_COLOR_MAGENTA "(SETUP): " format ANSI_COLOR_RESET, ##__VA_ARGS__)
