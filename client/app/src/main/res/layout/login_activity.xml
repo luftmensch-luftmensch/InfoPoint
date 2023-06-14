@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
+  ~
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 14/6/2023 at 17:35
+  ~
+  -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.authentication.login.LoginActivity">
+
+    <!-- ART WORK -->
+    <ImageView
+        android:id="@+id/login_logo_image_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/cover_authentication"
+        android:src="@drawable/authentication_icon"
+        app:layout_constraintBottom_toTopOf="@+id/login_info_point_logo"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- LOGO -->
+    <ImageView
+        android:id="@+id/login_info_point_logo"
+        style="@style/InfoPointLogo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/logo_app"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/login_logo_image_view" />
+
+    <!-- USERNAME -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_username_text_input_layout"
+        style="?attr/textInputOutlinedDenseStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_username"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/login_password_text_input_layout"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline15"
+        app:layout_constraintVertical_chainStyle="spread">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            tools:ignore="TextContrastCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- PASSWORD -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_password_text_input_layout"
+        style="?attr/textInputOutlinedDenseStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_password"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/login_username_text_input_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            tools:ignore="TextContrastCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- LOGIN CONFIRM BUTTON -->
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/button_login_text"
+        app:layout_constraintBottom_toTopOf="@+id/login_forgot_password_button"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_text_input_layout" />
+
+    <!-- FORGOT PW -->
+    <Button
+        android:id="@+id/login_forgot_password_button"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+
+    <!-- LINK TO SIGNUP -->
+    <LinearLayout
+        android:id="@+id/login_to_signup_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_account_question" />
+
+        <TextView
+            android:id="@+id/login_signup_text_view"
+            style="@style/Widget.InfoPoint.TextWithAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_text" />
+    </LinearLayout>
+
+    <!-- Progress bar to display states -->
+    <ProgressBar
+        android:id="@+id/login_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- GUIDELINES AND BARRIERS -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.39007092" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.97" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.41" />
+</androidx.constraintlayout.widget.ConstraintLayout>
