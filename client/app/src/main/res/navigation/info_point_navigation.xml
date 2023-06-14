@@ -1,149 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Scritto da Valentino Bocchetti il 5/3/2023 alle ore 21:59
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
   ~
-  ~ Copyright © 2023 InfoPoint
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 14/6/2023 at 0:0
+  ~
   -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/info_point_navigation"
-    app:startDestination="@+id/navigation_home">
+    android:id="@+id/info_point_navigation">
 
-    <!-- TODO: Add navigation items -->
-
-    <!-- Home -->
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.infopoint.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_home_to_auth_flow"
-            app:destination="@id/navigation_auth_flow"
-            app:popUpTo="@id/info_point_navigation"
-            app:popUpToInclusive="true"
-            />
-    </fragment>
-
-    <!-- ArtWork Details -->
-    <fragment
-        android:id="@+id/navigation_art_work_details"
-        android:name="com.infopoint.ui.artWork.details.ArtWorkDetailsFragment"
-        android:label="@string/artwork_details"
-        tools:layout="@layout/fragment_art_work_details">
-
-        <argument
-            android:name="artWorkId"
-            app:argType="long" />
-        <argument
-            android:name="authorId"
-            app:argType="long" />
-        <argument/>
-    </fragment>
-
-    <!-- Profile -->
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.infopoint.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile">
-        <!--
-        <action
-            android:id="@+id/action_navigation_profile_to_profileBottomSheet"
-            app:destination="@id/profileBottomSheet" />
-            -->
-    </fragment>
-
-    <navigation
-        android:id="@+id/navigation_auth_flow"
-        app:startDestination="@id/navigation_login">
-
-        <!-- Login Page -->
-        <fragment
-            android:id="@+id/navigation_login"
-            android:name="com.infopoint.ui.authentication.login.LoginFragment"
-            android:label="Login"
-            tools:layout="@layout/fragment_login">
-
-            <!-- Move to Home Page -->
-            <action
-                android:id="@+id/action_login_to_home"
-                app:destination="@id/navigation_home"
-                app:popUpTo="@id/navigation_home"
-                app:popUpToInclusive="true" />
-
-            <!-- Move to Registration Page -->
-            <action
-                android:id="@+id/action_login_to_registration"
-                app:destination="@id/navigation_registration" />
-
-            <!-- Move to Forgot PW Page -->
-            <action
-                android:id="@+id/action_login_to_forgot_password"
-                app:destination="@id/navigation_forgot_password" />
-        </fragment>
-
-        <!-- Forgot PW -->
-        <fragment
-            android:id="@+id/navigation_forgot_password"
-            android:name="com.infopoint.ui.authentication.forgotPassword.ForgotPasswordFragment"
-            android:label="Reset password"
-            tools:layout="@layout/fragment_forgot_password">
-
-            <!-- Move to New PW Page -->
-            <action
-                android:id="@+id/action_forgot_password_to_new_password"
-                app:destination="@id/navigation_new_password" />
-        </fragment>
-
-        <!-- New PW -->
-        <fragment
-            android:id="@+id/navigation_new_password"
-            android:name="com.infopoint.ui.authentication.forgotPassword.ResetPasswordFragment"
-            android:label="Nuova password"
-            tools:layout="@layout/fragment_reset_password">
-
-            <action
-                android:id="@+id/action_new_password_to_login"
-                app:destination="@id/navigation_login"
-                app:popUpTo="@id/navigation_login"
-                app:popUpToInclusive="true" />
-
-        </fragment>
-
-        <!-- Registration Page -->
-        <fragment
-            android:id="@+id/navigation_registration"
-            android:name="com.infopoint.ui.authentication.registration.RegistrationFragment"
-            android:label="Registrazione"
-            tools:layout="@layout/fragment_registration">
-
-            <!-- Confirmation -->
-            <action
-                android:id="@+id/action_registration_to_confirmation"
-                app:destination="@id/navigation_confirmation" />
-
-        </fragment>
-
-        <fragment
-            android:id="@+id/navigation_confirmation"
-            android:name="com.infopoint.ui.authentication.confirmation.ConfirmationFragment"
-            android:label="Conferma Codice"
-            tools:layout="@layout/fragment_confirmation">
-            <argument
-                android:name="userConfirm"
-                app:argType="string" />
-
-            <action
-                android:id="@+id/action_confirmation_to_login"
-                app:destination="@id/navigation_login"
-                app:popUpTo="@id/navigation_login"
-                app:popUpToInclusive="true" />
-        </fragment>
-
-
-
-    </navigation>
 </navigation>

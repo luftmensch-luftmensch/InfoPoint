@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
 
     <!-- Network Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,35 +8,24 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-    <!-- Auth permission (Biometric/Facial recognition) -->
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-
-    <!-- Camera permission (Needed for the authentication & Scanning the Bar Code) -->
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!--
-        * Setting android:allowBackup to false disable backups to google drive
-        * Setting android:supportsRtl to true enable right-to-left (RTL) layouts (in order to use in countries where language is written from right to left)
-    -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
-        android:name=".App"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_info_point_logo"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_info_point_logo"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.InfoPoint"
         tools:targetApi="31">
 
-        <!-- Main Activity w/ Splash Screen -->
+        <!-- Launcher w/ Splash Screen -->
         <activity
-            android:name=".ui.main.MainActivity"
-            android:theme="@style/Theme.InfoPoint.Starting"
+            android:name=".App"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,11 +33,10 @@
             </intent-filter>
         </activity>
 
-        <!-- Intro -->
-        <activity
-            android:name=".ui.intro.InfoPointIntro"
-            android:exported="true">
-        </activity>
+        <!-- Authentication -->
+        <activity android:name=".ui.activity.authentication.login.LoginActivity"/>
+        <activity android:name=".ui.activity.authentication.registration.RegistrationActivity"/>
+
     </application>
 
 </manifest>

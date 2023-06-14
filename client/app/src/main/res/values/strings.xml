@@ -1,16 +1,32 @@
 <!--
-  ~ Scritto da Valentino Bocchetti il 5/3/2023 alle ore 21:22
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
   ~
-  ~ Copyright © 2023 InfoPoint
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 13/6/2023 at 23:48
+  ~
   -->
 <resources>
     <string name="app_name">InfoPoint</string>
 
     <string name="title_activity_main">InfoPoint</string>
 
-    <!-- TITLES -->
-    <string name="title_home">Home</string>
-    <string name="title_profile">Profilo</string>
+    <!-- Bottom Bar -->
+    <string name="home">Home</string>
+    <string name="profile">Profilo</string>
+    <string name="search">Ricerca opere</string>
+    <string name="starred">Preferite</string>
 
     <!-- AUTHENTICATION -->
     <!-- Hints -->
@@ -23,7 +39,7 @@
     <string name="button_signup_text">Registrati</string>
     <string name="button_login_text">Accedi</string>
     <string name="text_social_login">Oppure</string>
-    <string name="button_signup_send_text">Registrati</string>
+    <string name="button_signup">Registrati</string>
     <string name="forgot_password"><u>Password dimenticata?</u></string>
 
     <!-- Form validation -->
@@ -109,8 +125,7 @@
     <string name="night_mode_off">Chiaro</string>
     <string name="night_mode_on">Scuro</string>
     <string name="pref_key_logout">logout</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="title_placeholder_text">Titolo Opera</string>
     <string name="cover_password">Cover password dimenticata</string>
     <string name="button_forgot_password_text">Invia codice</string>
@@ -123,7 +138,6 @@
     <string name="remove_art_work">Rimuovi opera</string>
     <string name="resend_confirmation_code">Inviami di nuovo il codice di conferma</string>
     <string name="hint_confirmation_code">Inserisci il codice di conferma</string>
-    <string name="search_art_work">Ricerca opere</string>
     <string name="comment_placeholder">Commento</string>
     <string name="placeholder_artist">Artista</string>
     <string name="button_confirm_text">Conferma</string>
@@ -132,4 +146,13 @@
     <string name="titleSlide1">Benvenuto su InfoPoint!</string>
     <string name="descriptionSlide1">Il supporto di cui avevi bisogno</string>
     <string name="artwork_details">Dettaglio Opera</string>
+    <string name="switch_to_login_page">Già registrato? Accedi!</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="create_account">Crea Account</string>
+    <string name="terms_and_conditions"><![CDATA[![CDATA[Terms & Conditions]]]]></string>
+    <string name="rectangle_with_borders" />
+    <string name="remember_me">Ricordami</string>
+    <string name="info_point_motto">Educate yourself!</string>
+    <string name="welcome_back">Bentornato!</string>
+    <string name="google_sign_in">Accedi con Google</string>
 </resources>

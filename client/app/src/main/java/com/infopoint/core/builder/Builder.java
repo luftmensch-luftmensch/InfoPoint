@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * First written in 2/3/2023 at 11:54
-*/
+ *   @author Valentino Bocchetti
+ *   First written in 13/6/2023 at 21:35
+ *
+ */
 
 package com.infopoint.core.builder;
 
@@ -27,10 +29,8 @@ import java.util.function.Supplier;
 /**
  * Builder class for models
  * @param <T> Generics Type
- * @author valentino
  */
 public class Builder<T> {
-
     private final Supplier<T> instantiator;
 
     private final List<Consumer<T>> instanceModifiers = new ArrayList<>();

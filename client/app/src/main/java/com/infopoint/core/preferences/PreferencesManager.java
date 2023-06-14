@@ -13,33 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * First written in 2/3/2023 at 12:01
- */
-
+ *   @author Valentino Bocchetti
+ *   First written in 14/6/2023 at 12:45
+ *
+*/
 package com.infopoint.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import javax.inject.Singleton;
-
-/**
- * <strong>Manager</strong> for <strong>Shared Preferences</strong>
- * @author valentino
- */
-@Singleton
+/** <strong>Manager</strong> for <strong>Shared Preferences</strong> */
 public class PreferencesManager {
     private static final String _TAG = "[PreferencesManager] ";
 
+    private static PreferencesManager manager;
+    private Context context;
+
     private static SharedPreferences preferences;
 
-    private PreferencesManager(){}
+    private PreferencesManager(){ }
 
-    public static void init(Context context){
+    public static void initialize(Context context) {
         Log.d(_TAG, "Initializing...");
-        if(preferences == null)
+
+        if (preferences == null)
             preferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+    }
+    public static PreferencesManager getInstance() {
+        if (manager == null) manager = new PreferencesManager();
+        return manager;
     }
 
     public static String read(String key, String defaultValue){
@@ -85,6 +88,5 @@ public class PreferencesManager {
                 editor.apply();
         }
     }
-
     public static boolean contains(String key){ return preferences.contains(key); }
 }

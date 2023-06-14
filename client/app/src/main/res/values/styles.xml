@@ -1,45 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Scritto da Valentino Bocchetti il 5/3/2023 alle ore 21:22
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
   ~
-  ~ Copyright © 2023 InfoPoint
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 14/6/2023 at 12:5
+  ~
   -->
 <resources>
-    <style name="AppLogo">
+    <style name="InfoPointLogo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@mipmap/ic_info_point_logo</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.App.CornerRoundSquarePercent" parent="Widget.AppCompat.ActionButton">
-        <item name="cornerSize">5%</item>
-    </style>
-
-    <style name="ThemeOverlay.InfoPoint.ElevationOverlayDisabled" parent="">
-        <item name="elevationOverlayEnabled">false</item>
-    </style>
-
-    <style name="Theme.InfoPoint.Widget.ActionButton" parent="Widget.AppCompat.ActionButton">
-        <item name="textAllCaps">false</item>
-        <item name="android:textAppearance">?attr/textAppearanceButton</item>
-    </style>
-
-    <style name="Widget.InfoPoint.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="iconPadding">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:minWidth">48dp</item>
-        <item name="android:minHeight">48dp</item>
-    </style>
-
-    <style name="PrefsTheme" parent="PreferenceThemeOverlay.v14.Material">
-        <item name="android:layout">@layout/fragment_settings</item>
-        <item name="colorAccent">@color/md_theme_light_primary</item>
     </style>
 </resources>

@@ -13,34 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * First written in 6/3/2023 at 11:11
+ *   @author Valentino Bocchetti
+ *   First written in 13/6/2023 at 18:47
+ *
 */
 
 package com.infopoint;
 
-import android.app.Application;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import androidx.appcompat.app.AppCompatActivity;
 
-import dagger.hilt.android.HiltAndroidApp;
+import com.infopoint.core.preferences.PreferencesManager;
+import com.infopoint.ui.activity.authentication.login.LoginActivity;
+import com.infopoint.ui.activity.authentication.registration.RegistrationActivity;
 
-/*
-    All apps using Hilt must contain an Application class annotated with @HiltAndroidApp.
-    @HiltAndroidApp kicks off the code generation of the Hilt components and also generates a base class
-    for your application that uses those generated components. Because the code generation needs access to all of your modules,
-    the target that compiles your Application class also needs to have all of your Dagger modules in its transitive dependencies.
-*/
-
-/**
- * Main entry point for the application
- * @author valentino
-*/
-@HiltAndroidApp
-public class App extends Application {
-    private static final String _TAG = "[App] ";
+public class App extends AppCompatActivity {
+    private final static String _TAG = "[InfoPointApplication] ";
 
     @Override
-    public void onCreate() {
-        Log.d(_TAG, "Starting application");
-        super.onCreate();
+    protected void onCreate(Bundle savedInstanceState) {
+        Log.d(_TAG, "Starting application...");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.app_splash_screen);
+
+        Animation topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
+        Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
+
+        findViewById(R.id.splashscreen_logo).setAnimation(topAnimation);
+        findViewById(R.id.splashscreen_title_text).setAnimation(bottomAnimation);
+        findViewById(R.id.splashscreen_body_text).setAnimation(bottomAnimation);
+
+        PreferencesManager.initialize(this);
+
+        new Handler().postDelayed(() -> {
+            Log.d(_TAG, "Finished splashscreen...");
+            startActivity(new Intent(App.this, RegistrationActivity.class));
+            finish();
+        }, 1500);
     }
 }
