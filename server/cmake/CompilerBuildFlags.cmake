@@ -114,7 +114,7 @@ function(set_project_build_flags project_name)
 
   if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)
     # Be as strict as possibile on error acceptance!
-    set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -fno-omit-frame-pointer) # -Werror
+    set(GCC_BUILD_FLAGS   ${GCC_BUILD_FLAGS} -fno-omit-frame-pointer -fanalyzer) # -Werror
     set(CLANG_BUILD_FLAGS ${CLANG_BUILD_FLAGS} -Werror)
     set(MSVC_BUILD_FLAG   ${MSVC_BUILD_FLAG} /WX)
   endif()
