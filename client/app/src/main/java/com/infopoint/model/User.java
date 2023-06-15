@@ -23,7 +23,36 @@ package com.infopoint.model;
 public class User {
     private String id;
     private String name;
-    private String surname;
+    private String password;
 
-    private String email;
+
+    public String validateName(String name) {
+        if (name.trim().length() == 0) {
+            return "Name cannot be empty";
+        } else if (name.trim().matches("^[0-9]+$")) {
+            return "Name cannot have numbers in it";
+        } else if (!name.trim().matches("^[a-zA-Z][a-zA-Z ]++$")) {
+            return "Invalid Name";
+        }
+        return null;
+    }
+
+    public String validatePassword(String password, String confirmPassword) {
+        if (password.trim().length() == 0) {
+            return "Passwords cannot be empty";
+        } else if (confirmPassword.trim().length() == 0) {
+            return "Passwords cannot be empty";
+        } else if (!confirmPassword.trim().matches(password.trim())) {
+            return "Passwords do not match";
+        } else if (password.trim().length() < 8) {
+            return "Password too small. Minimum length is 8";
+        } else if (password.trim().length() > 15) {
+            return "Password too long. Maximum length is 15";
+        } else if (password.trim().contains(" ")) {
+            return "Password cannot contain spaces";
+        } else if (!(password.trim().contains("@") || password.trim().contains("#")) || password.trim().contains("$") || password.trim().contains("%") || password.trim().contains("*") || password.trim().contains(".") || password.trim().matches("(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))")) {
+            return "Password should contain atleast one uppercase character or one number or any of the special characters from (@, #, $, %, *, .)";
+        }
+        return null;
+    }
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
+  ~
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 14/6/2023 at 20:36
+  ~
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_home"
+            android:title="@string/navigation_menu_home"
+            android:icon="@drawable/home_icon"/>
+
+        <item android:id="@+id/nav_search"
+            android:title="@string/navigation_menu_search"
+            android:icon="@drawable/search_icon"/>
+    </group>
+
+    <item android:title="@string/profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/nav_profile"
+                    android:title="@string/navigation_menu_profile"
+                    android:icon="@drawable/username_icon"/>
+
+                <item android:id="@+id/nav_logout"
+                    android:title="@string/navigation_menu_logout"
+                    android:icon="@drawable/logout_icon"/>
+
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/navigation_menu_settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/nav_feedback"
+                    android:title="@string/navigation_menu_feedback"
+                    android:icon="@drawable/feedback_icon"/>
+
+                <item android:id="@+id/nav_report_bug"
+                    android:title="@string/navigation_menu_report_bug"
+                    android:icon="@drawable/report_bug"/>
+
+                <item android:id="@+id/nav_about_us"
+                    android:title="@string/navigation_menu_about_us"
+                    android:icon="@drawable/about_us_icon"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>

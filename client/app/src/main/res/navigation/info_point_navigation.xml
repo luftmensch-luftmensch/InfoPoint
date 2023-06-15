@@ -20,6 +20,82 @@
   -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/info_point_navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/info_point_navigation"
+    app:startDestination="@id/nav_home">
+
+    <!-- Home -->
+    <fragment android:id="@+id/nav_home"
+        android:name="com.infopoint.ui.fragment.HomeFragment"
+        android:label="@string/navigation_menu_home"
+        tools:layout="@layout/home_fragment">
+
+    </fragment>
+
+    <!-- Search for a specific artwork -->
+    <fragment android:id="@+id/nav_search"
+        android:name="com.infopoint.ui.fragment.SearchFragment"
+        android:label="@string/navigation_menu_search"
+        tools:layout="@layout/search_fragment">
+        <action
+            android:id="@+id/action_nav_starred_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <!-- User starred artwork -->
+    <fragment android:id="@+id/nav_starred"
+        android:name="com.infopoint.ui.fragment.StarredFragment"
+        android:label="@string/navigation_menu_starred"
+        tools:layout="@layout/starred_fragment">
+        <action
+            android:id="@+id/action_nav_starred_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- User profile -->
+    <fragment android:id="@+id/nav_profile"
+        android:name="com.infopoint.ui.fragment.ProfileFragment"
+        android:label="@string/navigation_menu_profile"
+        tools:layout="@layout/profile_fragment">
+        <action
+            android:id="@+id/action_nav_profile_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <!-- Info about us -->
+    <fragment android:id="@+id/nav_about_us"
+        android:name="com.infopoint.ui.fragment.AboutUsFragment"
+        android:label="@string/navigation_menu_profile"
+        tools:layout="@layout/about_us_fragment">
+        <action
+            android:id="@+id/action_nav_about_us_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
+
+    <!-- Logout -->
+    <activity
+        android:id="@+id/nav_logout"
+        android:name="com.infopoint.ui.activity.authentication.login.LoginActivity"
+        android:label="@string/navigation_menu_logout"
+        tools:layout="@layout/login_activity" />
 
 </navigation>

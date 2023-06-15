@@ -29,11 +29,12 @@ import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.infopoint.core.preferences.PreferencesManager;
+import com.infopoint.ui.activity.MainActivity;
 import com.infopoint.ui.activity.authentication.login.LoginActivity;
 import com.infopoint.ui.activity.authentication.registration.RegistrationActivity;
 
 public class App extends AppCompatActivity {
-    private final static String _TAG = "[InfoPointApplication] ";
+    private final static String _TAG = "[App] ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class App extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
             Log.d(_TAG, "Finished splashscreen...");
-            startActivity(new Intent(App.this, RegistrationActivity.class));
+            startActivity(new Intent(App.this, MainActivity.class));
             finish();
         }, 1500);
     }

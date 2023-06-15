@@ -154,5 +154,39 @@
     <string name="remember_me">Ricordami</string>
     <string name="info_point_motto">Educate yourself!</string>
     <string name="welcome_back">Bentornato!</string>
-    <string name="google_sign_in">Accedi con Google</string>
+
+    <string name="navigation_menu_logout">Logout</string>
+    <string name="navigation_menu_about_us">Su di noi</string>
+    <string name="navigation_menu_report_bug">Segnala un problema</string>
+    <string name="navigation_menu_feedback">Feedback</string>
+    <string name="navigation_menu_settings">Impostazioni</string>
+    <string name="navigation_menu_home">Home</string>
+    <string name="navigation_menu_search">Ricerca</string>
+    <string name="navigation_menu_profile">Profilo</string>
+    <string name="navigation_menu_starred">Preferiti</string>
+    <string name="update_profile">Aggiorna profilo</string>
+    <string name="contact_us">Contattaci</string>
+    <string name="github_icon">Github</string>
+
+    <string name="about_us_title">Un nuovo modo di vivere i musei</string>
+    <string name="about_us_team">Il nostro TEAM</string>
+    <string name="linkedin_icon">Linkedin</string>
+
+    <string name="author_1">Valentino Bocchetti</string>
+    <string name="author_1_description">Lead Developer</string>
+
+    <string name="author_2">Dario Morace</string>
+    <string name="author_2_description">Developer</string>
+
+    <string name="author_3">Lucia Brando</string>
+    <string name="author_3_description">Designer &amp; Developer</string>
+    <string name="about_us">Su di noi</string>
+    <string name="artwork_name">Nome opera</string>
+    <string name="placeholder_author">Autore</string>
+    <string name="sort_button">Ordina</string>
+    <string name="sort_order">Modalità di ordinamento</string>
+
+    <string name="starred_empty">Salva le opere che più ti interessano per vederle in un secondo momento</string>
+    <string name="starred_empty_sub">Per salvare un opera clicca sul suo menu relativo</string>
+    <string name="starred_empty_icon">Rimuovi da preferiti</string>
 </resources>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
+  ~
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 14/6/2023 at 21:27
+  ~
+  -->
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/md_theme_dark_primaryContainer"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/starredBackgroundRectangle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:background="@drawable/rectangle_with_borders"
+            android:contentDescription="@string/rectangle_with_borders"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/starredLinearLayout" />
+
+        <LinearLayout
+            android:id="@+id/starredLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/starredSortButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/sort_button"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sort_icon"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/starredSortText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:textColor="@color/white"/>
+
+            <ImageButton
+                android:id="@+id/starredSortOrder"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:layout_marginStart="@dimen/small_margin"
+                android:contentDescription="@string/sort_order"
+                android:scaleType="centerCrop"
+                android:src="@drawable/arrow_upward_icon"
+                app:tint="@color/white"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/starredRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingStart="@dimen/medium_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/starredBackgroundRectangle"
+            app:layout_constraintVertical_bias="0.0"  />
+
+        <LinearLayout
+            android:id="@+id/starredEmptyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingStart="@dimen/medium_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:visibility="gone"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="@+id/starredBackgroundRectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/starredBackgroundRectangle" >
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/starred_empty_icon"
+                android:scaleType="centerCrop"
+                android:src="@drawable/starred_icon"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="@string/starred_empty"
+                android:textAlignment="center"
+                android:textColor="@color/md_theme_dark_primaryContainer"
+                android:textSize="@dimen/large_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/starred_empty_sub"
+                android:textAlignment="center"
+                android:textColor="@color/md_theme_dark_primaryContainer"
+                android:textSize="@dimen/medium_text" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

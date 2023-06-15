@@ -24,4 +24,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@mipmap/ic_info_point_logo</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ActivityToolbar">
+        <item name="android:textSize">@dimen/extra_large_text</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="autoSizeMinTextSize">@dimen/extra_large_text</item>
+    </style>
 </resources>
