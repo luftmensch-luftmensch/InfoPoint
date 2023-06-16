@@ -43,4 +43,8 @@
     <dimen name="medium_elevation">8dp</dimen>
     <dimen name="rectangle_top_margins">75dp</dimen>
     <dimen name="box_stroke_width_focused">2dp</dimen>
+    <dimen name="intro_bottom_margin">96dp</dimen>
+    <dimen name="intro_top_margin">48dp</dimen>
+    <dimen name="intro_getting_started_width">150dp</dimen>
+    <dimen name="intro_item_image_size">200dp</dimen>
 </resources>

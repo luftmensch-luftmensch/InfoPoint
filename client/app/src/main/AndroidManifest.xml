@@ -37,13 +37,13 @@
         <activity android:name=".ui.activity.authentication.login.LoginActivity"/>
         <activity android:name=".ui.activity.authentication.registration.RegistrationActivity"/>
 
-        <!-- Navigation graph -->
+        <!-- Intro -->
+        <activity android:name=".ui.activity.intro.IntroActivity"/>
 
+        <!-- Navigation graph -->
         <activity android:name=".ui.activity.MainActivity"
             android:exported="true">
             <nav-graph android:value="@navigation/info_point_navigation" />
         </activity>
-
     </application>
-
 </manifest>

@@ -24,6 +24,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -157,5 +159,20 @@ public class MainActivity extends AppCompatActivity
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         } else
             super.onBackPressed();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // TODO: Add logic based on SharedPreferences
+        ImageView profilePic = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_profile_image);
+        ImageView userVerified = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_verified_image);
+        TextView username = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_profile_name);
+        TextView usernameType = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_profile_type);
+
+        username.setText("User Name");
+        usernameType.setText("STUDENT");
+        userVerified.setImageResource(R.drawable.not_verified_icon);
+
     }
 }

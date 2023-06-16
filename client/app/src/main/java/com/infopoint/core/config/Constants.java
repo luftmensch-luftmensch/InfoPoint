@@ -29,10 +29,6 @@ public class Constants {
     public static final String NETWORK_ERROR = "Network Error";
     public static final String SERVER_ERROR = "Server unreachable";
 
-    // Storage Related
-    public static final String DATASTORE_STATE = "Datastore Status";
-    public static final String STORAGE = "Storage request";
-
     // Login/Registration Related
     public static final String LOGIN_STATE = "Login process";
     public static final String REGISTRATION_STATE = "Sign Up process";
@@ -54,17 +50,9 @@ public class Constants {
 
     // MIME_TYPES
     public static String MIME_TYPE_IMAGE = "image/jpeg";
-    public static String MIME_TYPE_AUDIO = "audio/amr";
-    public static String MIME_TYPE_VIDEO = "video/mp4";
     public static String MIME_TYPE_SKETCH = "image/png";
     public static String MIME_TYPE_FILES = "file/*";
 
-    public static String MIME_TYPE_IMAGE_EXT = ".jpeg";
-    public static String MIME_TYPE_AUDIO_EXT = ".amr";
-    public static String MIME_TYPE_VIDEO_EXT = ".mp4";
-    public static String MIME_TYPE_SKETCH_EXT = ".png";
-    public static String MIME_TYPE_CONTACT_EXT = ".vcf";
-
-    // SHARED_PREFERENCES KEY
-    public static String FIRST_RUN = "first_run";
+    public static String IS_LOGGED = "IS_LOGGED";
+    public static String INTRO_VIEWED = "INTRO_VIEWED";
 }

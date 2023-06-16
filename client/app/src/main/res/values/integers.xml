@@ -19,6 +19,6 @@
   ~
   -->
 <resources>
-    <integer name="slide_transition">500</integer>
-    <integer name="splash_screen_translation">800</integer>
+    <integer name="small_delay_transition">500</integer>
+    <integer name="medium_delay_transition">800</integer>
 </resources>

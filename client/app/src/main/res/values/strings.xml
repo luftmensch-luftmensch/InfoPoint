@@ -189,4 +189,10 @@
     <string name="starred_empty">Salva le opere che più ti interessano per vederle in un secondo momento</string>
     <string name="starred_empty_sub">Per salvare un opera clicca sul suo menu relativo</string>
     <string name="starred_empty_icon">Rimuovi da preferiti</string>
+    <string name="intro_skip">Salta</string>
+    <string name="intro_back">Indietro</string>
+    <string name="intro_next">Avanti</string>
+    <string name="intro_getting_started">Inizia!</string>
+    <string name="intro">Intro</string>
+    <string name="intro_item_image_description">Intro immagine</string>
 </resources>

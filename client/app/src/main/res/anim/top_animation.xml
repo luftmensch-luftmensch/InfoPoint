@@ -22,7 +22,7 @@
     <translate
         android:fromXDelta="0%"
         android:fromYDelta="-100%"
-        android:duration="@integer/splash_screen_translation"/>
+        android:duration="@integer/medium_delay_transition"/>
     <alpha
         android:fromAlpha="0.1"
         android:toAlpha="1.0"

@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="organization_signature" />
+  <settings default="organization_signature">
+    <module2copyright>
+      <element module="All" copyright="organization_signature" />
+    </module2copyright>
+  </settings>
 </component>

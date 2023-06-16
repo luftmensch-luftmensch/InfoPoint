@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
+  ~
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 16/6/2023 at 11:33
+  ~
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.activity.intro.IntroActivity">
+
+    <Button
+        android:id="@+id/intro_next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableEnd="@drawable/arrow_forward_icon"
+        android:drawableTint="@color/md_theme_dark_secondaryContainer"
+        android:padding="@dimen/small_padding"
+        android:text="@string/intro_next"
+        android:textColor="@color/md_theme_dark_secondaryContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/intro_prev_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableStart="@drawable/arrow_backward_icon"
+        android:drawableTint="@color/md_theme_dark_secondaryContainer"
+        android:padding="@dimen/small_padding"
+        android:text="@string/intro_back"
+        android:textColor="@color/md_theme_dark_secondaryContainer"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/intro_skip_button"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/small_padding"
+        android:text="@string/intro_skip"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/md_theme_dark_secondaryContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/intro_getting_started_button"
+        android:layout_width="@dimen/intro_getting_started_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/intro_bottom_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:background="@drawable/rounded_buttons"
+        android:text="@string/intro_getting_started"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/intro_top_margin"
+        android:text="@string/app_name"
+        android:textColor="@color/md_theme_light_onSurfaceVariant"
+        android:textSize="@dimen/extra_large_text"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/intro_view_pager"
+        android:contentDescription="@string/intro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        app:layout_constraintBottom_toTopOf="@+id/intro_tab_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/intro_tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/intro_next_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/intro_prev_button"
+        app:tabBackground="@drawable/intro_indicator_selector" />
+</androidx.constraintlayout.widget.ConstraintLayout>

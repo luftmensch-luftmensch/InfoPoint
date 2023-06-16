@@ -28,10 +28,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.infopoint.core.preferences.PreferencesManager;
+import com.infopoint.core.config.Constants;
+import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.MainActivity;
 import com.infopoint.ui.activity.authentication.login.LoginActivity;
-import com.infopoint.ui.activity.authentication.registration.RegistrationActivity;
+import com.infopoint.ui.activity.intro.IntroActivity;
 
 public class App extends AppCompatActivity {
     private final static String _TAG = "[App] ";
@@ -49,11 +50,13 @@ public class App extends AppCompatActivity {
         findViewById(R.id.splashscreen_title_text).setAnimation(bottomAnimation);
         findViewById(R.id.splashscreen_body_text).setAnimation(bottomAnimation);
 
-        PreferencesManager.initialize(this);
-
         new Handler().postDelayed(() -> {
             Log.d(_TAG, "Finished splashscreen...");
-            startActivity(new Intent(App.this, MainActivity.class));
+
+            if (StorageManager.with(this).contains(Constants.IS_LOGGED))
+                startActivity(new Intent(App.this, MainActivity.class));
+            else
+                startActivity(new Intent(App.this, IntroActivity.class));
             finish();
         }, 1500);
     }
