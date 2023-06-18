@@ -53,10 +53,12 @@ public class App extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Log.d(_TAG, "Finished splashscreen...");
 
-            if (StorageManager.with(this).contains(Constants.IS_LOGGED))
-                startActivity(new Intent(App.this, MainActivity.class));
-            else
-                startActivity(new Intent(App.this, IntroActivity.class));
+            startActivity(new Intent(App.this, MainActivity.class));
+
+            // if (StorageManager.with(this).contains(Constants.IS_LOGGED))
+            //     startActivity(new Intent(App.this, MainActivity.class));
+            // else
+            //     startActivity(new Intent(App.this, IntroActivity.class));
             finish();
         }, 1500);
     }

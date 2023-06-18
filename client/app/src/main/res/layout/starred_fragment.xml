@@ -24,7 +24,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/md_theme_dark_primaryContainer"
+    android:background="@color/md_theme_light_primaryContainer"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -130,7 +130,7 @@
                 android:layout_marginTop="@dimen/medium_margin"
                 android:text="@string/starred_empty"
                 android:textAlignment="center"
-                android:textColor="@color/md_theme_dark_primaryContainer"
+                android:textColor="@color/md_theme_light_primaryContainer"
                 android:textSize="@dimen/large_text" />
 
             <TextView
@@ -139,7 +139,7 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:text="@string/starred_empty_sub"
                 android:textAlignment="center"
-                android:textColor="@color/md_theme_dark_primaryContainer"
+                android:textColor="@color/md_theme_light_primaryContainer"
                 android:textSize="@dimen/medium_text" />
 
         </LinearLayout>

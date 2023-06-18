@@ -109,6 +109,7 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         skipButton.setOnClickListener(v -> {
+            Log.d(_TAG, "Skipping intro");
             StorageManager.with(this).write(Constants.INTRO_VIEWED, true);
             startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -116,6 +117,7 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         gettingStartedButton.setOnClickListener(v -> {
+            Log.d(_TAG, "GettingStarted clicked");
             StorageManager.with(this).write(Constants.INTRO_VIEWED, true);
             startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

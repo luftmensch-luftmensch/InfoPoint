@@ -18,36 +18,51 @@
   ~   First written in 13/6/2023 at 23:22
   ~
   -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/home_icon"
         android:orderInCategory="1"
-        android:title="@string/home" />
+        android:title="@string/home"
+        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white" />
 
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/search_icon"
         android:orderInCategory="2"
-        android:title="@string/search" />
+        android:title="@string/search"
+        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white" />
 
     <item
         android:id="@+id/nav_fab"
         android:title=""
         android:orderInCategory="3"
-        android:enabled="false"/>
+        android:enabled="false"
+        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white" />
 
     <item
         android:id="@+id/nav_starred"
         android:icon="@drawable/starred_icon"
         android:orderInCategory="4"
-        android:title="@string/starred" />
+        android:title="@string/starred"
+        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/profile_icon"
         android:orderInCategory="5"
-        android:title="@string/profile" />
-
+        android:title="@string/profile"
+        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white" />
 </menu>

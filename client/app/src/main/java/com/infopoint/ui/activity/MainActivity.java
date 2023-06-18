@@ -20,47 +20,23 @@
 
 package com.infopoint.ui.activity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.navigation.NavigationView;
 import com.infopoint.R;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationBarView.OnItemReselectedListener, NavController.OnDestinationChangedListener {
 
+public class MainActivity extends AppCompatActivity {
     private final static String _TAG = "[MainActivity] ";
     public NavController navController;
-    public BottomAppBar bottomAppBar;
-    public DrawerLayout drawerLayout;
-
-    public FloatingActionButton fab;
-    public Toolbar toolbar;
     public NavOptions.Builder leftToRightBuilder, rightToLeftBuilder;
-    private AppBarConfiguration appBarConfiguration;
-    private BottomNavigationView bottomNavigationView;
-    private NavigationView navigationView;
+    private ChipNavigationBar bar;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -71,28 +47,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setUI() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-
-        bottomAppBar = findViewById(R.id.bottom_app_bar);
-        bottomNavigationView = findViewById(R.id.bottom_nav_view);
-        navigationView = findViewById(R.id.nav_view);
-        fab = findViewById(R.id.fab);
+        bar = findViewById(R.id.bottom_bar);
+        bar.setItemSelected(R.id.nav_home, true);
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.addOnDestinationChangedListener(this);
-        appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_starred, R.id.search, R.id.nav_profile, R.id.nav_about_us, R.id.nav_logout)
-                .setOpenableLayout(drawerLayout)
-                .build();
-
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-        navigationView.setCheckedItem(R.id.nav_home);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         leftToRightBuilder = new NavOptions.Builder();
         leftToRightBuilder.setEnterAnim(R.anim.slide_in_right);
@@ -108,71 +66,35 @@ public class MainActivity extends AppCompatActivity
         rightToLeftBuilder.setPopExitAnim(R.anim.slide_out_left);
         rightToLeftBuilder.setLaunchSingleTop(true);
 
-
-
-        // Specific handler
-        toolbar.setNavigationOnClickListener(v -> {
-            if (drawerLayout.isDrawerVisible(GravityCompat.START))
-                drawerLayout.closeDrawer(GravityCompat.START);
-            else
-                drawerLayout.openDrawer(GravityCompat.START);
+        bar.setOnItemSelectedListener(item -> {
+            if (item == R.id.nav_home) {
+                if (navController.getCurrentDestination().getId() != R.id.nav_home) navController.navigate(R.id.nav_home, null, rightToLeftBuilder.build());
+            } else if (item == R.id.nav_search) {
+                if (navController.getCurrentDestination().getId() != R.id.nav_search) navController.navigate(R.id.nav_search, null, leftToRightBuilder.build());
+            } else if (item == R.id.nav_starred) {
+                if (navController.getCurrentDestination().getId() != R.id.nav_starred) navController.navigate(R.id.nav_starred, null, leftToRightBuilder.build());
+            } else if (item == R.id.nav_profile) {
+                if (navController.getCurrentDestination().getId() != R.id.nav_profile) navController.navigate(R.id.nav_profile, null, leftToRightBuilder.build());
+            }
         });
-
     }
 
-    @Override
-    public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination destination, @Nullable Bundle bundle) {
-        Log.d(_TAG, "onDestinationChanged: starts");
-
-    }
-
-    @Override
-    public void onNavigationItemReselected(@NonNull MenuItem item) {
-
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (drawerLayout.isDrawerVisible(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START);
-
-        if (item.getItemId() == R.id.nav_home) {
-            Log.d(_TAG, "onNavigationItemSelected: Opening Home Fragment");
-            navController.navigate(R.id.nav_home, null, rightToLeftBuilder.build());
-        } else if (item.getItemId() == R.id.nav_starred) {
-
-            Log.d(_TAG, "onNavigationItemSelected: Opening Starred Fragment");
-            navController.navigate(R.id.nav_starred, null, leftToRightBuilder.build());
-
-        }
-
-        return false;
-    }
     @Override
     public void onBackPressed() {
-        Log.d(_TAG, "onBackPressed: back pressed");
-        if (drawerLayout.isDrawerVisible(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START);
-        else if (navController.getCurrentDestination().getId() == R.id.nav_home) {
+        Log.d(_TAG, "onBackPressed");
+        if (bar.getSelectedItemId() == R.id.nav_home) {
+            Log.d(_TAG, "onBackPressed: Current destination Home -> Closing the app");
             finishAffinity();
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        } else
-            super.onBackPressed();
+        } else {
+            navController.navigate(R.id.nav_home, null, rightToLeftBuilder.build());
+            bar.setItemSelected(R.id.nav_home, true);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // TODO: Add logic based on SharedPreferences
-        ImageView profilePic = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_profile_image);
-        ImageView userVerified = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_verified_image);
-        TextView username = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_profile_name);
-        TextView usernameType = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_profile_type);
-
-        username.setText("User Name");
-        usernameType.setText("STUDENT");
-        userVerified.setImageResource(R.drawable.not_verified_icon);
-
+        // TODO: Add SharedPreferences Logic
     }
 }

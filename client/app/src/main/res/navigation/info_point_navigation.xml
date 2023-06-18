@@ -38,7 +38,7 @@
         android:label="@string/navigation_menu_search"
         tools:layout="@layout/search_fragment">
         <action
-            android:id="@+id/action_nav_starred_to_nav_home"
+            android:id="@+id/action_nav_search_to_nav_home"
             app:destination="@id/nav_home"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"

@@ -81,6 +81,8 @@ dependencies {
     // Effects
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+    // Eye candy navigation bar
+    implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

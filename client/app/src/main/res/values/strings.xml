@@ -25,8 +25,8 @@
     <!-- Bottom Bar -->
     <string name="home">Home</string>
     <string name="profile">Profilo</string>
-    <string name="search">Ricerca opere</string>
-    <string name="starred">Preferite</string>
+    <string name="search">Ricerca</string>
+    <string name="starred">Preferiti</string>
 
     <!-- AUTHENTICATION -->
     <!-- Hints -->

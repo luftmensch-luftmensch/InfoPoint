@@ -23,7 +23,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/md_theme_dark_primaryContainer"
+    android:background="@color/md_theme_light_primaryContainer"
     android:layout_marginTop="@dimen/medium_margin"
     android:paddingBottom="@dimen/medium_padding"
     android:paddingTop="@dimen/medium_padding">
