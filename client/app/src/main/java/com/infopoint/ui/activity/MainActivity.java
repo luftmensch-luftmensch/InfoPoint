@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 if (navController.getCurrentDestination().getId() != R.id.nav_home) navController.navigate(R.id.nav_home, null, options);
             } else if (item == R.id.nav_search) {
                 if (navController.getCurrentDestination().getId() != R.id.nav_search) navController.navigate(R.id.nav_search, null, options);
-            } else if (item == R.id.nav_starred) {
-                if (navController.getCurrentDestination().getId() != R.id.nav_starred) navController.navigate(R.id.nav_starred, null, options);
             } else if (item == R.id.nav_profile) {
                 if (navController.getCurrentDestination().getId() != R.id.nav_profile) navController.navigate(R.id.nav_profile, null, options);
             }

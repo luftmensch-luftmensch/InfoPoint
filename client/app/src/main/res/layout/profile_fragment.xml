@@ -47,6 +47,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".feature_profile.profile.ProfileFragment">
 
+        <!-- Profile pic -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_photo"
             android:layout_width="128dp"
@@ -77,6 +78,7 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
             tools:ignore="PrivateResource" />
 
+        <!-- Username -->
         <TextView
             android:id="@+id/textview_username"
             android:layout_width="wrap_content"
@@ -89,8 +91,9 @@
             app:layout_constraintBottom_toTopOf="@id/settings_chip"
             app:layout_constraintEnd_toEndOf="@id/profile_photo"
             app:layout_constraintStart_toStartOf="@id/profile_photo"
-            app:layout_constraintTop_toBottomOf="@id/profile_photo"
-            />
+            app:layout_constraintTop_toBottomOf="@id/profile_photo" />
+
+        <!-- User level -->
         <TextView
             android:id="@+id/textview_user_level"
             android:layout_width="wrap_content"
@@ -103,9 +106,9 @@
             app:layout_constraintBottom_toTopOf="@id/settings_chip"
             app:layout_constraintEnd_toEndOf="@id/textview_username"
             app:layout_constraintStart_toStartOf="@id/textview_username"
-            app:layout_constraintTop_toBottomOf="@id/textview_username"
-            />
+            app:layout_constraintTop_toBottomOf="@id/textview_username" />
 
+        <!-- About us -->
         <com.google.android.material.chip.Chip
             android:id="@+id/settings_chip"
             style="@style/Widget.Material3.Chip.Assist"
@@ -115,38 +118,20 @@
             android:text="@string/chip_text_settings"
             app:chipIcon="@drawable/settings_icon"
             app:ensureMinTouchTargetSize="true"
-            app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+            app:layout_constraintBottom_toTopOf="@+id/view_pager"
             app:layout_constraintEnd_toEndOf="@id/textview_user_level"
             app:layout_constraintStart_toStartOf="@id/textview_user_level"
             app:layout_constraintTop_toBottomOf="@id/textview_user_level" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/viewPager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/settings_chip"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-        <View
-            android:layout_width="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tab_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/viewPager"
-            android:layout_height="5dp"
-            android:background="@drawable/shadow_tab"/>
-
+        <!-- View pager for the art work starred by the user -->
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+            android:id="@+id/view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_layout" />
+            app:layout_constraintTop_toBottomOf="@id/settings_chip" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

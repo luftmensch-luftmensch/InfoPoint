@@ -40,24 +40,6 @@
         app:cnb_textColor="@color/white" />
 
     <item
-        android:id="@+id/nav_fab"
-        android:title=""
-        android:orderInCategory="3"
-        android:enabled="false"
-        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
-        app:cnb_iconColor="@color/white"
-        app:cnb_textColor="@color/white" />
-
-    <item
-        android:id="@+id/nav_starred"
-        android:icon="@drawable/starred_icon"
-        android:orderInCategory="4"
-        android:title="@string/starred"
-        app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
-        app:cnb_iconColor="@color/white"
-        app:cnb_textColor="@color/white" />
-
-    <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/profile_icon"
         android:orderInCategory="5"

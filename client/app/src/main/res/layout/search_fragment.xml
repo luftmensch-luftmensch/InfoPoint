@@ -42,7 +42,7 @@
             app:navigationIcon="@drawable/arrow_back_icon" >
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/search"
+                android:id="@+id/search_view"
                 android:backgroundTint="@color/white"
                 android:layout_width="match_parent"
                 android:paddingBottom="2dp"
