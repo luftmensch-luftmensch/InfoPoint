@@ -26,6 +26,7 @@
         <!-- Launcher w/ Splash Screen -->
         <activity
             android:name=".App"
+            android:screenOrientation="sensorPortrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,14 +35,23 @@
         </activity>
 
         <!-- Authentication -->
-        <activity android:name=".ui.activity.authentication.login.LoginActivity"/>
-        <activity android:name=".ui.activity.authentication.registration.RegistrationActivity"/>
+        <activity
+            android:name=".ui.activity.authentication.login.LoginActivity"
+            android:screenOrientation="sensorPortrait"
+            />
+        <activity
+            android:name=".ui.activity.authentication.registration.RegistrationActivity"
+            android:screenOrientation="sensorPortrait"
+            />
 
         <!-- Intro -->
-        <activity android:name=".ui.activity.intro.IntroActivity"/>
+        <activity android:name=".ui.activity.intro.IntroActivity"
+            android:screenOrientation="sensorPortrait"
+            />
 
         <!-- Navigation graph -->
         <activity android:name=".ui.activity.MainActivity"
+            android:screenOrientation="sensorPortrait"
             android:exported="true">
             <nav-graph android:value="@navigation/info_point_navigation" />
         </activity>

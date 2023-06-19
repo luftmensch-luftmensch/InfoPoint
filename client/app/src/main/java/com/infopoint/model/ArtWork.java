@@ -16,9 +16,30 @@
  *   @author Valentino Bocchetti
  *   First written in 13/6/2023 at 20:59
  *
- */
+*/
 
 package com.infopoint.model;
 
+import androidx.annotation.NonNull;
+
 public class ArtWork {
+    private String name;
+    private String author;
+    private String description;
+
+    public ArtWork(String name, String author, String description) {
+        this.name = name;
+        this.author = author;
+        this.description = description;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "ArtWork{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

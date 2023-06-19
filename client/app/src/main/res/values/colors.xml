@@ -19,17 +19,9 @@
   ~
   -->
 <resources>
-    <!-- Palette -->
-    <color name="md_theme_light_primaryInverse">#4DDADA</color>
-
-    <color name="md_theme_light_top_bar">#1A006A6A</color>
-    <color name="md_theme_dark_top_bar">#1A4DDADA</color>
-
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-
-
     <color name="seed">#CFB4C8</color>
 
     <!-- Light variant -->

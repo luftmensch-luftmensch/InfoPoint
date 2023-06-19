@@ -195,4 +195,7 @@
     <string name="intro_getting_started">Inizia!</string>
     <string name="intro">Intro</string>
     <string name="intro_item_image_description">Intro immagine</string>
+    <string name="placeholder_user_level">Livello</string>
+    <string name="find_art_work">Cerca un\'opera</string>
+    <string name="search_art_works">Ricerca opere</string>
 </resources>

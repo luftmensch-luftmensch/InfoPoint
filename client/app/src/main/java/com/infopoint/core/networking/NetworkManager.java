@@ -22,10 +22,26 @@ package com.infopoint.core.networking;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.InetAddresses;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.util.Log;
+
+import com.infopoint.core.config.Constants;
+import com.infopoint.model.ArtWork;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
 
 public class NetworkManager {
+    private static final String _TAG = "[NetworkManager] ";
 
     public static Boolean checkConnection(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -33,5 +49,35 @@ public class NetworkManager {
         if (network == null) return false;
         NetworkCapabilities capabilities = manager.getNetworkCapabilities(network);
         return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
+    }
+
+    public static ArrayList<ArtWork> retrieveArtwork(String fmt) {
+        ArrayList artworks = new ArrayList();
+        try {
+            InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
+            if(address.isReachable(2000)){ // Check if the server is reachable
+                Socket s = new Socket(address, Constants.SERVER_PORT);
+                // Create the writer in order to write to the socket just opened
+                PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
+                // Write the request
+                out.println(fmt);
+
+                // Read the response received from the server
+                BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+                // TODO: Handle read
+
+                Log.d(_TAG, "Closing socket");
+                s.close();
+            }
+        }catch (IOException e){
+            Log.d(_TAG, e.getLocalizedMessage());
+        }
+        return artworks;
+    }
+
+    public static boolean login(String username, String password) {
+
+        return false;
     }
 }

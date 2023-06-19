@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:logo="@drawable/logo_no_background_alt"
+            app:logoAdjustViewBounds="true"
             app:menu="@menu/top_bar_main_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -88,7 +89,22 @@
             app:layout_constraintBottom_toTopOf="@id/settings_chip"
             app:layout_constraintEnd_toEndOf="@id/profile_photo"
             app:layout_constraintStart_toStartOf="@id/profile_photo"
-            app:layout_constraintTop_toBottomOf="@id/profile_photo" />
+            app:layout_constraintTop_toBottomOf="@id/profile_photo"
+            />
+        <TextView
+            android:id="@+id/textview_user_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/placeholder_user_level"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:layout_constraintBottom_toTopOf="@id/settings_chip"
+            app:layout_constraintEnd_toEndOf="@id/textview_username"
+            app:layout_constraintStart_toStartOf="@id/textview_username"
+            app:layout_constraintTop_toBottomOf="@id/textview_username"
+            />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/settings_chip"
@@ -100,9 +116,9 @@
             app:chipIcon="@drawable/settings_icon"
             app:ensureMinTouchTargetSize="true"
             app:layout_constraintBottom_toTopOf="@+id/tab_layout"
-            app:layout_constraintEnd_toEndOf="@id/textview_username"
-            app:layout_constraintStart_toStartOf="@id/textview_username"
-            app:layout_constraintTop_toBottomOf="@id/textview_username" />
+            app:layout_constraintEnd_toEndOf="@id/textview_user_level"
+            app:layout_constraintStart_toStartOf="@id/textview_user_level"
+            app:layout_constraintTop_toBottomOf="@id/textview_user_level" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

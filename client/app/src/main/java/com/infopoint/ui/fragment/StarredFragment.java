@@ -20,8 +20,25 @@
 
 package com.infopoint.ui.fragment;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.infopoint.R;
 
 public class StarredFragment extends Fragment {
     private final static String _TAG = "[StarredFragment] ";
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle bundle) {
+        Log.d(_TAG, "onCreateView: Starting...");
+        return inflater.inflate(R.layout.starred_fragment, container, false);
+    }
 }

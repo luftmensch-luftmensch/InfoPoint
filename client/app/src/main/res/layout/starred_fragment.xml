@@ -19,131 +19,49 @@
   ~
   -->
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/md_theme_light_primaryContainer"
-    android:fillViewport="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    tools.context=".ui.fragment.StarredFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/recycler_art_work_starred">
 
-        <ImageView
-            android:id="@+id/starredBackgroundRectangle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:background="@drawable/rectangle_with_borders"
-            android:contentDescription="@string/rectangle_with_borders"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/starredLinearLayout" />
-
-        <LinearLayout
-            android:id="@+id/starredLinearLayout"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar_starred"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/large_margin"
-            android:layout_marginStart="@dimen/large_margin"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/md_theme_light_primary"
+            app:menu="@menu/filter_menu"
+            app:navigationIconTint="@color/white"
+            app:navigationIcon="@drawable/arrow_back_icon" >
 
-            <ImageButton
-                android:id="@+id/starredSortButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/sort_button"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sort_icon"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/starredSortText"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_starred"
+                android:backgroundTint="@color/white"
+                android:layout_width="match_parent"
+                android:paddingBottom="2dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:textColor="@color/white"/>
+                android:background="@drawable/search_background"
+                android:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="@string/find_art_work">
 
-            <ImageButton
-                android:id="@+id/starredSortOrder"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                android:layout_marginStart="@dimen/small_margin"
-                android:contentDescription="@string/sort_order"
-                android:scaleType="centerCrop"
-                android:src="@drawable/arrow_upward_icon"
-                app:tint="@color/white"/>
-        </LinearLayout>
+            </androidx.appcompat.widget.SearchView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/starredRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/medium_padding"
-            android:paddingStart="@dimen/medium_padding"
-            android:paddingTop="@dimen/medium_padding"
-            android:layout_marginBottom="?attr/actionBarSize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/starredBackgroundRectangle"
-            app:layout_constraintVertical_bias="0.0"  />
+        </com.google.android.material.appbar.MaterialToolbar>
 
-        <LinearLayout
-            android:id="@+id/starredEmptyLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingEnd="@dimen/medium_padding"
-            android:paddingStart="@dimen/medium_padding"
-            android:paddingTop="@dimen/medium_padding"
-            android:visibility="gone"
-            android:layout_marginBottom="?attr/actionBarSize"
-            app:layout_constraintBottom_toBottomOf="@+id/starredBackgroundRectangle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/starredBackgroundRectangle" >
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="@string/starred_empty_icon"
-                android:scaleType="centerCrop"
-                android:src="@drawable/starred_icon"
-                app:tint="@color/white" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_art_work_starred"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:text="@string/starred_empty"
-                android:textAlignment="center"
-                android:textColor="@color/md_theme_light_primaryContainer"
-                android:textSize="@dimen/large_text" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_margin"
-                android:text="@string/starred_empty_sub"
-                android:textAlignment="center"
-                android:textColor="@color/md_theme_light_primaryContainer"
-                android:textSize="@dimen/medium_text" />
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

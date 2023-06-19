@@ -27,15 +27,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-
-import com.infopoint.R;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import com.infopoint.R;
 
 public class MainActivity extends AppCompatActivity {
     private final static String _TAG = "[MainActivity] ";
     public NavController navController;
-    public NavOptions.Builder leftToRightBuilder, rightToLeftBuilder;
+    private NavOptions options;
     private ChipNavigationBar bar;
 
     @Override
@@ -52,29 +51,23 @@ public class MainActivity extends AppCompatActivity {
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        leftToRightBuilder = new NavOptions.Builder();
-        leftToRightBuilder.setEnterAnim(R.anim.slide_in_right);
-        leftToRightBuilder.setExitAnim(R.anim.slide_out_left);
-        leftToRightBuilder.setPopEnterAnim(R.anim.slide_in_left);
-        leftToRightBuilder.setPopExitAnim(R.anim.slide_out_right);
-        leftToRightBuilder.setLaunchSingleTop(true);
-
-        rightToLeftBuilder = new NavOptions.Builder();
-        rightToLeftBuilder.setEnterAnim(R.anim.slide_in_left);
-        rightToLeftBuilder.setExitAnim(R.anim.slide_out_right);
-        rightToLeftBuilder.setPopEnterAnim(R.anim.slide_in_right);
-        rightToLeftBuilder.setPopExitAnim(R.anim.slide_out_left);
-        rightToLeftBuilder.setLaunchSingleTop(true);
+        options = new NavOptions.Builder()
+                .setLaunchSingleTop(true) // Prevent multiple copies of the same destination
+                .setEnterAnim(R.anim.fade_in)
+                .setExitAnim(R.anim.fade_out)
+                .setPopEnterAnim(R.anim.slide_in_left)
+                .setPopExitAnim(R.anim.slide_out_right)
+                .build();
 
         bar.setOnItemSelectedListener(item -> {
             if (item == R.id.nav_home) {
-                if (navController.getCurrentDestination().getId() != R.id.nav_home) navController.navigate(R.id.nav_home, null, rightToLeftBuilder.build());
+                if (navController.getCurrentDestination().getId() != R.id.nav_home) navController.navigate(R.id.nav_home, null, options);
             } else if (item == R.id.nav_search) {
-                if (navController.getCurrentDestination().getId() != R.id.nav_search) navController.navigate(R.id.nav_search, null, leftToRightBuilder.build());
+                if (navController.getCurrentDestination().getId() != R.id.nav_search) navController.navigate(R.id.nav_search, null, options);
             } else if (item == R.id.nav_starred) {
-                if (navController.getCurrentDestination().getId() != R.id.nav_starred) navController.navigate(R.id.nav_starred, null, leftToRightBuilder.build());
+                if (navController.getCurrentDestination().getId() != R.id.nav_starred) navController.navigate(R.id.nav_starred, null, options);
             } else if (item == R.id.nav_profile) {
-                if (navController.getCurrentDestination().getId() != R.id.nav_profile) navController.navigate(R.id.nav_profile, null, leftToRightBuilder.build());
+                if (navController.getCurrentDestination().getId() != R.id.nav_profile) navController.navigate(R.id.nav_profile, null, options);
             }
         });
     }
@@ -87,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             finishAffinity();
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         } else {
-            navController.navigate(R.id.nav_home, null, rightToLeftBuilder.build());
+            navController.navigate(R.id.nav_home, null, options);
             bar.setItemSelected(R.id.nav_home, true);
         }
     }

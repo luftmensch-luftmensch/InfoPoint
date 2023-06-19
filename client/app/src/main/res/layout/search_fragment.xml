@@ -30,25 +30,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:liftOnScroll="true"
-        app:liftOnScrollTargetViewId="@id/recycler_routes">
+        app:liftOnScrollTargetViewId="@id/recycler_art_work">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/top_app_bar_search"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/md_theme_light_primary"
             app:menu="@menu/filter_menu"
-            app:navigationIcon="@drawable/arrow_back_icon">
+            app:navigationIconTint="@color/white"
+            app:navigationIcon="@drawable/arrow_back_icon" >
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search"
-                android:backgroundTint="@color/md_theme_light_top_bar"
+                android:backgroundTint="@color/white"
                 android:layout_width="match_parent"
                 android:paddingBottom="2dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_background"
                 android:iconifiedByDefault="false"
                 app:queryBackground="@android:color/transparent"
-                app:queryHint="Cerca un itinerario">
+                app:queryHint="@string/find_art_work">
 
             </androidx.appcompat.widget.SearchView>
 
@@ -57,7 +59,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_routes"
+        android:id="@+id/recycler_art_work"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

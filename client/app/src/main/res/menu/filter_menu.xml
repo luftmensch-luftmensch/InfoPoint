@@ -22,8 +22,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/filter_search"
-        android:contentDescription="Ricerca itinerari"
+        android:contentDescription="@string/search_art_works"
         android:icon="@drawable/filter_list_icon"
-        android:title="Ricerca itinerari"
+        android:title="@string/search_art_works"
         app:showAsAction="always" />
 </menu>
