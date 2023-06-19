@@ -37,22 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/md_theme_light_primary"
-            app:menu="@menu/filter_menu"
-            app:navigationIconTint="@color/white"
-            app:navigationIcon="@drawable/arrow_back_icon" >
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view"
-                android:backgroundTint="@color/white"
-                android:layout_width="match_parent"
-                android:paddingBottom="2dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/search_background"
-                android:iconifiedByDefault="false"
-                app:queryBackground="@android:color/transparent"
-                app:queryHint="@string/find_art_work">
-
-            </androidx.appcompat.widget.SearchView>
+            app:menu="@menu/search_menu"
+            app:title="@string/search"
+            app:titleTextColor="@color/white" >
 
         </com.google.android.material.appbar.MaterialToolbar>
 

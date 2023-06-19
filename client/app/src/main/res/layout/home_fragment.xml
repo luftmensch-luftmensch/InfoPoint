@@ -26,17 +26,19 @@
     tools:context=".ui.fragment.HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/app_bar_layout_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:liftOnScroll="true"
         app:liftOnScrollTargetViewId="@id/recycler_home">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/top_app_bar_home"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/md_theme_light_primary"
             app:title="@string/home"
+            app:titleTextColor="@color/white"
             app:menu="@menu/top_bar_main_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>

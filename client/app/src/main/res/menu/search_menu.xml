@@ -15,15 +15,16 @@
   ~ limitations under the License.
   ~
   ~   @author Valentino Bocchetti
-  ~   First written in 15/6/2023 at 16:25
+  ~   First written in 19/6/2023 at 15:21
   ~
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
     <item
-        android:id="@+id/filter_search"
-        android:contentDescription="@string/search_art_works"
-        android:icon="@drawable/filter_list_icon"
-        android:title="@string/search_art_works"
-        app:showAsAction="always" />
+        android:id="@+id/menu_item_search"
+        android:icon="@drawable/search_icon"
+        android:title="@string/search"
+        android:iconTint="@color/white"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
 </menu>
