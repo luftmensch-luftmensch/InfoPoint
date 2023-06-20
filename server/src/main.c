@@ -17,11 +17,9 @@
 #include "helpers/logging/logging.h"
 #include "helpers/logging/welcome_message.h"
 
-#include "helpers/pool/thread_pool.h"
 #include "helpers/config/info_point_config.h"
 #include "helpers/command_line_runner/command_line_runner.h"
 #include "helpers/utility/utility.h"
-#include "core/database/database.h"
 
 int main(int argc, char** argv){
   // Welcome message
@@ -47,8 +45,4 @@ int main(int argc, char** argv){
   free(cfg);
 
   destroy_server(s);
-
-  /* db_handler* database = init_db_handler("admin", "password", "localhost:27017", "noesys"); */
-  /* printf("%s %s %s\n", database->settings.user_collection, database->settings.art_work_collection, database->settings.database_name); */
-  /* destroy_db_handler(database); */
 }

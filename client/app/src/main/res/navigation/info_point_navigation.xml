@@ -61,21 +61,6 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
-    <!-- Info about us -->
-    <fragment android:id="@+id/nav_about_us"
-        android:name="com.infopoint.ui.fragment.AboutUsFragment"
-        android:label="@string/navigation_menu_profile"
-        tools:layout="@layout/about_us_fragment">
-        <action
-            android:id="@+id/action_nav_about_us_to_nav_home"
-            app:destination="@id/nav_home"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/nav_home"
-            app:popUpToInclusive="true"/>
-    </fragment>
-
-
 
     <!-- Logout -->
     <activity

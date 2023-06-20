@@ -20,6 +20,8 @@
 
 package com.infopoint.ui.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,15 +32,43 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.Chip;
 import com.infopoint.R;
 
 public class ProfileFragment extends Fragment {
     private final static String _TAG = "[ProfileFragment] ";
+
+    private Chip chip;
+    private BottomSheetDialog dialog;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle bundle) {
         Log.d(_TAG, "onCreateView: Starting...");
         return inflater.inflate(R.layout.profile_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
+        super.onViewCreated(view, bundle);
+        chip = view.findViewById(R.id.about_us_chip);
+        chip.setOnClickListener(click -> showDialog());
+    }
+
+    private void showDialog() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        dialog.setContentView(R.layout.about_us_modal);
+        dialog.findViewById(R.id.about_us_team_card_author_1_github_link).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/luftmensch-luftmensch/"))));
+        dialog.findViewById(R.id.about_us_team_card_author_2_github_link).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/saltyDario/"))));
+        dialog.findViewById(R.id.about_us_team_card_author_3_github_link).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lbrando/"))));
+        dialog.findViewById(R.id.about_us_contact).setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, "infopoint@info.com");
+            requireActivity().startActivity(Intent.createChooser(intent, "Seleziona client di posta elettronica"));
+        });
+
+        dialog.show();
     }
 }

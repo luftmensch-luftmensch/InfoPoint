@@ -88,7 +88,7 @@
             android:maxLines="1"
             android:text="@string/placeholder_username"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintBottom_toTopOf="@id/settings_chip"
+            app:layout_constraintBottom_toTopOf="@id/about_us_chip"
             app:layout_constraintEnd_toEndOf="@id/profile_photo"
             app:layout_constraintStart_toStartOf="@id/profile_photo"
             app:layout_constraintTop_toBottomOf="@id/profile_photo" />
@@ -103,14 +103,14 @@
             android:maxLines="1"
             android:text="@string/placeholder_user_level"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintBottom_toTopOf="@id/settings_chip"
+            app:layout_constraintBottom_toTopOf="@id/about_us_chip"
             app:layout_constraintEnd_toEndOf="@id/textview_username"
             app:layout_constraintStart_toStartOf="@id/textview_username"
             app:layout_constraintTop_toBottomOf="@id/textview_username" />
 
         <!-- About us -->
         <com.google.android.material.chip.Chip
-            android:id="@+id/settings_chip"
+            android:id="@+id/about_us_chip"
             style="@style/Widget.Material3.Chip.Assist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/settings_chip" />
+            app:layout_constraintTop_toBottomOf="@id/about_us_chip" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
