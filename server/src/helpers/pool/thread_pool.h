@@ -31,12 +31,11 @@
     pthread_t* threads;		/* Array of threads spawned by the thread pool */
     size_t threads_alive;	/* N° of threads currently active */
 
-
     pthread_mutex_t lock;	/* Mutex of the thread pool */
     pthread_cond_t signal;	/* Conditional variable for the thread pool */
 
     queue_t* queue; 		/* Queue containing all the tasks that has to be executed */
-    bool started;		/* Control switch for the worker threads */
+    bool active;		/* Control switch for the worker threads */
   } thread_pool_t;
 
   /* =================================== Function Prototyes [Job] ======================================= */

@@ -20,8 +20,6 @@
 
 #define _m(type, format, ...) _msgcategory(type, " SIGNAL HANDLER ", format __VA_OPT__(,) __VA_ARGS__)
 
-volatile sig_atomic_t persist = 1;
-
 void setup_signals(int sig, void (func)(int)) {
   struct sigaction sa = {
     .sa_flags = SA_RESTART,

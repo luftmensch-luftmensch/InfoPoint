@@ -13,9 +13,6 @@
 
   #include <signal.h>
 
-  /** Handle interrupt to end program gracefully */
-  extern volatile sig_atomic_t persist;
-
   /** Helper function used to setup a signal handler to stop the execution gracefully */
   void setup_signals(int, void (func)(int));
 #endif

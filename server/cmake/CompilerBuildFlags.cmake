@@ -109,7 +109,7 @@ function(set_project_build_flags project_name)
       ### Threading support ###
       # In some cases gcc could be compiled with thread support out of the box. For sake of sanity we are going to declare explictly
       -pthread
-      # -fno-strict-aliasing
+      -fno-strict-aliasing
   )
 
   if (${PROJECT_NAME}_WARNINGS_AS_ERRORS)

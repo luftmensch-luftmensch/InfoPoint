@@ -99,14 +99,14 @@ unsigned char* file_reader(const char* file_name) {
   // Get the size of the specified file
   off_t size = get_file_size(file_name);
 
-  if (!(buffer = malloc(size + 1))) { // Check if we can allocate enought space to put the content of the file in the buffer
-    fprintf(stderr, "[%s] (%s) Failed to allocate enought space to store the specified file name <%s>", __FILE_NAME__, __func__, file_name);
-    exit (EXIT_FAILURE);
-  }
-
   if (!(fp = fopen(file_name, "r"))) { // Try to open the file in read mode
     fprintf(stderr, "[%s] (%s) Failed to open the given file name <%s> -> %s", __FILE_NAME__, __func__, file_name, strerror(errno));
     return NULL;
+  }
+
+  if (!(buffer = malloc(size + 1))) { // Check if we can allocate enought space to put the content of the file in the buffer
+    fprintf(stderr, "[%s] (%s) Failed to allocate enought space to store the specified file name <%s>", __FILE_NAME__, __func__, file_name);
+    exit (EXIT_FAILURE);
   }
 
   // Try to read the given file

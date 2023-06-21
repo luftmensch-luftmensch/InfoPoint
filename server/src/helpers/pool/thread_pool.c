@@ -27,13 +27,20 @@ void* execute_task(void* arg) {
   thread_pool_t* pool = (thread_pool_t*) arg;
   task_t* task_to_execute;
 
-  while(persist) {
+  for(;;) {
     /* ==== [Start of critical section] ==== */
     pthread_mutex_lock(&(pool->lock));
     // wait for the condition: a non-empty queue
-    while(is_empty(pool->queue)) {
+    /**
+      Wait on condition variable, check for spurious wakeups.
+      When returning from pthread_cond_wait(), we own the lock.
+    */
+    while(is_empty(pool->queue) && (!pool->active)) {
       pthread_cond_wait(&(pool->signal), &(pool->lock));
     }
+
+    if (!pool->active)
+      break;
 
     task_to_execute = (task_t*) dequeue(pool->queue);
     pthread_mutex_unlock(&(pool->lock));
@@ -41,6 +48,10 @@ void* execute_task(void* arg) {
 
     printf("Pulled task n° %p\n", task_to_execute->arg);
   }
+
+  pool->threads_alive--;
+  pthread_mutex_unlock(&(pool->lock));
+  pthread_exit(NULL);
   return NULL;
 }
 
@@ -79,6 +90,7 @@ thread_pool_t* init_thread_pool(size_t amount) {
     _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->threads!\n", __FILE_NAME__, __func__);
     destroy_queue(pool->queue);
     free(pool);
+    return NULL;
   }
 
   _m(_msginfo, "[%s] (%s) Initialized thread_pool->threads\n", __FILE_NAME__, __func__);
@@ -95,23 +107,28 @@ thread_pool_t* init_thread_pool(size_t amount) {
 
   /* Initialize thread_pool mutex & cond */
   pthread_mutex_init(&(pool->lock), NULL);
-  printf("Intialized thread_pool->lock\n");
+  _m(_msginfo, "[%s] (%s) Initialized thread_pool->lock", __FILE_NAME__, __func__);
   pthread_cond_init(&(pool->signal), NULL);
-  printf("Intialized thread_pool->signal\n");
+  _m(_msginfo, "[%s] (%s) Initialized thread_pool->signal", __FILE_NAME__, __func__);
 
   return pool;
 }
 
 void destroy_thread_pool(thread_pool_t* pool_to_destroy) {
-  // pool_to_destroy->active = false; /* Disable the active control switch */
+  _m(_msginfo, "[%s] (%s) Destroying the thread_pool as requested", __FILE_NAME__, __func__);
+  pool_to_destroy->active = false; /* Disable the active control switch */
 
-  printf("Signaling thread_pool->threads\n");
-  /* Signal all threads in the thread pool that it's going to shutdown */
+  /* ==== Start of critical section ==== */
+  pthread_mutex_lock(&(pool_to_destroy->lock));
+
   pthread_cond_broadcast(&(pool_to_destroy->signal));
 
   /* Wait to end signaling before joining */
   for (size_t i = 0; i < pool_to_destroy->threads_alive; i++)
     pthread_join(pool_to_destroy->threads[i], NULL);
+
+  pthread_mutex_unlock(&(pool_to_destroy->lock));
+  /* ==== End of critical section ==== */
 
   /* Finally deallocate space occupied by the threads */
   free(pool_to_destroy->threads);
@@ -119,9 +136,13 @@ void destroy_thread_pool(thread_pool_t* pool_to_destroy) {
   /* Deallocate the queue used by the threads */
   destroy_queue(pool_to_destroy->queue);
 
+  /* Destroy the mutex & the condition variable as we don't need it */
+  pthread_mutex_destroy(&(pool_to_destroy->lock));
+  pthread_cond_destroy(&(pool_to_destroy->signal));
+
+  /* Finally destroy the thread_pool itself */
   free(pool_to_destroy);
 }
-
 
 bool submit_task(thread_pool_t* pool, task_t* task) {
   /* ==== Start of critical section ==== */
