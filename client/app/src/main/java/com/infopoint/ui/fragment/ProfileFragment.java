@@ -31,8 +31,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -59,6 +57,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, bundle);
         chip = view.findViewById(R.id.about_us_chip);
         chip.setOnClickListener(click -> showDialog());
+
 
         toolbar = view.findViewById(R.id.top_app_bar_profile);
 
@@ -88,6 +87,7 @@ public class ProfileFragment extends Fragment {
         Log.d(_TAG, "Calling About Us dialog");
         final BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         dialog.setContentView(R.layout.about_us_modal);
+        dialog.getBehavior().setMaxWidth(8000);
         dialog.findViewById(R.id.about_us_team_card_author_1_github_link).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/luftmensch-luftmensch/"))));
         dialog.findViewById(R.id.about_us_team_card_author_2_github_link).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/saltyDario/"))));
         dialog.findViewById(R.id.about_us_team_card_author_3_github_link).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lbrando/"))));

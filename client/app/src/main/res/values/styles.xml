@@ -66,5 +66,4 @@
         <item name="android:gravity">center_vertical</item>
         <item name="autoSizeMinTextSize">@dimen/extra_large_text</item>
     </style>
-
 </resources>

@@ -192,4 +192,7 @@
 
     <string name="confirm_request">CONFERMA</string>
     <string name="cancel_request">ANNULLA</string>
+    <string name="find_by_author">Autori</string>
+    <string name="find_by_date">Data</string>
+    <string name="find_by_name">Nome</string>
 </resources>
