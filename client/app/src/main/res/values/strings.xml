@@ -32,7 +32,6 @@
     <!-- Hints -->
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
-    <string name="hint_email">Email</string>
     <string name="hint_confirm_password">Conferma password</string>
 
     <!-- Actions -->
@@ -58,19 +57,19 @@
 
     <string name="unknown_error">Errore sconosciuto, contatta un amministratore</string>
 
-    <!-- STUFF -->
+    <!-- Logo -->
     <string name="logo_app">Logo App</string>
 
     <!-- ERRORS RELATED TO NETWORK OR STORAGE -->
-    <string name="data_corrupted">Try to reinstall app, data may be corrupted</string>
-    <string name="unexpected_error">Unexpected error, retry</string>
+    <string name="data_corrupted">Prova a reinstallare l\'app, i dati potrebbero essersi corrotti!</string>
+    <string name="unexpected_error">Errore inaspettato, riprova</string>
     <string name="internet_error">Controlla la tua connessione ad internet</string>
 
     <string name="bad_request">Operazione effettuata non valida, controlla le informazioni inserite</string>
     <string name="forbidden">Non hai i permessi necessari per effettuare l\'operazione</string>
     <string name="internal_error">Il Server non può elaborare la richiesta al momento, riprova più tardi</string>
     <string name="not_acceptable">Richiesta non valida, aggiorna l\'app</string>
-    <string name="not_found">Non ci sono risultati</string>
+    <string name="not_found">Nessun risultato trovato</string>
     <string name="service_unavailable">Servizio non disponibile, riprova più tardi</string>
     <string name="timeout">Timeout della richiesta, riprova</string>
     <string name="unauthorized">Non sei autenticato correttamente per l\'utilizzo dei servizi</string>
@@ -81,19 +80,17 @@
     <string name="chip_save_text">Salva</string>
 
     <string name="placeholder_username">\@username</string>
-    <string name="chip_text_settings">Impostazioni</string>
+    <string name="chip_text_about">Su InfoPoint</string>
     <string name="description_placeholder">Descrizione</string>
     <string name="wrong_credentials">Username o password non corretti, riprova.</string>
     <string name="password_length">La password deve contenere almeno 8 caratteri.</string>
     <string name="username_check">L\'username non può contenere spazi.</string>
-    <string name="email_check">Email non valida.</string>
     <string name="passwords_matching">La password non corrisponde.</string>
     <string name="next_fab">Avanti</string>
     <string name="description_hint">Descrizione (opzionale)</string>
 
     <string name="password_reset_success">La password è stata aggiornata con successo! Effettua l\'accesso.</string>
 
-    <string name="done_select_photos">Fatto</string>
 
     <string name="warning_not_updated_or_incorrect">Informazioni inesatte o non aggiornate</string>
 
@@ -114,17 +111,6 @@
 
 
     <string name="action_settings">Impostazioni</string>
-    <string name="pref_key_night" translatable="false">key_night_mode</string>
-    <string name="pref_night_title">Tema</string>
-    <string name="pref_night_summary">Imposta il tema dell\'app</string>
-    <string name="pref_night_dialog">Imposta tema</string>
-    <string name="pref_night_auto" translatable="false">auto</string>
-    <string name="pref_night_on" translatable="false">on</string>
-    <string name="pref_night_off" translatable="false">off</string>
-    <string name="night_mode_auto">Sistema</string>
-    <string name="night_mode_off">Chiaro</string>
-    <string name="night_mode_on">Scuro</string>
-    <string name="pref_key_logout">logout</string>
 
     <string name="title_placeholder_text">Titolo Opera</string>
     <string name="cover_password">Cover password dimenticata</string>
@@ -198,4 +184,12 @@
     <string name="placeholder_user_level">Livello</string>
     <string name="find_art_work">Cerca un\'opera</string>
     <string name="search_art_works">Ricerca opere</string>
+    <string name="logout">Esci</string>
+
+    <!-- LOGOUT -->
+    <string name="confirm_logout">Sei sicuro di voler uscire?</string>
+    <string name="confirm_logout_body">In caso di conferma dovrai effettuare nuovamente l\'accesso per poter utilizzare l\'app!</string>
+
+    <string name="confirm_request">CONFERMA</string>
+    <string name="cancel_request">ANNULLA</string>
 </resources>

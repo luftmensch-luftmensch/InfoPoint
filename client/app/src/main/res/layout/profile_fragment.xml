@@ -25,18 +25,20 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/app_bar_layout_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/top_app_bar_profile"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:logo="@drawable/logo_no_background_alt"
-            app:logoAdjustViewBounds="true"
-            app:menu="@menu/top_bar_main_menu" />
+            android:background="@color/md_theme_light_primary"
+            app:title="@string/profile"
+            app:titleTextColor="@color/white"
+            app:menu="@menu/menu_exit"
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".feature_profile.profile.ProfileFragment">
+        tools:context=".ui.fragments.ProfileFragment">
 
         <!-- Profile pic -->
         <com.google.android.material.imageview.ShapeableImageView
@@ -115,8 +117,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@string/chip_text_settings"
-            app:chipIcon="@drawable/settings_icon"
+            android:text="@string/chip_text_about"
+            app:chipIcon="@drawable/about_us_icon"
+            app:chipIconTint="@color/black"
             app:ensureMinTouchTargetSize="true"
             app:layout_constraintBottom_toTopOf="@+id/view_pager"
             app:layout_constraintEnd_toEndOf="@id/textview_user_level"

@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:liftOnScroll="true"
-        app:liftOnScrollTargetViewId="@id/recycler_home">
+        app:liftOnScrollTargetViewId="@id/recycler_view_home">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_home"
@@ -69,7 +69,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_home"
+            android:id="@+id/recycler_view_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
