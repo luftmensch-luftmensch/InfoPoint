@@ -31,7 +31,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.infopoint.core.config.Constants;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.MainActivity;
-import com.infopoint.ui.activity.authentication.login.LoginActivity;
 import com.infopoint.ui.activity.intro.IntroActivity;
 
 public class App extends AppCompatActivity {
@@ -53,13 +52,14 @@ public class App extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Log.d(_TAG, "Finished splashscreen...");
 
-            startActivity(new Intent(App.this, MainActivity.class));
-
-            // if (StorageManager.with(this).contains(Constants.IS_LOGGED))
-            //     startActivity(new Intent(App.this, MainActivity.class));
-            // else
-            //     startActivity(new Intent(App.this, IntroActivity.class));
-            finish();
-        }, 1500);
+            // startActivity(new Intent(App.this, MainActivity.class)); finish();
+            if (StorageManager.with(this).contains(Constants.INTRO_VIEWED)) {
+                startActivity(new Intent(App.this, MainActivity.class));
+                finishAffinity();
+            } else {
+                startActivity(new Intent(App.this, IntroActivity.class));
+                finishAffinity();
+            }
+        }, 2000);
     }
 }

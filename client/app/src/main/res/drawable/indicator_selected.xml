@@ -15,18 +15,16 @@
   ~ limitations under the License.
   ~
   ~   @author Valentino Bocchetti
-  ~   First written in 16/6/2023 at 11:45
+  ~   First written in 22/6/2023 at 10:40
   ~
   -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape
-            android:innerRadius="0dp"
-            android:shape="ring"
-            android:thickness="4dp"
+        <shape android:shape="ring"
+            android:innerRadius="3dp"
+            android:thickness="2dp"
             android:useLevel="false">
-
-            <solid android:color="@color/white" />
+            <solid android:color="@color/md_theme_light_primary" />
         </shape>
     </item>
 </layer-list>

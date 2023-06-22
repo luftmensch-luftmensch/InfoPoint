@@ -15,17 +15,16 @@
   ~ limitations under the License.
   ~
   ~   @author Valentino Bocchetti
-  ~   First written in 16/6/2023 at 12:00
+  ~   First written in 22/6/2023 at 11:4
   ~
   -->
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <alpha
-        android:duration="@integer/medium_delay_transition"
         android:fromAlpha="0.0"
-        android:toAlpha="1.0" />
-
+        android:toAlpha="1.0"
+        android:duration="@integer/small_delay_transition" />
     <translate
-        android:duration="@integer/medium_delay_transition"
         android:fromYDelta="-100%"
-        android:toYDelta="0%" />
+        android:toYDelta="0%"
+        android:duration="@integer/medium_delay_transition" />
 </set>

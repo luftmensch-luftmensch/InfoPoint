@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright © 2023 InfoPoint. All rights reserved.
   ~
   ~ Licensed under the MIT License;
@@ -15,18 +14,16 @@
   ~ limitations under the License.
   ~
   ~   @author Valentino Bocchetti
-  ~   First written in 16/6/2023 at 11:44
+  ~   First written in 22/6/2023 at 10:40
   ~
   -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape
-            android:innerRadius="3dp"
-            android:shape="ring"
-            android:thickness="2dp"
+        <shape android:shape="ring"
+            android:innerRadius="0dp"
+            android:thickness="4dp"
             android:useLevel="false">
-
-            <solid android:color="@color/md_theme_light_secondaryContainer" />
+            <solid android:color="@color/md_theme_dark_outlineVariant" />
         </shape>
     </item>
 </layer-list>

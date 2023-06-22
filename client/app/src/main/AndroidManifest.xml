@@ -46,8 +46,7 @@
 
         <!-- Intro -->
         <activity android:name=".ui.activity.intro.IntroActivity"
-            android:screenOrientation="sensorPortrait"
-            />
+            android:screenOrientation="sensorPortrait" />
 
         <!-- Navigation graph -->
         <activity android:name=".ui.activity.MainActivity"
