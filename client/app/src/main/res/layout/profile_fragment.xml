@@ -32,13 +32,9 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_profile"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/md_theme_light_primary"
             app:title="@string/profile"
-            app:titleTextColor="@color/white"
             app:menu="@menu/menu_exit"
-            />
+            style="@style/InfoPointMaterialToolBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -119,7 +115,6 @@
             android:layout_marginTop="6dp"
             android:text="@string/chip_text_about"
             app:chipIcon="@drawable/about_us_icon"
-            app:chipIconTint="@color/black"
             app:ensureMinTouchTargetSize="true"
             app:layout_constraintBottom_toTopOf="@+id/view_pager"
             app:layout_constraintEnd_toEndOf="@id/textview_user_level"

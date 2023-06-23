@@ -21,7 +21,7 @@
 <resources>
     <style name="Theme.InfoPoint" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@color/md_theme_dark_primary</item>
+        <item name="android:statusBarColor">@color/md_theme_dark_primaryContainer</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowActivityTransitions">true</item>
@@ -70,7 +70,7 @@
     </style>
 
     <style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="backgroundTint">@color/md_theme_light_surface</item>
+        <item name="backgroundTint">@color/md_theme_dark_onTertiary</item>
         <item name="android:elevation">0dp</item>
     </style>
 </resources>

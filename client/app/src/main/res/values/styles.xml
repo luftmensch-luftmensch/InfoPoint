@@ -27,24 +27,6 @@
         <item name="autoSizeMinTextSize">@dimen/extra_large_text</item>
     </style>
 
-    <style name="InfoPointBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/InfoPointBottomSheet</item>
-    </style>
-
-    <style name="InfoPointBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <item name="shapeAppearanceOverlay">@style/InfoPointShapeAppearanceBottomSheetDialog</item>
-        <!-- TODO: Updated colors -->
-        <item name="android:backgroundTint">@color/md_theme_light_onPrimary</item>
-    </style>
-
-    <style name="InfoPointShapeAppearanceBottomSheetDialog" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">@dimen/large_margin</item>
-        <item name="cornerSizeTopLeft">@dimen/large_margin</item>
-        <item name="cornerSizeBottomRight">@dimen/medium_margin</item>
-        <item name="cornerSizeBottomLeft">@dimen/medium_margin</item>
-    </style>
-
     <style name="Widget.InfoPoint.TextWithAction" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/md_theme_light_primary</item>
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle2
@@ -55,6 +37,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@mipmap/ic_info_point_logo</item>
+    </style>
+
+    <style name="InfoPointMaterialToolBar">
+        <item name="android:background">@color/md_theme_dark_primaryContainer</item>
+        <item name="titleTextColor">@color/md_theme_dark_onPrimaryContainer</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">

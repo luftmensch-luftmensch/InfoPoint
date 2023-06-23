@@ -31,27 +31,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/cover_authentication"
-        android:src="@drawable/authentication_icon"
-        app:layout_constraintBottom_toTopOf="@+id/login_info_point_logo"
+        android:src="@drawable/login_icon"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:layout_constraintVertical_chainStyle="packed" />
-
-    <!-- LOGO -->
-    <ImageView
-        android:id="@+id/login_info_point_logo"
-        style="@style/InfoPointLogo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:contentDescription="@string/logo_app"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/login_logo_image_view" />
 
     <!-- USERNAME -->
     <com.google.android.material.textfield.TextInputLayout
@@ -145,13 +131,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_account_question" />
+            android:text="@string/no_account_question"
+            android:fontFamily="@font/muli"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text"
+            android:textStyle="normal"
+            />
 
         <TextView
             android:id="@+id/login_signup_text_view"
             style="@style/Widget.InfoPoint.TextWithAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/muli"
+            android:textColor="@color/md_theme_dark_onBackground"
+            android:textSize="@dimen/medium_text"
+            android:textStyle="normal"
             android:text="@string/sign_up_text" />
     </LinearLayout>
 

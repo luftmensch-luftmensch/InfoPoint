@@ -27,8 +27,8 @@
         android:orderInCategory="1"
         android:title="@string/home"
         app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
-        app:cnb_iconColor="@color/white"
-        app:cnb_textColor="@color/white" />
+        app:cnb_iconColor="@color/md_theme_dark_onPrimaryContainer"
+        app:cnb_textColor="@color/md_theme_dark_onPrimaryContainer" />
 
     <item
         android:id="@+id/nav_search"
@@ -36,8 +36,8 @@
         android:orderInCategory="2"
         android:title="@string/search"
         app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
-        app:cnb_iconColor="@color/white"
-        app:cnb_textColor="@color/white" />
+        app:cnb_iconColor="@color/md_theme_dark_onPrimaryContainer"
+        app:cnb_textColor="@color/md_theme_dark_onPrimaryContainer" />
 
     <item
         android:id="@+id/nav_profile"
@@ -45,6 +45,6 @@
         android:orderInCategory="5"
         android:title="@string/profile"
         app:cnb_backgroundColor="@color/md_theme_light_onPrimaryContainer"
-        app:cnb_iconColor="@color/white"
-        app:cnb_textColor="@color/white" />
+        app:cnb_iconColor="@color/md_theme_dark_onPrimaryContainer"
+        app:cnb_textColor="@color/md_theme_dark_onPrimaryContainer" />
 </menu>

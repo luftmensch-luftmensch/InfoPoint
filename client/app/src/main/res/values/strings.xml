@@ -156,7 +156,7 @@
     <string name="github_icon">Github</string>
 
     <string name="about_us_title">Un nuovo modo di vivere i musei</string>
-    <string name="about_us_team">Il nostro TEAM</string>
+    <string name="about_us_team"><u>Il nostro TEAM</u></string>
     <string name="linkedin_icon">Linkedin</string>
 
     <string name="author_1">Valentino Bocchetti</string>

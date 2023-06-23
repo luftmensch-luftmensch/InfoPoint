@@ -32,24 +32,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/cover_authentication"
-        android:src="@drawable/authentication_icon"
-        app:layout_constraintBottom_toTopOf="@+id/registration_info_point_logo"
+        android:src="@drawable/registration_icon"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_chainStyle="packed" />
-
-    <!-- LOGO -->
-    <ImageView
-        android:id="@+id/registration_info_point_logo"
-        style="@style/InfoPointLogo"
-        android:layout_width="0dp"
-        android:layout_marginTop="15dp"
-        android:contentDescription="@string/logo_app"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/registration_logo_image_view" />
 
     <!-- USERNAME -->
     <com.google.android.material.textfield.TextInputLayout
@@ -147,12 +135,15 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/registration_button"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        >
+        app:layout_constraintStart_toStartOf="@+id/guideline4" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/muli"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text"
+            android:textStyle="normal"
             android:text="@string/already_registered" />
 
         <TextView
@@ -160,7 +151,11 @@
             style="@style/Widget.InfoPoint.TextWithAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_text" />
+            android:fontFamily="@font/muli"
+            android:textColor="@color/md_theme_dark_onBackground"
+            android:textSize="@dimen/medium_text"
+            android:textStyle="normal"
+            android:text="@string/login_text" />
     </LinearLayout>
 
     <!-- Progress bar to display states -->

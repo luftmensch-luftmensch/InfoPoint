@@ -35,12 +35,8 @@
         <!-- TODO: Check for usage of menu -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_home"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/md_theme_light_primary"
             app:title="@string/home"
-            app:titleTextColor="@color/white"
-            app:menu="@menu/top_bar_main_menu" />
+            style="@style/InfoPointMaterialToolBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

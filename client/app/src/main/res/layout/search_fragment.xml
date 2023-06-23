@@ -33,12 +33,9 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_search"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/md_theme_light_primary"
             app:menu="@menu/search_menu"
             app:title="@string/search"
-            app:titleTextColor="@color/white" >
+            style="@style/InfoPointMaterialToolBar" >
 
         </com.google.android.material.appbar.MaterialToolbar>
 

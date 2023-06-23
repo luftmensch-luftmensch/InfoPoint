@@ -24,7 +24,6 @@
         android:id="@+id/menu_item_search"
         android:icon="@drawable/search_icon"
         android:title="@string/search"
-        android:iconTint="@color/white"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 </menu>

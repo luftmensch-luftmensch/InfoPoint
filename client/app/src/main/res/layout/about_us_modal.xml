@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/small_padding"
                 android:text="@string/author_1"
-                android:textColor="@color/black"
+                android:textColor="@color/md_theme_dark_outlineVariant"
                 android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_1_icon"
@@ -288,12 +288,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_3" >
 
-        <ImageView
-            android:id="@+id/about_us_report_bug_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/report_bug"
-            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -301,8 +295,9 @@
             android:text="@string/report_bug"
             android:textStyle="bold"
             android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@id/about_us_report_bug_image_view"
-            />
+            app:drawableLeftCompat="@drawable/report_bug"
+            android:drawablePadding="@dimen/small_padding"
+            app:drawableTint="@color/md_theme_dark_onPrimary" />
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

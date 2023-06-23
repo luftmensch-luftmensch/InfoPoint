@@ -32,10 +32,10 @@
         android:layout_height="70dp"
         app:cnb_orientationMode="horizontal"
         android:layout_gravity="bottom"
-        android:background="@drawable/rounded_bar"
+        android:background="@color/md_theme_dark_primaryContainer"
         android:elevation="16dp"
         android:padding="8dp"
-        app:cnb_unselectedColor="@color/md_theme_light_onSecondary"
+        app:cnb_unselectedColor="@color/md_theme_dark_onSecondaryContainer"
         app:cnb_menuResource="@menu/bottom_bar_menu" />
     <include layout="@layout/content_main" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
