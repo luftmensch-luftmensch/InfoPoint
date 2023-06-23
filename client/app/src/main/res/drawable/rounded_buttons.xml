@@ -24,6 +24,5 @@
     <padding
         android:left="@dimen/medium_padding"
         android:right="@dimen/medium_padding" />
-    <!-- TODO: Update colors -->
     <solid android:color="@color/cardview_dark_background" />
 </shape>

@@ -22,7 +22,6 @@ package com.infopoint.core.networking;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.InetAddresses;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.util.Log;
@@ -52,7 +51,7 @@ public class NetworkManager {
     }
 
     public static ArrayList<ArtWork> retrieveArtwork(String fmt) {
-        ArrayList artworks = new ArrayList();
+        ArrayList<ArtWork> artworks = new ArrayList<ArtWork>();
         try {
             InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
             if(address.isReachable(2000)){ // Check if the server is reachable

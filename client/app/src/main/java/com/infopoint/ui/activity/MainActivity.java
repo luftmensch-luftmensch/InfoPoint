@@ -86,6 +86,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // TODO: Add SharedPreferences Logic
     }
 }

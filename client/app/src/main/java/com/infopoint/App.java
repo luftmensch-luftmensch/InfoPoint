@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.animation.Animation;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,16 +38,14 @@ public class App extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(_TAG, "Starting application...");
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+        Log.d(_TAG, "Starting application...");
         setContentView(R.layout.app_splash_screen);
 
-        Animation topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
-        Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
-
-        findViewById(R.id.splashscreen_logo).setAnimation(topAnimation);
-        findViewById(R.id.splashscreen_title_text).setAnimation(bottomAnimation);
-        findViewById(R.id.splashscreen_body_text).setAnimation(bottomAnimation);
+        findViewById(R.id.splashscreen_logo).setAnimation(AnimationUtils.loadAnimation(this, R.anim.top_animation));
+        findViewById(R.id.splashscreen_title_text).setAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_animation));
+        findViewById(R.id.splashscreen_body_text).setAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_animation));
 
         new Handler().postDelayed(() -> {
             Log.d(_TAG, "Finished splashscreen...");

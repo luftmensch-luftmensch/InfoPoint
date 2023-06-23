@@ -20,6 +20,8 @@
 
 package com.infopoint.ui.activity.authentication.login;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -27,18 +29,22 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
 import com.infopoint.core.networking.NetworkManager;
+import com.infopoint.ui.activity.authentication.registration.RegistrationActivity;
+
+import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity {
     private final static String _TAG = "[LoginActivity] ";
 
     private TextInputLayout usernameTextInputLayout, passwordTextInputLayout;
     private TextInputEditText usernameEditText, passwordEditText;
-    private CheckBox rememberMe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         Log.d(_TAG, "Checking internet connection...");
-        // TODO: Handle it
-        NetworkManager.checkConnection(this);
-
+        if (!NetworkManager.checkConnection(this))
+            Toasty.error(this, "Nessun connessione ad internet!\nRiprova più tardi", Toasty.LENGTH_LONG).show();
         setUI();
-
     }
 
     private void setUI() {
@@ -59,27 +63,32 @@ public class LoginActivity extends AppCompatActivity {
 
         Button loginButton = findViewById(R.id.login_button);
         Button forgotPassword = findViewById(R.id.login_forgot_password_button);
-        TextView registrationTextView = findViewById(R.id.login_signup_text_view);
+        TextView loginToRegistrationTextView = findViewById(R.id.login_signup_text_view);
 
-
-
+        loginToRegistrationTextView.setOnClickListener(click -> {
+            Log.d(_TAG, "Moving to Registration");
+            startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+            finishAffinity();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
 
         // TODO: Add Login logic
         loginButton.setOnClickListener(view -> {
-
         });
 
-        // TODO: Add forgotPassword logic
         forgotPassword.setOnClickListener(view -> {
-
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, "infopoint@info.com");
+            startActivity(Intent.createChooser(intent, "Seleziona client di posta elettronica"));
         });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(_TAG, "onResume: Checking internet connection");
-
         NetworkManager.checkConnection(this);
     }
 }

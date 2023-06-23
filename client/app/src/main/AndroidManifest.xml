@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
+  ~
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 23/6/2023 at 8:26
+  ~
+  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -26,7 +45,7 @@
         <!-- Launcher w/ Splash Screen -->
         <activity
             android:name=".App"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="fullSensor"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,20 +56,21 @@
         <!-- Authentication -->
         <activity
             android:name=".ui.activity.authentication.login.LoginActivity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="fullSensor"
             />
+        <!-- sensorPortrait -->
         <activity
             android:name=".ui.activity.authentication.registration.RegistrationActivity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="fullSensor"
             />
 
         <!-- Intro -->
         <activity android:name=".ui.activity.intro.IntroActivity"
-            android:screenOrientation="sensorPortrait" />
+            android:screenOrientation="fullSensor" />
 
         <!-- Navigation graph -->
         <activity android:name=".ui.activity.MainActivity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="fullSensor"
             android:exported="true">
             <nav-graph android:value="@navigation/info_point_navigation" />
         </activity>

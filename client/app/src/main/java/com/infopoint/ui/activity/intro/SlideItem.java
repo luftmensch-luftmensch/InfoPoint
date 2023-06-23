@@ -22,18 +22,14 @@ package com.infopoint.ui.activity.intro;
 
 public class SlideItem {
     private final String title;
-    private final String description;
     private final int image;
 
-    public SlideItem(String title, String description, int image) {
+    public SlideItem(String title, int image) {
         this.title = title;
-        this.description = description;
         this.image = image;
     }
 
     public String getTitle() { return title; }
-
-    public String getDescription() { return description; }
 
     public int getImage() { return image; }
 }

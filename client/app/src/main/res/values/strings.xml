@@ -74,6 +74,7 @@
     <string name="timeout">Timeout della richiesta, riprova</string>
     <string name="unauthorized">Non sei autenticato correttamente per l\'utilizzo dei servizi</string>
 
+    <string name="login_text"> <u>Accedi</u></string>
     <string name="sign_up_text"> <u>Registrati</u></string>
     <string name="no_account_question">Non hai un account?</string>
     <string name="button_confirm_reset_text">Conferma</string>
@@ -195,4 +196,9 @@
     <string name="find_by_author">Autori</string>
     <string name="find_by_date">Data</string>
     <string name="find_by_name">Nome</string>
+    <string name="image_dummy_content_description">Descrizione</string>
+    <string name="report_bug">Segnala un problema</string>
+    <string name="already_registered">Già iscritto?</string>
+    <string name="splash_screen_title">Visita l\'arte in un modo</string>
+    <string name="splash_screen_body">tutto nuovo</string>
 </resources>

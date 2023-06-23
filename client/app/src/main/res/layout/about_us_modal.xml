@@ -60,6 +60,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Icon Author 1 -->
+            <ImageView
+                android:id="@+id/about_us_team_card_author_1_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/programmer_male_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/image_dummy_content_description" />
+
+            <!-- Name Author 1 -->
+            <TextView
+                android:id="@+id/about_us_team_card_author_1_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/small_padding"
+                android:text="@string/author_1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_1_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Type Author 1 -->
+            <TextView
+                android:id="@+id/about_us_team_card_author_1_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/small_padding"
+                android:paddingEnd="@dimen/small_padding"
+                android:paddingStart="@dimen/small_padding"
+                android:text="@string/author_1_description"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_1_icon"
+                app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_1_username" />
+
+            <!-- Github Link Author 1 -->
             <ImageButton
                 android:id="@+id/about_us_team_card_author_1_github_link"
                 android:layout_width="48dp"
@@ -70,36 +110,8 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/github_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/about_us_team_card_author_1_type"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/about_us_team_card_author_1_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/small_padding"
-                android:text="@string/author_1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/about_us_team_card_author_1_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/small_padding"
-                android:paddingEnd="@dimen/small_padding"
-                android:paddingStart="@dimen/small_padding"
-                android:text="@string/author_1_description"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_1_username" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -125,6 +137,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Icon Author 2 -->
+            <ImageView
+                android:id="@+id/about_us_team_card_author_2_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/programmer_male_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/image_dummy_content_description" />
+
+            <!-- Name Author 2 -->
+            <TextView
+                android:id="@+id/about_us_team_card_author_2_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/small_padding"
+                android:text="@string/author_2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_2_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Type Author 2 -->
+            <TextView
+                android:id="@+id/about_us_team_card_author_2_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/small_padding"
+                android:paddingEnd="@dimen/small_padding"
+                android:paddingStart="@dimen/small_padding"
+                android:text="@string/author_2_description"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_2_icon"
+                app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_2_username" />
+
+            <!-- Github Link Author 2 -->
             <ImageButton
                 android:id="@+id/about_us_team_card_author_2_github_link"
                 android:layout_width="48dp"
@@ -135,35 +187,8 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/github_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/about_us_team_card_author_2_type"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/about_us_team_card_author_2_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/small_padding"
-                android:text="@string/author_2"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/about_us_team_card_author_2_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/small_padding"
-                android:paddingEnd="@dimen/small_padding"
-                android:paddingStart="@dimen/small_padding"
-                android:text="@string/author_2_description"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_2_username" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -190,6 +215,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Icon Author 3 -->
+            <ImageView
+                android:id="@+id/about_us_team_card_author_3_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/programmer_female_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/image_dummy_content_description" />
+
+            <!-- Name Author 3 -->
+            <TextView
+                android:id="@+id/about_us_team_card_author_3_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/small_padding"
+                android:text="@string/author_3"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_3_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Type Author 3 -->
+            <TextView
+                android:id="@+id/about_us_team_card_author_3_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/small_padding"
+                android:paddingEnd="@dimen/small_padding"
+                android:paddingStart="@dimen/small_padding"
+                android:text="@string/author_3_description"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/about_us_team_card_author_3_icon"
+                app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_3_username" />
+
+            <!-- Github Link Author 3 -->
             <ImageButton
                 android:id="@+id/about_us_team_card_author_3_github_link"
                 android:layout_width="48dp"
@@ -200,44 +265,17 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/github_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/about_us_team_card_author_3_type"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/about_us_team_card_author_3_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/small_padding"
-                android:text="@string/author_3"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/about_us_team_card_author_3_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/small_padding"
-                android:paddingEnd="@dimen/small_padding"
-                android:paddingStart="@dimen/small_padding"
-                android:text="@string/author_3_description"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_3_username" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Contact us -->
+    <!-- Report bug -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/about_us_contact"
+        android:id="@+id/about_us_report_bug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/medium_margin"
@@ -250,12 +288,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/about_us_team_card_author_3" >
 
+        <ImageView
+            android:id="@+id/about_us_report_bug_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/report_bug"
+            />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_us"
+            android:text="@string/report_bug"
             android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/about_us_report_bug_image_view"
+            />
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

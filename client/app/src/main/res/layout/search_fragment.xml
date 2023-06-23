@@ -51,6 +51,12 @@
             app:tabIndicatorFullWidth="true"
             tools:ignore="SpeakableTextPresentCheck">
 
+            <!-- Search by Name of the ArtWork -->
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/find_by_name" />
+
             <!-- Search by Author -->
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -62,12 +68,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/find_by_date" />
-
-            <!-- Search by Name of the ArtWork -->
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/find_by_name" />
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -20,15 +20,19 @@
 
 package com.infopoint.ui.activity.authentication.registration;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
+import com.infopoint.ui.activity.authentication.login.LoginActivity;
+
 public class RegistrationActivity extends AppCompatActivity {
     private final static String _TAG = "[RegistrationActivity] ";
 
@@ -44,16 +48,25 @@ public class RegistrationActivity extends AppCompatActivity {
         setUI();
     }
 
+    private void setUI() {
+        usernameTextInputLayout = findViewById(R.id.registration_username_text_input_layout);
+        passwordTextInputLayout = findViewById(R.id.registration_password_text_input_layout);
+        confirmPasswordTextInputLayout = findViewById(R.id.registration_confirm_password_text_input_layout);
+
+        TextView registrationToLoginTextView = findViewById(R.id.signup_login_text_view);
+
+        registrationToLoginTextView.setOnClickListener(click -> {
+            Log.d(_TAG, "Moving to Login");
+            startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+            finishAffinity();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
+    }
+
     @Override
     public void onBackPressed() {
         Log.d(_TAG, "Creating animation...");
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right);
-    }
-
-    private void setUI() {
-        usernameTextInputLayout = findViewById(R.id.registration_username_text_input_layout);
-        passwordTextInputLayout = findViewById(R.id.registration_password_text_input_layout);
-        confirmPasswordTextInputLayout = findViewById(R.id.registration_confirm_password_text_input_layout);
     }
 }

@@ -24,7 +24,7 @@
             android:innerRadius="3dp"
             android:thickness="2dp"
             android:useLevel="false">
-            <solid android:color="@color/md_theme_light_primary" />
+            <solid android:color="@color/md_theme_dark_onSurfaceVariant" />
         </shape>
     </item>
 </layer-list>

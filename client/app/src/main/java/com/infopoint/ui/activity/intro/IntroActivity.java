@@ -43,22 +43,20 @@ public class IntroActivity extends AppCompatActivity {
     private final static String _TAG = "[IntroActivity] ";
 
     private ViewPager pager;
-    private TabLayout layout;
     private Button nextButton, gettingStartedButton, skipButton;
     private int currPos = 0;
 
-    // TODO: Update values diplayed in the intro
     private static final List<SlideItem> items = List.of(
-            new SlideItem("Un nuovo strumento", "per la conoscenza", R.drawable.avatar_icon),
-            new SlideItem("Scopri tutti i segreti", "delle opere", R.drawable.avatar_icon),
-            new SlideItem("TODO", "TODO", R.drawable.avatar_icon)
+            new SlideItem("Un nuovo strumento per unire conoscenza e fantasia", R.drawable.intro_slide_icon_1),
+            new SlideItem("Le opere non avranno più segreti per te", R.drawable.intro_slide_icon_2),
+            new SlideItem("Condividi la tua esperienza con chi ti circonda", R.drawable.intro_slide_icon_3)
     );
 
     @Override
     protected void onCreate(Bundle bundle) {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(bundle);
         Log.d(_TAG, "onCreate: Starting...");
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.intro_activity);
         setUI();
     }
@@ -68,7 +66,7 @@ public class IntroActivity extends AppCompatActivity {
         gettingStartedButton = findViewById(R.id.intro_activity_getting_started_button);
         skipButton = findViewById(R.id.intro_activity_skip_button);
 
-        layout = findViewById(R.id.intro_activity_tab_layout);
+        TabLayout layout = findViewById(R.id.intro_activity_tab_layout);
 
         pager = findViewById(R.id.intro_activity_view_pager);
         pager.setAdapter(new IntroAdapter(this, items));
@@ -107,5 +105,4 @@ public class IntroActivity extends AppCompatActivity {
         gettingStartedButton.setVisibility(View.VISIBLE);
         gettingStartedButton.setAnimation(AnimationUtils.loadAnimation(this, R.anim.intro_animation));
     }
-
 }

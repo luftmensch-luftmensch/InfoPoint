@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2023 InfoPoint. All rights reserved.
+  ~
+  ~ Licensed under the MIT License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://mit-license.org/
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~   @author Valentino Bocchetti
+  ~   First written in 23/6/2023 at 8:22
+  ~
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportWidth="12.281"
+    android:viewportHeight="12.281"
+    android:width="200dp"
+    android:height="200dp" >
+    <group
+        android:translateX="-0"
+        android:translateY="0.24">
+        <group
+            android:translateX="-62.587"
+            android:translateY="54.273">
+            <path
+                android:pathData="M70.5 -45.792c-1.8 -1.145 -6.335 -1.128 -7.417 -1.106v3.943h3.492A8.837 8.837 0 0 1 70.5 -45.792"
+                android:fillColor="#498A76" />
+            <path
+                android:pathData="M68.727 -52.714a0.533 0.533 0 0 0 0.533 -0.533 0.533 0.533 0 0 0 -0.533 -0.533 0.534 0.534 0 0 0 -0.533 0.533 0.534 0.534 0 0 0 0.533 0.533"
+                android:fillColor="#7DC3AA" />
+            <path
+                android:pathData="M71.911 -47.527a0.842 0.842 0 0 0 0.841 -0.841 0.842 0.842 0 0 0 -0.841 -0.841 0.841 0.841 0 0 0 -0.84 0.841 0.841 0.841 0 0 0 0.84 0.841"
+                android:fillColor="#A3DAC1" />
+            <path
+                android:pathData="M67.212 -42.956h7.163v-2.859a8.506 8.506 0 0 0 -7.163 2.859"
+                android:fillColor="#498A76" />
+            <path
+                android:pathData="M71.911 -49.7a1.334 1.334 0 0 1 1.332 1.333 1.333 1.333 0 0 1 -1.332 1.332 1.334 1.334 0 0 1 -1.332 -1.332A1.334 1.334 0 0 1 71.911 -49.7Zm-8.832 2.31c1.209 -0.027 6.263 -0.045 7.992 1.414a9.225 9.225 0 0 1 3.3 -0.331v-4.007h-11.3v2.924"
+                android:fillColor="#C3EAD6" />
+            <path
+                android:pathData="M74.375 -46.308a9.225 9.225 0 0 0 -3.3 0.331c-1.729 -1.459 -6.783 -1.441 -7.992 -1.414v-2.924h11.3Zm0 3.353H67.212a8.506 8.506 0 0 1 7.163 -2.859Zm-11.3 0V-46.9c1.081 -0.021 5.621 -0.039 7.417 1.106a8.837 8.837 0 0 0 -3.925 2.836Zm4.791 -9.734a1.022 1.022 0 0 0 0.857 0.467 1.026 1.026 0 0 0 0.852 -0.455l2.3 1.87H65.559Zm0.857 -1.091a0.533 0.533 0 0 1 0.533 0.533 0.533 0.533 0 0 1 -0.533 0.533 0.534 0.534 0 0 1 -0.533 -0.533A0.534 0.534 0 0 1 68.727 -53.781Zm5.648 2.973H72.654l-2.909 -2.369c0 -0.024 0.007 -0.047 0.007 -0.071a1.026 1.026 0 0 0 -1.025 -1.026A1.026 1.026 0 0 0 67.7 -53.247c0 0.019 0 0.036 0.006 0.055L64.78 -50.808h-1.7a0.493 0.493 0 0 0 -0.492 0.492v7.36a0.493 0.493 0 0 0 0.492 0.492h11.3a0.493 0.493 0 0 0 0.492 -0.492v-7.36a0.493 0.493 0 0 0 -0.492 -0.492"
+                android:fillColor="#171A1C" />
+            <path
+                android:pathData="M71.911 -49.209a0.842 0.842 0 0 1 0.841 0.841 0.842 0.842 0 0 1 -0.841 0.841 0.841 0.841 0 0 1 -0.84 -0.841A0.841 0.841 0 0 1 71.911 -49.209Zm0 2.173a1.333 1.333 0 0 0 1.332 -1.332A1.334 1.334 0 0 0 71.911 -49.7a1.334 1.334 0 0 0 -1.332 1.333 1.334 1.334 0 0 0 1.332 1.332"
+                android:fillColor="#171A1C" />
+        </group>
+    </group>
+</vector>

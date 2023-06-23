@@ -41,30 +41,14 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/intro_slide_item_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/large_margin"
-        android:layout_marginStart="@dimen/large_margin"
-        android:layout_marginTop="@dimen/small_margin"
-        android:textAlignment="center"
-        android:textColor="@color/md_theme_light_onSurfaceVariant"
-        android:textSize="@dimen/small_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intro_slide_item_title"
-        app:layout_constraintVertical_bias="0.15" />
-
-    <TextView
         android:id="@+id/intro_slide_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/small_margin"
         android:layout_marginEnd="@dimen/medium_margin"
         android:layout_marginStart="@dimen/medium_margin"
-        android:textColor="@color/black"
+        android:fontFamily="@font/muli"
+        android:textColor="@color/md_theme_dark_onSurfaceVariant"
         android:textSize="@dimen/large_text"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/intro_guideline"

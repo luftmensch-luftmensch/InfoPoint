@@ -54,21 +54,21 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/author_name"
+                    android:id="@+id/art_work_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#dddddd"
-                    android:text="@string/placeholder_author"
+                    android:text="@string/artwork_name"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textColor="#616161" />
 
                 <TextView
-                    android:id="@+id/route_name"
+                    android:id="@+id/art_work_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="#dddddd"
-                    android:text="@string/artwork_name"
+                    android:text="@string/placeholder_author"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:textColor="#616161" />
 

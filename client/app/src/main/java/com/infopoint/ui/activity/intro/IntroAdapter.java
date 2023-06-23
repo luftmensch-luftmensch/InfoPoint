@@ -51,10 +51,8 @@ public class IntroAdapter extends PagerAdapter {
 
         ImageView image = view.findViewById(R.id.intro_slide_item_image);
         TextView title = view.findViewById(R.id.intro_slide_item_title);
-        TextView description = view.findViewById(R.id.intro_slide_item_description);
 
         title.setText(items.get(position).getTitle());
-        description.setText(items.get(position).getDescription());
         image.setImageResource(items.get(position).getImage());
 
         container.addView(view);
