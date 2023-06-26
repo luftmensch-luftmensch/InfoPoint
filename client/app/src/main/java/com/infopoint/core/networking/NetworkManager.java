@@ -51,7 +51,7 @@ public class NetworkManager {
     }
 
     public static ArrayList<ArtWork> retrieveArtwork(String fmt) {
-        ArrayList<ArtWork> artworks = new ArrayList<ArtWork>();
+        ArrayList<ArtWork> artworks = new ArrayList<>();
         try {
             InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
             if(address.isReachable(2000)){ // Check if the server is reachable

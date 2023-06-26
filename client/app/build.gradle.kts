@@ -74,6 +74,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
 
+    // JSON Serializer/Deserializer
+    implementation("com.google.code.gson:gson:2.10.1")
+
+
     // Navigation graph
     implementation("androidx.navigation:navigation-fragment:2.6.0")
     implementation("androidx.navigation:navigation-ui:2.6.0")
