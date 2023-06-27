@@ -101,7 +101,7 @@ server* init_server(unsigned int port, const size_t max_workers){
 
   s->conn_count = 0;
 
-  // Thread pool setup
+  // TODO: Thread pool setup
   
   return s;
 }
