@@ -39,6 +39,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/** Utility class used to perform Network operations */
 public class NetworkManager {
     private static final String _TAG = "[NetworkManager] ";
 

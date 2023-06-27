@@ -31,6 +31,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import com.infopoint.R;
 
+/** Main Activity of the Application */
 public class MainActivity extends AppCompatActivity {
     private final static String _TAG = "[MainActivity] ";
     public NavController navController;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setUI();
     }
 
+    /** Helper method used to setup the UI of the activity */
     private void setUI() {
         bar = findViewById(R.id.bottom_bar);
         bar.setItemSelected(R.id.nav_home, true);

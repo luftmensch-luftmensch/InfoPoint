@@ -33,6 +33,7 @@ import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.MainActivity;
 import com.infopoint.ui.activity.intro.IntroActivity;
 
+/** Main Entry used to show the Splash Screen and  subsequently move to {@link MainActivity} if logged, {@link IntroActivity} otherwise */
 public class App extends AppCompatActivity {
     private final static String _TAG = "[App] ";
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  *
  *   @author Valentino Bocchetti
- *   First written in 16/6/2023 at 12:9
+ *   First written in 16/6/2023 at 12:09
  *
- */
+*/
 
-package com.infopoint.ui.activity.intro;
+package com.infopoint.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -31,9 +31,12 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.infopoint.R;
+import com.infopoint.ui.activity.intro.IntroActivity;
+import com.infopoint.ui.activity.intro.SlideItem;
 
 import java.util.List;
 
+/** Helper Adapter Class used for the {@link IntroActivity} */
 public class IntroAdapter extends PagerAdapter {
     private final Context context;
     private final List<SlideItem> items;
@@ -45,7 +48,6 @@ public class IntroAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.intro_page_layout, container, false);
 

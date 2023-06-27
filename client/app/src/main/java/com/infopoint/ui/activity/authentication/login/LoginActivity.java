@@ -25,11 +25,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -39,6 +37,7 @@ import com.infopoint.ui.activity.authentication.registration.RegistrationActivit
 
 import es.dmoral.toasty.Toasty;
 
+/** Activity used to perform authentication operation [login] */
 public class LoginActivity extends AppCompatActivity {
     private final static String _TAG = "[LoginActivity] ";
 

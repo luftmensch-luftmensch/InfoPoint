@@ -17,7 +17,7 @@
   ~   First written in 13/6/2023 at 23:48
   ~
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">InfoPoint</string>
 
     <string name="title_activity_main">InfoPoint</string>
@@ -67,7 +67,7 @@
 
     <string name="bad_request">Operazione effettuata non valida, controlla le informazioni inserite</string>
     <string name="forbidden">Non hai i permessi necessari per effettuare l\'operazione</string>
-    <string name="internal_error">Il Server non può elaborare la richiesta al momento, riprova più tardi</string>
+    <string name="internal_error" tools:ignore="Typos">Il Server non può elaborare la richiesta al momento, riprova più tardi</string>
     <string name="not_acceptable">Richiesta non valida, aggiorna l\'app</string>
     <string name="not_found">Nessun risultato trovato</string>
     <string name="service_unavailable">Servizio non disponibile, riprova più tardi</string>
@@ -173,7 +173,7 @@
     <string name="sort_button">Ordina</string>
     <string name="sort_order">Modalità di ordinamento</string>
 
-    <string name="starred_empty">Salva le opere che più ti interessano per vederle in un secondo momento</string>
+    <string name="starred_empty" tools:ignore="Typos">Salva le opere che più ti interessano per vederle in un secondo momento</string>
     <string name="starred_empty_sub">Per salvare un opera clicca sul suo menu relativo</string>
     <string name="starred_empty_icon">Rimuovi da preferiti</string>
     <string name="intro_skip">Salta</string>

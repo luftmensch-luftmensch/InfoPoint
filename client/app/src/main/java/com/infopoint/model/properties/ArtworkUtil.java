@@ -32,6 +32,7 @@ import com.infopoint.model.ArtWork;
 
 import java.util.List;
 
+/** Utility class used to perform operation on artwork (retrieve, load, ...) */
 public class ArtworkUtil {
     /**
      * Helper method used to retrieve or load the ArtWorks

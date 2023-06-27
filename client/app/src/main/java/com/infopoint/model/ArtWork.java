@@ -22,6 +22,7 @@ package com.infopoint.model;
 
 import androidx.annotation.NonNull;
 
+/** Model representing artwork properties */
 public class ArtWork {
     private String name;
     private String author;

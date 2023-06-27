@@ -36,9 +36,11 @@ import com.infopoint.R;
 import com.infopoint.core.config.Constants;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.authentication.login.LoginActivity;
+import com.infopoint.ui.adapters.IntroAdapter;
 
 import java.util.List;
 
+/** Cool Intro illustrating InfoPoint capabilities */
 public class IntroActivity extends AppCompatActivity {
     private final static String _TAG = "[IntroActivity] ";
 
@@ -52,6 +54,7 @@ public class IntroActivity extends AppCompatActivity {
             new SlideItem("Condividi la tua esperienza con chi ti circonda", R.drawable.intro_slide_icon_3)
     );
 
+    @SuppressWarnings("DEPRECATION")
     @Override
     protected void onCreate(Bundle bundle) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -61,6 +64,7 @@ public class IntroActivity extends AppCompatActivity {
         setUI();
     }
 
+    /** Helper method used to setup the UI of the activity */
     private void setUI() {
         nextButton = findViewById(R.id.intro_activity_next_button);
         gettingStartedButton = findViewById(R.id.intro_activity_getting_started_button);
@@ -99,6 +103,8 @@ public class IntroActivity extends AppCompatActivity {
         });
 
     }
+
+    /** Helper method to move the view to the last page */
     private void loadLastScreen() {
         nextButton.setVisibility(View.INVISIBLE);
         skipButton.setVisibility(View.INVISIBLE);

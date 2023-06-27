@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 
 import com.infopoint.R;
 
+/** Fragment used to perform search operation about a specific {@link com.infopoint.model.ArtWork ArtWork} */
 public class SearchFragment extends Fragment {
     private final static String _TAG = "[SearchFragment] ";
     @Override

@@ -28,11 +28,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
 import com.infopoint.ui.activity.authentication.login.LoginActivity;
 
+/** Activity used to perform authentication operation [registration] */
 public class RegistrationActivity extends AppCompatActivity {
     private final static String _TAG = "[RegistrationActivity] ";
 

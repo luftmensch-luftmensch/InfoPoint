@@ -26,6 +26,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+/** Wrapper class around {@link SharedPreferences} */
 public class StorageManager {
     private static final String _TAG = "[StorageManager] ";
     private static final String PREF_NAME = "app_settings";
@@ -62,29 +63,16 @@ public class StorageManager {
     public boolean contains(String key){ return preferences.contains(key); }
 
     public <T> void write(String key, T value) {
-
         SharedPreferences.Editor editor = preferences.edit();
 
         // Retrieve the type of value using the simple name of the underlying class as given in the source code
         // avoiding using instanceof for each possible type (Supported type are String, Integer, Long, Boolean)
         switch (value.getClass().getSimpleName()) {
-            case "String":
-                editor.putString(key, (String) value);
-                break;
-
-            case "Integer":
-                editor.putInt(key, (Integer) value);
-                break;
-
-            case "Long":
-                editor.putLong(key, (Long) value);
-                break;
-
-            case "Boolean":
-                editor.putBoolean(key, (Boolean) value);
-                break;
-            default:
-                Log.d(_TAG, "Unknown type <" + value.getClass().getSimpleName() + "> was given");
+            case "String" -> editor.putString(key, (String) value);
+            case "Integer" -> editor.putInt(key, (Integer) value);
+            case "Long" -> editor.putLong(key, (Long) value);
+            case "Boolean" -> editor.putBoolean(key, (Boolean) value);
+            default -> Log.d(_TAG, "Unknown type <" + value.getClass().getSimpleName() + "> was given");
         }
         editor.apply();
     }

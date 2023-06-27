@@ -20,6 +20,7 @@
 
 package com.infopoint.core.config;
 
+/** Utility class used to define constants around the Application */
 public class Constants {
     public static final String SERVER_ADDR = "";
     public static final int SERVER_PORT = 0;

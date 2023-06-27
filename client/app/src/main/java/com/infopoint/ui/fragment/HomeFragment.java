@@ -21,7 +21,6 @@
 package com.infopoint.ui.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,15 +31,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.infopoint.R;
-import com.infopoint.core.config.Constants;
-import com.infopoint.core.preferences.StorageManager;
-import com.infopoint.model.ArtWork;
 
-import java.util.List;
-
+/** Home of the InfoPoint application (where all the artworks are displayed) */
 public class HomeFragment extends Fragment {
     private final static String _TAG = "[HomeFragment] ";
 
@@ -55,5 +48,4 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
     }
-
 }

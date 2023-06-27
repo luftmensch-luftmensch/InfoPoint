@@ -40,6 +40,7 @@ import com.infopoint.R;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.MainActivity;
 
+/** Fragment used to show info about the current user logged */
 public class ProfileFragment extends Fragment {
     private final static String _TAG = "[ProfileFragment] ";
     private Chip chip;

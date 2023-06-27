@@ -2,3 +2,13 @@
 plugins {
     id("com.android.application") version "8.1.0-beta01" apply false
 }
+
+// Show deprecations notice during build
+allprojects {
+    gradle.projectsEvaluated {
+
+        tasks.withType<JavaCompile> {
+            options.compilerArgs.addAll(arrayOf("-parameters", "-Xlint:deprecation"))
+        }
+    }
+}

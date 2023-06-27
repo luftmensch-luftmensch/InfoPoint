@@ -20,5 +20,6 @@
 
 package com.infopoint.ui.adapters;
 
+/** Helper Adapter Class used for the {@link com.infopoint.ui.fragment.HomeFragment HomeFragment} & {@link com.infopoint.ui.fragment.ProfileFragment ProfileFragment} */
 public class ArtWorkAdapter {
 }

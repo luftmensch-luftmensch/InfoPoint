@@ -20,6 +20,7 @@
 
 package com.infopoint.model;
 
+/** Model representing user properties */
 public class User {
     private String id;
     private String name;

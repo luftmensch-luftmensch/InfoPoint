@@ -20,4 +20,5 @@
 
 package com.infopoint.model.properties;
 
+/** Enumeration representing the possible types of users */
 public enum UserType { STUDENT, EXPERT }
