@@ -8,6 +8,7 @@
   +  Lucia Brando        (matr. N86003382)
 */
 
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -16,7 +17,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <netinet/in.h>
-
+#include <sys/socket.h>
 
 #include "server.h"
 
@@ -27,10 +28,12 @@
 #define _m(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
 
 server* init_server(unsigned int port, const size_t max_workers){
-  unsigned int use_port = !port ? DEFAULT_PORT : port;
-
   // Allocate memory for the newly created server
   server* s = malloc(sizeof(struct server));
+  if (s == NULL) {
+    _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
+    return NULL;
+  }
 
   // Define type of socket
   /*
@@ -71,7 +74,7 @@ server* init_server(unsigned int port, const size_t max_workers){
     Set port number, using htons function to use proper byte order
     We are using htons to convert PORT to a "netwrok byte order"
   */
-  s ->transport.sin_port = htons(use_port);
+  s ->transport.sin_port = htons(port);
 
   /* Make the server listening to any interfaces in order to make it available on the network */
   s ->transport.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -94,7 +97,7 @@ server* init_server(unsigned int port, const size_t max_workers){
     perror("listen: ");
     exit(errno); 
   }
-  _m(_msgevent, "[%s] (%s) Server ready and it is listening for new clients on port: %d!", __FILE_NAME__, __func__, use_port);
+  _m(_msgevent, "[%s] (%s) Server ready and it is listening for new clients on port: %d!", __FILE_NAME__, __func__, port);
 
   s->conn_count = 0;
 

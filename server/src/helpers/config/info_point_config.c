@@ -17,6 +17,7 @@ info_point_config* provide_config(const char* file_name) {
   config_parser* parser = NULL;
   if(read_file(file_name, &parser) != CONFIG_OK) {
     fprintf(stderr, "[%s] (%s) Failed to parse %s", __FILE__, __func__, file_name);
+    free(info_point_cfg);
     return NULL;
   }
 

@@ -6,6 +6,15 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 #
 # Define compiler https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#how-do-i-use-a-different-compiler
 
+
+# In order to generate the compile_commands.json to make clangd able to find mongoc lib:
+# 1. cmake -S . -B build/  -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+# 2. In the build folder run
+#   1. make clean
+#   2. bear -- make
+# 3. cmake --build build
+# DONE!
+
 #
 # Project details
 #
@@ -18,6 +27,8 @@ project("SERVER"
 
 # If enabled, generates a compile_commands.json file containing the exact compiler calls for all translation units of the project in machine-readable form
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_C_STANDARD 17)
 
 
 include(cmake/StandardSettings.cmake)
@@ -42,7 +53,6 @@ endif (UNIX)
 #
 # Prevent building in the source directory
 #
-
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.\n")
 endif()
@@ -71,13 +81,6 @@ add_executable(${PROJECT_EXECUTABLE})
 # Database setup
 #
 
-# In order to generate the compile_commands.json to make clangd able to find mongoc lib:
-# 1. cmake -S . -B build/  -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-# 2. In the build folder run
-#   1. make clean
-#   2. bear -- make
-# 3. cmake --build build
-# DONE!
 
 # Find driver needed for mongodb connection
 find_package(mongoc-1.0 1.7 REQUIRED)
@@ -89,7 +92,6 @@ target_sources(${PROJECT_EXECUTABLE} PRIVATE ${sources} ${headers})
 #
 # Set the project standard and warnings
 #
-# TODO: Set CMAKE_C_STANDARD
 message("\nApplied compiler warnings. Using standard ${CMAKE_C_STANDARD}.\n")
 
 set_project_build_flags(${PROJECT_EXECUTABLE})
