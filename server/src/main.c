@@ -20,6 +20,7 @@
 #include "helpers/config/info_point_config.h"
 #include "helpers/command_line_runner/command_line_runner.h"
 #include "helpers/utility/utility.h"
+#include "core/payload/payload.h"
 
 int main(int argc, char** argv){
   // Welcome message
@@ -45,4 +46,8 @@ int main(int argc, char** argv){
   free(cfg);
 
   destroy_server(s);
+
+  // const char* input ="CALL,EXPECTED,v3,v4,v5<>w1,w2,w3,w4,w5<>x1,x2,x3,x4<>y1,y2,y3,y4,y5,y6";
+
+  // parse_data(input, "<>", ",");
 }

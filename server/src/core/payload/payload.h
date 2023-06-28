@@ -14,9 +14,19 @@
   #include <stdlib.h>
   #include <stdbool.h>
 
+  typedef enum request_t {
+    LOGIN,
+    REGISTRATION,
+    ARTWORKS
+  } request_t;
+
   typedef struct payload_t {
+    request_t request;
     void* data;
     size_t length;
   } payload_t;
+
+  /* TODO: Change current return type */
+  void parse_data(const char*, const char*, const char*);
 
 #endif

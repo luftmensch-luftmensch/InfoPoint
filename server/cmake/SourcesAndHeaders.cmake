@@ -23,10 +23,12 @@ set(sources
     # Configuration parser with ini config file
     src/helpers/config/config_parser.c
     src/helpers/config/info_point_config.c
-    
 
     # Database Related
     src/core/database/database.c
+
+    # Payload
+    src/core/payload/payload.c
 )
 
 set(headers
@@ -56,4 +58,7 @@ set(headers
 
     # Database Related
     src/core/database/database.h
+
+    # Payload
+    src/core/payload/payload.h
 )
