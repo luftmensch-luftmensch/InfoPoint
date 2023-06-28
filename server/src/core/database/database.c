@@ -13,6 +13,8 @@
 
 #include "database.h"
 
+#include "../../helpers/base/macros.h"
+
 #define _m(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format __VA_OPT__(,) __VA_ARGS__)
 
 db_handler* init_db_handler(char* username, char* password, char* host, char* database_name) {
@@ -122,4 +124,77 @@ void destroy_db_handler(db_handler* handler) {
 
   _m(_msgevent, "[%s] (%s) Done!", __FILE_NAME__, __func__);
   free(handler);
+}
+
+bool populate_collection(mongoc_client_t* client, char* database_name, char* collection_name) {
+  // Custom entry used to populate the ArtWork collection (TODO: Set meaningful values)
+  art_work artworks[] = { // Casting to char* in order to silence the warning (char* to const char[X])
+    {(char*) "NAME1", (char*) "AUTHOR1", (char*) "DESCRIPTION1"},
+    {(char*) "NAME2", (char*) "AUTHOR2", (char*) "DESCRIPTION2"}
+  };
+
+  bson_t* documents[ARRAY_SIZE(artworks)];
+
+  bson_error_t error; // Error handler
+
+
+  // Inizialize the document
+  for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
+    // { "_id" : { "$numberInt" : "<I>" }, "name" : <VALUE>, "author" : <VALUE>, "description" : <VALUE> }
+    documents[i] = BCON_NEW("_id", BCON_INT32(i),
+			    "name", BCON_UTF8(artworks[i].name),
+			    "author", BCON_UTF8(artworks[i].author),
+			    "description", BCON_UTF8(artworks[i].description));
+  }
+
+  // Retrieve the collection in which execute bulk insert
+  mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
+
+  // Insert multi checking for errors
+  bool status = mongoc_collection_insert_many(collection, (const bson_t **) documents, ARRAY_SIZE(artworks), NULL, NULL, &error);
+
+  if (!status) {
+    _m(_msginfo, "[%s] (%s) Failed to populate the collection %s! Cause: %s\n", __FILE_NAME__, __func__, collection_name , error.message);
+  }
+
+  // Only for debug purpose (Decomment to show the structure of the artwork documents)
+  // for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
+  //   char* str;
+  //   str = bson_as_canonical_extended_json (artwork_document[i], NULL);
+  //   printf("Item n° %zu: %s\n", i, str);
+  //   bson_free(str);
+  // }
+
+
+  /* Document cleanup */
+  for (size_t i = 0; i < ARRAY_SIZE(artworks); i++)
+    bson_destroy(documents[i]);
+
+  /* Collection clenaup */
+  mongoc_collection_destroy(collection);
+
+  return status;
+}
+
+
+bool insert_single(bson_t* document, mongoc_client_t* client, char* database_name, char* collection_name) {
+  mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
+
+  bson_error_t error; // Error handler
+
+  /* Insert the document & check for errors */
+  if (!mongoc_collection_insert_one(collection, document, NULL, NULL, &error)) {
+    _m(_msginfo, "[%s] (%s) Failed to insert into collection %s! Cause: %s\n", __FILE_NAME__, __func__, collection_name , error.message);
+    return false;
+  }
+
+  /* Collection clenaup */
+  mongoc_collection_destroy(collection);
+
+  return true;
+}
+
+bson_t* retrieve_single(mongoc_client_t* client, char* database_name, char* collection_name) {
+  bson_error_t error;
+  return NULL;
 }

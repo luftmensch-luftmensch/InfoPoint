@@ -21,7 +21,8 @@
     bool validate_regex(const void * const, const void * const);
 
     /* Count the occurence of a given delimeter inside a given buffer */
-    int count_occurence(const char*, const char*, bool);
+    size_t count_occurence(const char*, const char*);
+    // int count_occurence(const char*, const char*, bool);
 
     /* Strip a given delimeter from a given buffer */
     /* TODO: Change return type */

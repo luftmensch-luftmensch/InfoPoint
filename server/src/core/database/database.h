@@ -31,10 +31,19 @@
       #define MONGO_DB_ARTWORK_COLLECTION_NAME "artwork"
   #endif
 
+  #ifndef REGEX_NICKNAME
+    /**
+     * User nickname boundaries:
+     * 1. Has to start with an alphanumeric;
+     * 2. At least two characters;
+     * 3. Has to end with an alphanumeric
+    */
+    #define REGEX_NICKNAME "^[a-zA-Z0-9]+[_@#]?[a-zA-Z0-9]+$"
+  #endif
+
   typedef struct db_handler {
     struct instance {
       mongoc_client_pool_t* pool;	/* Connection pool for multi-threaded programs */
-      // mongoc_client_t* client;	/* Client to the mongodb instance  */
       mongoc_uri_t* uri;		/* Abstraction on top of the MongoDB connection URI format */
 
       //mongoc_cursor_t* cursor;
@@ -56,24 +65,40 @@
 
   } db_handler;
 
+  /* ArtWork Collection structure */
+  typedef struct art_work {
+    char* id;
+    char* name;
+    char* author;
+    char* description;
+  } art_work;
+
+  /* User Level of the user */
+  typedef enum user_level {
+    STANDARD,
+    MEDIUM,
+    EXPERT,
+  } user_level;
+
+  /* User Collection structure */
+  typedef struct user {
+    char* id;
+    char* name;
+    char* password;
+    user_level level;
+  } user;
+
   // Database Handler related functions
   db_handler* init_db_handler(char*, char*, char*, char*);
   void destroy_db_handler(db_handler*);
 
   /* Collection population */
-  bool populate_collection();
+  bool populate_collection(mongoc_client_t*, char*, char*);
 
   /* Retrieve a single document in a form of a payload */
-  payload_t* retrieve_single();
+  bson_t* retrieve_single(mongoc_client_t*, char*, char*);
+  // payload_t* retrieve_single(mongoc_client_t*, char*, char*);
 
   /* Insert a single document in a given collection */
-  bool insert_single(payload_t*, char*);
-  /* Update a single document in a given collection */
-  bool update_single(payload_t*, char*);
-
-  /* Remove a single document from a given collection */
-  bool delete_single(char*, char*);
-  /* Bulk remove from a given collection with a matching strategy */
-  bool bulk_delete(char*, char*);
-
+  bool insert_single(bson_t*, mongoc_client_t*, char*, char*);
 #endif

@@ -61,6 +61,7 @@ bool validate_regex(const void * const s, const void * const pattern) {
   return comparison_value;
 }
 
+/*
 int count_occurence(const char *str, const char* substr, bool overlap) {
   if ((strlen(substr) == 0) || (strlen(str) == 0)) return -1; // forbid empty substr
 
@@ -69,6 +70,11 @@ int count_occurence(const char *str, const char* substr, bool overlap) {
   for (char* s = (char*)str; (s = strstr(s, substr)); s += increment)
     ++count;
   return count;
+}
+*/
+
+size_t count_occurence(const char* data, const char* delim) {
+  return *data == '\0' ? 0 : count_occurence(data + 1, delim) + (*data == *delim);
 }
 
 long long current_timestamp() {
