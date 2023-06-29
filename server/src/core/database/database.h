@@ -31,6 +31,10 @@
       #define MONGO_DB_ARTWORK_COLLECTION_NAME "artwork"
   #endif
 
+  #ifndef MONGO_DB_COLLECTION_DATA_MAX_SIZE
+    #define MONGO_DB_COLLECTION_DATA_MAX_SIZE 128
+  #endif
+
   #ifndef REGEX_NICKNAME
     /**
      * User nickname boundaries:
@@ -65,6 +69,11 @@
 
   } db_handler;
 
+  typedef enum document_type {
+    ART_WORK,
+    USER
+  } document_type;
+
   /* ArtWork Collection structure */
   typedef struct art_work {
     char* id;
@@ -73,19 +82,12 @@
     char* description;
   } art_work;
 
-  /* User Level of the user */
-  typedef enum user_level {
-    STANDARD,
-    MEDIUM,
-    EXPERT,
-  } user_level;
-
   /* User Collection structure */
   typedef struct user {
     char* id;
     char* name;
     char* password;
-    user_level level;
+    char* level;
   } user;
 
   // Database Handler related functions
@@ -101,4 +103,7 @@
 
   /* Insert a single document in a given collection */
   bool insert_single(bson_t*, mongoc_client_t*, char*, char*);
+
+  payload_t* parse_bson_as_artwork(bson_t* document);
+  payload_t* parse_bson_as_user(bson_t* document);
 #endif

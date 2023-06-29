@@ -23,11 +23,10 @@
 #include "helpers/utility/utility.h"
 #include "core/payload/payload.h"
 
-
 int main(int argc, char** argv){
   // Welcome message
   fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
-  
+
   // Parse command line arguments
   char* config_file = parse_command_line_arguments(argc, argv);
 
@@ -52,4 +51,33 @@ int main(int argc, char** argv){
   // const char* input ="CALL,EXPECTED,v3,v4,v5<>w1,w2,w3,w4,w5<>x1,x2,x3,x4<>y1,y2,y3,y4,y5,y6";
 
   // parse_data(input, "<>", ",");
+
+  /* BSON TESTING
+  bson_t* doc = BCON_NEW("_id", BCON_INT32(0),
+			 "name", BCON_UTF8("NAME"),
+			 "author", BCON_UTF8("AUTHOR"),
+			 "description", BCON_UTF8("DESCRIPTION"));
+
+  bson_t* doc_u = BCON_NEW("_id", BCON_INT32(0),
+			 "name", BCON_UTF8("NAME"),
+			 "password", BCON_UTF8("PASSWORD"),
+			 "level", BCON_UTF8("LEVEL"));
+
+  payload_t* p = parse_bson_as_artwork(doc);
+
+  printf("%s\n", (char*) p->data);
+
+  free(p->data);
+  free(p);
+
+  payload_t* p_u = parse_bson_as_user(doc_u);
+  
+  printf("%s\n", (char*) p_u->data);
+
+  free(p_u->data);
+  free(p_u);
+
+  bson_free(doc);
+  bson_free(doc_u);
+  */
 }

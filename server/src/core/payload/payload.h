@@ -23,7 +23,7 @@
   typedef struct payload_t {
     request_t request;
     void* data;
-    size_t length;
+    size_t size;
   } payload_t;
 
   /* TODO: Change current return type */

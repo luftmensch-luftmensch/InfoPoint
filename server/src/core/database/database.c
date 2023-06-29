@@ -17,6 +17,10 @@
 
 #define _m(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format __VA_OPT__(,) __VA_ARGS__)
 
+/* Helpers function for art_work & user */
+static void destroy_art_work(art_work*);
+static void destroy_user(user*);
+
 db_handler* init_db_handler(char* username, char* password, char* host, char* database_name) {
   db_handler* handler = malloc(sizeof(struct db_handler));
   bson_error_t error; // Error handler
@@ -129,8 +133,8 @@ void destroy_db_handler(db_handler* handler) {
 bool populate_collection(mongoc_client_t* client, char* database_name, char* collection_name) {
   // Custom entry used to populate the ArtWork collection (TODO: Set meaningful values)
   art_work artworks[] = { // Casting to char* in order to silence the warning (char* to const char[X])
-    {(char*) "NAME1", (char*) "AUTHOR1", (char*) "DESCRIPTION1"},
-    {(char*) "NAME2", (char*) "AUTHOR2", (char*) "DESCRIPTION2"}
+    {(char*)"NAME1", (char*)"AUTHOR1", (char*)"DESCRIPTION1"},
+    {(char*)"NAME2", (char*)"AUTHOR2", (char*)"DESCRIPTION2"}
   };
 
   bson_t* documents[ARRAY_SIZE(artworks)];
@@ -194,7 +198,109 @@ bool insert_single(bson_t* document, mongoc_client_t* client, char* database_nam
   return true;
 }
 
-bson_t* retrieve_single(mongoc_client_t* client, char* database_name, char* collection_name) {
-  bson_error_t error;
-  return NULL;
+// bson_t* retrieve_single(mongoc_client_t* client, char* database_name, char* collection_name) {
+//   bson_error_t error;
+//   return NULL;
+// }
+
+payload_t* parse_bson_as_artwork(bson_t* document) {
+  if (document == NULL)
+    return NULL;
+
+  payload_t* payload = malloc(sizeof(struct payload_t));
+
+  bson_iter_t iter;
+
+  art_work* art = malloc(sizeof(struct art_work));
+
+  if (bson_iter_init(&iter, document)) {
+    while(bson_iter_next(&iter)) {
+      const bson_value_t* value = bson_iter_value(&iter);
+      if (strcmp(bson_iter_key(&iter), "_id") == 0) {
+	// printf("ID\n");
+      } else if (strcmp(bson_iter_key(&iter), "name") == 0) {
+	art->name = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) art->name, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else if (strcmp(bson_iter_key(&iter), "author") == 0) {
+	art->author = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) art->author, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else if (strcmp(bson_iter_key(&iter), "description") == 0) {
+	art->description = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) art->description, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else {
+	printf("Unknown key");
+      }
+    }
+  }
+
+  size_t total_size = (strlen(art->name) + 1) + (strlen(art->author) + 1) + (strlen(art->description) + 1) + 9;
+
+  payload->data = malloc(total_size);
+  payload->size = total_size;
+
+  snprintf(payload->data, total_size, "<>%s<>%s<>%s<>", art->name, art->author, art->description);
+
+  destroy_art_work(art);
+  return payload;
+}
+
+payload_t* parse_bson_as_user(bson_t* document) {
+  if (document == NULL)
+    return NULL;
+
+  payload_t* payload = malloc(sizeof(struct payload_t));
+
+  bson_iter_t iter;
+
+  user* u = malloc(sizeof(struct user));
+
+  if (bson_iter_init(&iter, document)) {
+    while(bson_iter_next(&iter)) {
+      const bson_value_t* value = bson_iter_value(&iter);
+      if (strcmp(bson_iter_key(&iter), "_id") == 0) {
+	// printf("ID\n");
+      } else if (strcmp(bson_iter_key(&iter), "name") == 0) {
+	u->name = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) u->name, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else if (strcmp(bson_iter_key(&iter), "password") == 0) {
+	u->password = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) u->password, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else if (strcmp(bson_iter_key(&iter), "level") == 0) {
+	u->level = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) u->level, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else {
+	printf("Unknown key");
+      }
+    }
+  }
+
+  size_t total_size = (strlen(u->name) + 1) + (strlen(u->password) + 1) + (strlen(u->level) + 1) + 9;;
+
+  payload->data = malloc(total_size);
+  payload->size = total_size;
+
+  snprintf(payload->data, payload->size, "<>%s<>%s<>%s<>", u->name, u->password, u->level);
+
+  destroy_user(u);
+
+  return payload;
+}
+
+
+static void destroy_user(user* u) {
+  if(!u) return;
+  if (u->name) free(u->name);
+  if (u->password) free(u->password);
+  if (u->level) free(u->level);
+  free(u);
+}
+
+static void destroy_art_work(art_work* art) {
+  if (!art)
+    return;
+
+  if (art->name) free(art->name);
+  if (art->author) free(art->author);
+  if (art->description) free(art->description);
+  free(art);
 }
