@@ -27,11 +27,18 @@
 
 #define _m(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
 
-server* init_server(unsigned int port, const size_t max_workers){
+server* init_server(unsigned int port, const size_t max_workers, char* username, char* password, char* host, char* database_name){
   // Allocate memory for the newly created server
   server* s = malloc(sizeof(struct server));
   if (s == NULL) {
     _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
+    return NULL;
+  }
+
+  // Database Handler setup
+  s->handler = init_handler(username, password, host, database_name);
+  if (s->handler == NULL) {
+    _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server->handler! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     return NULL;
   }
 
@@ -122,5 +129,7 @@ void destroy_server(server* s) {
   // Stopping and destroying the thread pool
 
   _m(_msgevent, "[%s] (%s) Goodbye!", __FILE_NAME__, __func__);
+
+  destroy_handler(s->handler);
   free(s);
 }

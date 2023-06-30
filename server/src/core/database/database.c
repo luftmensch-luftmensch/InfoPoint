@@ -21,7 +21,7 @@
 static void destroy_art_work(art_work*);
 static void destroy_user(user*);
 
-db_handler* init_db_handler(char* username, char* password, char* host, char* database_name) {
+db_handler* init_handler(char* username, char* password, char* host, char* database_name) {
   db_handler* handler = malloc(sizeof(struct db_handler));
   bson_error_t error; // Error handler
 
@@ -30,15 +30,18 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   _m(_msginfo, "[%s] (%s) Initializing settings for the handler", __FILE_NAME__, __func__);
 
   // Uri field initialization
-  snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s/authMechanism=SCRAM-SHA-256&authSource=admin", username, password, host); // mongodb://<username>:<password>@<host>
+  snprintf(handler->settings.database_uri, sizeof(handler->settings.database_uri), "mongodb://%s:%s@%s/", username, password, host); // mongodb://<username>:<password>@<host>
 
   // Collections identifier field initialization
   handler->settings.user_collection     = (char*) MONGO_DB_USER_COLLECTION_NAME;
   handler->settings.art_work_collection = (char*) MONGO_DB_ARTWORK_COLLECTION_NAME;
 
   // Database name field initialization
-  handler->settings.database_name = database_name;
-  
+  assert((strlen(database_name) + 1) < sizeof(handler->settings.name));
+  snprintf(handler->settings.name, sizeof(handler->settings.name), "%s", database_name);
+
+  // handler->settings.name = malloc((strlen(database_name) + 1));
+  // memcpy(handler->settings.name, database_name, (strlen(database_name) + 1));
 
   _m(_msginfo, "[%s] (%s) Database Handler initialization", __FILE_NAME__, __func__);
   mongoc_init(); /* Required to initialize libmongoc's internals (It should be called only once!) */
@@ -53,8 +56,6 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
     _m(_msgfatal, "[%s] (%s) Failed to parse URI <%s> Cause: %s\n", __FILE_NAME__, __func__, handler->settings.database_uri, error.message);
     exit(errno);
   }
-
-  printf("Auth source %s - Auth mechanism: %s\n", mongoc_uri_get_auth_source(handler->instance.uri), mongoc_uri_get_auth_mechanism(handler->instance.uri));
 
   _m(_msginfo, "[%s] (%s) Database instance pool setup", __FILE_NAME__, __func__);
   handler->instance.pool = mongoc_client_pool_new(handler->instance.uri);
@@ -78,8 +79,7 @@ db_handler* init_db_handler(char* username, char* password, char* host, char* da
   return handler;
 }
 
-
-void destroy_db_handler(db_handler* handler) {
+void destroy_handler(db_handler* handler) {
   /*
     For some reason interal function of mongoc triggers valgrind about certain
     known leaks/still reachable in both OpenSSL and CyrusSASL in certain scenarios.
@@ -127,6 +127,7 @@ void destroy_db_handler(db_handler* handler) {
   _m(_msghighlight, "[%s] (%s) Finishing mongoc cleanup", __FILE_NAME__, __func__);
 
   _m(_msgevent, "[%s] (%s) Done!", __FILE_NAME__, __func__);
+
   free(handler);
 }
 
@@ -144,11 +145,15 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
 
   // Inizialize the document
   for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
-    // { "_id" : { "$numberInt" : "<I>" }, "name" : <VALUE>, "author" : <VALUE>, "description" : <VALUE> }
-    documents[i] = BCON_NEW("_id", BCON_INT32(i),
+    bson_oid_t oid;
+    bson_oid_init (&oid, NULL);
+
+    // { "_id" : { "$oid" : "<&oid>" }, "name" : <VALUE>, "author" : <VALUE>, "description" : <VALUE> }
+    documents[i] = BCON_NEW("_id", BCON_OID(&oid),
 			    "name", BCON_UTF8(artworks[i].name),
 			    "author", BCON_UTF8(artworks[i].author),
 			    "description", BCON_UTF8(artworks[i].description));
+
   }
 
   // Retrieve the collection in which execute bulk insert
@@ -164,7 +169,7 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
   // Only for debug purpose (Decomment to show the structure of the artwork documents)
   // for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
   //   char* str;
-  //   str = bson_as_canonical_extended_json (artwork_document[i], NULL);
+  //   str = bson_as_canonical_extended_json (documents[i], NULL);
   //   printf("Item n° %zu: %s\n", i, str);
   //   bson_free(str);
   // }
@@ -198,12 +203,32 @@ bool insert_single(bson_t* document, mongoc_client_t* client, char* database_nam
   return true;
 }
 
-// bson_t* retrieve_single(mongoc_client_t* client, char* database_name, char* collection_name) {
-//   bson_error_t error;
-//   return NULL;
-// }
+bool is_present(mongoc_client_t* client, bson_t* filter, bson_t* options, char* database_name, char* collection_name) {
+  bson_error_t error;
 
-payload_t* parse_bson_as_artwork(bson_t* document) {
+  mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
+
+  mongoc_cursor_t* cursor = mongoc_collection_find_with_opts(collection, filter, options, NULL);
+
+  const bson_t* retrieved;
+  if (!mongoc_cursor_next(cursor, &retrieved)) {
+    _m(_msginfo, "[%s] (%s) Failed to found document!", __FILE_NAME__, __func__);
+    return false;
+  }
+
+  if (mongoc_cursor_error(cursor, &error)) {
+    _m(_msgwarn, "[%s] (%s) An error occurred! Cause: %s\n", __FILE_NAME__, __func__, error.message);
+  }
+
+  /* Cursor cleanup */
+  mongoc_cursor_destroy(cursor);
+
+  /* Collection clenaup */
+  mongoc_collection_destroy(collection);
+  return true;
+}
+
+payload_t* parse_bson_as_artwork(const bson_t* document) {
   if (document == NULL)
     return NULL;
 
@@ -244,7 +269,7 @@ payload_t* parse_bson_as_artwork(bson_t* document) {
   return payload;
 }
 
-payload_t* parse_bson_as_user(bson_t* document) {
+payload_t* parse_bson_as_user(const bson_t* document) {
   if (document == NULL)
     return NULL;
 

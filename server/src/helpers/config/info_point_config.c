@@ -37,8 +37,10 @@ info_point_config* provide_config(const char* file_name) {
 
   /* [Database] Retriving config options fields from the given config file */
   read_str_from_cfg(parser, "database", "type", info_point_cfg->ds.type, sizeof(info_point_cfg->ds.type), "undefined");
+  read_str_from_cfg(parser, "database", "name", info_point_cfg->ds.database_name, sizeof(info_point_cfg->ds.database_name), "undefined");
   read_str_from_cfg(parser, "database", "host", info_point_cfg->ds.host, sizeof(info_point_cfg->ds.host), "undefined");
-  read_str_from_cfg(parser, "database", "auth_mechanism", info_point_cfg->ds.auth_mechanism, sizeof(info_point_cfg->ds.auth_mechanism), "undefined");
+  read_str_from_cfg(parser, "database", "username", info_point_cfg->ds.username, sizeof(info_point_cfg->ds.username), "undefined");
+  read_str_from_cfg(parser, "database", "password", info_point_cfg->ds.password, sizeof(info_point_cfg->ds.password), "undefined");
 
   read_uint_from_cfg(parser, "database", "port", &info_point_cfg->ds.port, 1234);
 
@@ -60,6 +62,9 @@ info_point_config* provide_default_config() {
     .ds = {
       .type = "mongodb",
       .host = "localhost",
+      .username = "admin",
+      .password = "password",
+      .database_name = "info",
       .port = 27017,
     },
     .ls = {
@@ -76,6 +81,6 @@ info_point_config* provide_default_config() {
 void cfg_pretty_print(const info_point_config* cfg, FILE* file) {
   fprintf(file, "### Networking\n\tHost -> %s, Port -> %d, Timeout -> %d\n\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
   fprintf(file, "### Connections\n\tMax Clients -> %d, Max Threads ->  %d\n\n", cfg->cs.max_clients, cfg->cs.max_threads);
-  fprintf(file, "### Database\n\tType -> %s, Host -> %s Auth Mechanism-> %s, Port -> %d\n\n", cfg->ds.type, cfg->ds.host, cfg->ds.auth_mechanism, cfg->ds.port);
+  fprintf(file, "### Database\n\tType -> %s, Host -> %s, Username -> %s, Password -> %s, Database Name -> %s, Port -> %d\n\n", cfg->ds.type, cfg->ds.host, cfg->ds.username, cfg->ds.password, cfg->ds.database_name, cfg->ds.port);
   fprintf(file, "### Logging\n\tLog Level - %s, Log File - %s\n\n", cfg->ls.log_level, cfg->ls.log_file);
 }

@@ -13,6 +13,7 @@
 
   #include <arpa/inet.h>
   #include "../../helpers/pool/thread_pool.h"
+  #include "../database/database.h"
 
   #ifndef TIMEOUT_CONNECTION_S
       #define TIMEOUT_CONNECTION_S 20.0f
@@ -20,15 +21,16 @@
 
   typedef enum connection_status { NEW, ALIVE, DEAD } connection_status;
 
-  /* Server */
+  /* Server structure */
   typedef struct server {
     ssize_t socket;
     struct sockaddr_in transport;
     size_t conn_count;
+    db_handler* handler;
     thread_pool_t* pool;
   } server;
 
-  server* init_server(unsigned int, const size_t);
+  server* init_server(unsigned int, const size_t, char*, char*, char*, char*);
   void destroy_server(server*);
   void server_loop(server*);
 #endif

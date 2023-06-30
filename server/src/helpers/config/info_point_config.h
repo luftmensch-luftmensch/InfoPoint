@@ -38,8 +38,10 @@
     /* Configuration for database setting related */
     struct database_settings {
       char type[INFO_POINT_MAX_BUFF];		// Type of the specified database
+      char database_name[INFO_POINT_MAX_BUFF];	// Name of the database to use
       char host[INFO_POINT_MAX_BUFF];		// Host of the running database
-      char auth_mechanism[INFO_POINT_MAX_BUFF]; // Auth mechanism used during connection negotiation
+      char username[INFO_POINT_MAX_BUFF];	// Username credential
+      char password[INFO_POINT_MAX_BUFF];	// Password credential
       unsigned int port;			// Port of the running database
     } ds;
 

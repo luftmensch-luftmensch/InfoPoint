@@ -61,7 +61,7 @@
      * Do basic operation with the speciefied documents used by the service
     */
     struct mongo_db_settings {
-      char* database_name;		/* Database name identifier */
+      char  name[100];			/* Database name identifier */
       char  database_uri[100];		/* String used to connect to the mongodb instance */
       char* user_collection;		/* Identifier of the collection used to store & retrieve data of the users */
       char* art_work_collection;	/* Identifier of the collection used to store & retrieve data of the artworks */
@@ -76,7 +76,6 @@
 
   /* ArtWork Collection structure */
   typedef struct art_work {
-    char* id;
     char* name;
     char* author;
     char* description;
@@ -91,19 +90,18 @@
   } user;
 
   // Database Handler related functions
-  db_handler* init_db_handler(char*, char*, char*, char*);
-  void destroy_db_handler(db_handler*);
+  db_handler* init_handler(char*, char*, char*, char*);
+  void destroy_handler(db_handler*);
 
   /* Collection population */
   bool populate_collection(mongoc_client_t*, char*, char*);
 
-  /* Retrieve a single document in a form of a payload */
-  bson_t* retrieve_single(mongoc_client_t*, char*, char*);
-  // payload_t* retrieve_single(mongoc_client_t*, char*, char*);
+  /* Check if a document is present */
+  bool is_present(mongoc_client_t*, bson_t*, bson_t*, char*, char*);
 
   /* Insert a single document in a given collection */
   bool insert_single(bson_t*, mongoc_client_t*, char*, char*);
 
-  payload_t* parse_bson_as_artwork(bson_t* document);
-  payload_t* parse_bson_as_user(bson_t* document);
+  payload_t* parse_bson_as_artwork(const bson_t*);
+  payload_t* parse_bson_as_user(const bson_t*);
 #endif

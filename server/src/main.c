@@ -23,7 +23,7 @@
 #include "helpers/utility/utility.h"
 #include "core/payload/payload.h"
 
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
   // Welcome message
   fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
 
@@ -41,10 +41,24 @@ int main(int argc, char** argv){
   cfg_pretty_print(cfg, stdout);
 
 
-  server* s = init_server(cfg->ns.port, cfg->cs.max_clients);
+  server* s = init_server(cfg->ns.port, cfg->cs.max_clients, cfg->ds.username, cfg->ds.password, cfg->ds.host, cfg->ds.database_name);
 
   /* Finally free the cfg, as we no more need it */
   free(cfg);
+
+  mongoc_client_t* client = mongoc_client_pool_pop(s->handler->instance.pool);
+
+  bson_t* filter = BCON_NEW("name", BCON_UTF8("NAME1"));
+  bson_t* opts = BCON_NEW("limit", BCON_INT64(1));
+
+  bool status = is_present(client, filter, opts, s->handler->settings.name, s->handler->settings.art_work_collection);
+
+  printf("Status: %d\n", status);
+
+  bson_free(filter);
+  bson_free(opts);
+
+  mongoc_client_pool_push(s->handler->instance.pool, client);
 
   destroy_server(s);
 
@@ -80,4 +94,5 @@ int main(int argc, char** argv){
   bson_free(doc);
   bson_free(doc_u);
   */
+
 }
