@@ -50,7 +50,7 @@ db_handler* init_handler(char* username, char* password, char* host, char* datab
 
   /* Safely create a MongoDB URI object from the given string */
 
-  _m(_msginfo, "[%s] (%s) Parsing mongodb endpoint <%s>\n", __FILE_NAME__, __func__, handler->settings.database_uri);
+  _m(_msginfo, "[%s] (%s) Parsing mongodb endpoint <%s>", __FILE_NAME__, __func__, handler->settings.database_uri);
   handler->instance.uri = mongoc_uri_new_with_error(handler->settings.database_uri, &error);
   if (!handler->instance.uri) {
     _m(_msgfatal, "[%s] (%s) Failed to parse URI <%s> Cause: %s\n", __FILE_NAME__, __func__, handler->settings.database_uri, error.message);
@@ -183,6 +183,38 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
   mongoc_collection_destroy(collection);
 
   return status;
+}
+
+void retrieve_art_works(mongoc_client_t* client, char* database_name, char* collection_name) {
+  bson_error_t error;
+
+  // Retrieve the collection in which execute bulk insert
+  mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
+
+  bson_t* filter = BCON_NEW("name", BCON_REGEX("m","i") );
+
+  mongoc_cursor_t *cursor = mongoc_collection_find_with_opts(collection, filter, NULL, NULL);
+
+  const bson_t* retrieved;
+
+  while (mongoc_cursor_next(cursor, &retrieved)) {
+    char* str = bson_as_canonical_extended_json(retrieved, NULL);
+    printf("%s\n", str);
+    bson_free(str);
+  }
+
+  if (mongoc_cursor_error(cursor, &error)) {
+    _m(_msgwarn, "[%s] (%s) An error occurred! Cause: %s\n", __FILE_NAME__, __func__, error.message);
+  }
+
+  /* Query cleanup */
+  bson_free(filter);
+
+  /* Collection clenaup */
+  mongoc_collection_destroy(collection);
+
+  /* Cursor cleanup */
+  mongoc_cursor_destroy(cursor);
 }
 
 

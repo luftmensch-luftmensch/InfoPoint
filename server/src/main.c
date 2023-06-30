@@ -48,6 +48,13 @@ int main(int argc, char** argv) {
 
   mongoc_client_t* client = mongoc_client_pool_pop(s->handler->instance.pool);
 
+  retrieve_art_works(client, s->handler->settings.name, s->handler->settings.art_work_collection);
+
+  // bool status = populate_collection(client, s->handler->settings.name, s->handler->settings.art_work_collection);
+
+  // printf("Status: %d", status);
+
+  /*
   bson_t* filter = BCON_NEW("name", BCON_UTF8("NAME1"));
   bson_t* opts = BCON_NEW("limit", BCON_INT64(1));
 
@@ -58,6 +65,7 @@ int main(int argc, char** argv) {
   bson_free(filter);
   bson_free(opts);
 
+  */
   mongoc_client_pool_push(s->handler->instance.pool, client);
 
   destroy_server(s);

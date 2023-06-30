@@ -96,6 +96,8 @@
   /* Collection population */
   bool populate_collection(mongoc_client_t*, char*, char*);
 
+  void retrieve_art_works(mongoc_client_t*, char*, char*);
+
   /* Check if a document is present */
   bool is_present(mongoc_client_t*, bson_t*, bson_t*, char*, char*);
 
