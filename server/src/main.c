@@ -8,9 +8,6 @@
   +  Lucia Brando        (matr. N86003382)
 */
 
-
-#include <stdint.h>
-#include <pthread.h>
 #include <stdio.h>
 
 #include "core/database/database.h"
@@ -22,12 +19,6 @@
 #include "helpers/command_line_runner/command_line_runner.h"
 #include "helpers/utility/utility.h"
 #include "core/payload/payload.h"
-
-/* int main() { */
-/*   thread_pool* pool = init_thread_pool(0); */
-/*   usleep(50); */
-/*   destroy_thread_pool(pool); */
-/* } */
 
 int main(int argc, char** argv) {
   // Welcome message
@@ -47,7 +38,7 @@ int main(int argc, char** argv) {
   cfg_pretty_print(cfg, stdout);
 
 
-  server* s = init_server(cfg->ns.port, cfg->cs.max_clients, cfg->ds.username, cfg->ds.password, cfg->ds.host, cfg->ds.database_name);
+  server* s = init_server(cfg->ns.port, cfg->cs.max_clients, cfg->cs.max_workers, cfg->ds.username, cfg->ds.password, cfg->ds.host, cfg->ds.database_name);
 
   /* Finally free the cfg, as we no more need it */
   free(cfg);

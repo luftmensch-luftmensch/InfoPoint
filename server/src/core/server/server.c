@@ -27,7 +27,11 @@
 
 #define _m(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
 
-server* init_server(unsigned int port, const size_t max_workers, char* username, char* password, char* host, char* database_name){
+/* Helpers functions */
+bool _serve_new_conn(server*);
+bool _refuse_conn(server*);
+
+server* init_server(unsigned int port, const size_t max_clients, const size_t max_workers, char* username, char* password, char* host, char* database_name){
   // Allocate memory for the newly created server
   server* s = malloc(sizeof(struct server));
   if (s == NULL) {
@@ -99,7 +103,7 @@ server* init_server(unsigned int port, const size_t max_workers, char* username,
   _m(_msginfo, "[%s] (%s) Server binded to socket <%d>!", __FILE_NAME__, __func__, s->socket);
 
   // Socket listening
-  if(listen(s->socket, max_workers) != 0){
+  if(listen(s->socket, max_clients) != 0){
     _m(_msgfatal, "[%s] (%s) Could not start listening! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     perror("listen: ");
     exit(errno); 
@@ -116,7 +120,6 @@ server* init_server(unsigned int port, const size_t max_workers, char* username,
   
   return s;
 }
-
 
 void destroy_server(server* s) {
   _m(_msginfo, "[%s] (%s) Shutting down the server <%ld> as requested", __FILE_NAME__, __func__, s->socket);
@@ -138,3 +141,33 @@ void destroy_server(server* s) {
   destroy_thread_pool(s->pool);
   free(s);
 }
+
+
+void server_loop(server* s) {
+  _m(_msgevent, "[%s] (%s) Server is now entering server_loop and is polling for new events!", __FILE_NAME__, __func__);
+}
+
+
+bool _serve_new_conn(server* s) {
+  ssize_t socket;
+  struct sockaddr_in transport;
+  socklen_t len = sizeof(transport);
+
+  /* Accept a new connection */
+  if ((socket = accept(s->socket, (struct sockaddr*) &transport, &len) == -1)) {
+    _m(_msgwarn, "[%s] (%s) Failed on accept()! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
+    perror("accept: ");
+    close(socket);
+    return false;
+  }
+
+  /* Create a new task */
+  task_t* task = init_task(NULL, (void*) socket);
+
+  /* Inser the new connection fd into the server->thread_pool */
+  submit_task(s->pool, task);
+
+  return true;
+}
+
+bool _refuse_conn(server*);

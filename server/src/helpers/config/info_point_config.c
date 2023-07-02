@@ -28,7 +28,7 @@ info_point_config* provide_config(const char* file_name) {
 
   /* [Connections] Retriving config options fields from the given config file */
   read_uint_from_cfg(parser, "connections", "max_clients", &info_point_cfg->cs.max_clients, 10);
-  read_uint_from_cfg(parser, "connections", "max_threads", &info_point_cfg->cs.max_threads, 10);
+  read_uint_from_cfg(parser, "connections", "max_threads", &info_point_cfg->cs.max_workers, 10);
 
   /* [Logging] Retriving config options fields from the given config file */
 
@@ -57,7 +57,7 @@ info_point_config* provide_default_config() {
     },
     .cs = {
       .max_clients = 100,
-      .max_threads = 100,
+      .max_workers = 100,
     },
     .ds = {
       .type = "mongodb",
@@ -80,7 +80,7 @@ info_point_config* provide_default_config() {
 
 void cfg_pretty_print(const info_point_config* cfg, FILE* file) {
   fprintf(file, "### Networking\n\tHost -> %s, Port -> %d, Timeout -> %d\n\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
-  fprintf(file, "### Connections\n\tMax Clients -> %d, Max Threads ->  %d\n\n", cfg->cs.max_clients, cfg->cs.max_threads);
+  fprintf(file, "### Connections\n\tMax Clients -> %d, Max Threads ->  %d\n\n", cfg->cs.max_clients, cfg->cs.max_workers);
   fprintf(file, "### Database\n\tType -> %s, Host -> %s, Username -> %s, Password -> %s, Database Name -> %s, Port -> %d\n\n", cfg->ds.type, cfg->ds.host, cfg->ds.username, cfg->ds.password, cfg->ds.database_name, cfg->ds.port);
   fprintf(file, "### Logging\n\tLog Level - %s, Log File - %s\n\n", cfg->ls.log_level, cfg->ls.log_file);
 }

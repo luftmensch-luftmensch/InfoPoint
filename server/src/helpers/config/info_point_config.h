@@ -32,7 +32,7 @@
     /* Configuration for connection setting related */
     struct connection_settings {
       unsigned int max_clients; // N° of clients that the server should accept
-      unsigned int max_threads; // N° of threads that the server should use
+      unsigned int max_workers; // N° of threads that the server should use
     } cs;
 
     /* Configuration for database setting related */
