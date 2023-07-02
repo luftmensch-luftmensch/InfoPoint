@@ -13,7 +13,7 @@ set(sources
     src/core/message/message.c
 
     # Workers related
-    src/helpers/pool/thread_pool.c
+    src/core/pool/thread_pool.c
     src/helpers/container/queue.c
     src/helpers/handler/signal_handler.c
 
@@ -44,7 +44,7 @@ set(headers
     src/core/message/message.h
 
     # Workers related
-    src/helpers/pool/thread_pool.h
+    src/core/pool/thread_pool.h
     src/helpers/container/queue.h
     src/helpers/handler/signal_handler.h
 

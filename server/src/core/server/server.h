@@ -12,7 +12,7 @@
 #define _SERVER_H_
 
   #include <arpa/inet.h>
-  #include "../../helpers/pool/thread_pool.h"
+  #include "../pool/thread_pool.h"
   #include "../database/database.h"
 
   #ifndef TIMEOUT_CONNECTION_S
@@ -27,7 +27,7 @@
     struct sockaddr_in transport;
     size_t conn_count;
     db_handler* handler;
-    thread_pool_t* pool;
+    thread_pool* pool;
   } server;
 
   server* init_server(unsigned int, const size_t, char*, char*, char*, char*);

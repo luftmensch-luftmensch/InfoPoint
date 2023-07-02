@@ -40,9 +40,6 @@ db_handler* init_handler(char* username, char* password, char* host, char* datab
   assert((strlen(database_name) + 1) < sizeof(handler->settings.name));
   snprintf(handler->settings.name, sizeof(handler->settings.name), "%s", database_name);
 
-  // handler->settings.name = malloc((strlen(database_name) + 1));
-  // memcpy(handler->settings.name, database_name, (strlen(database_name) + 1));
-
   _m(_msginfo, "[%s] (%s) Database Handler initialization", __FILE_NAME__, __func__);
   mongoc_init(); /* Required to initialize libmongoc's internals (It should be called only once!) */
 
@@ -197,10 +194,12 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
 
   const bson_t* retrieved;
 
+
   while (mongoc_cursor_next(cursor, &retrieved)) {
-    char* str = bson_as_canonical_extended_json(retrieved, NULL);
-    printf("%s\n", str);
-    bson_free(str);
+    payload_t* p = parse_bson_as_artwork(retrieved);
+    printf("Payload: %s\n", (char*) p->data);
+    free(p->data);
+    free(p);
   }
 
   if (mongoc_cursor_error(cursor, &error)) {

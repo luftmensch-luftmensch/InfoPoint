@@ -23,6 +23,12 @@
 #include "helpers/utility/utility.h"
 #include "core/payload/payload.h"
 
+/* int main() { */
+/*   thread_pool* pool = init_thread_pool(0); */
+/*   usleep(50); */
+/*   destroy_thread_pool(pool); */
+/* } */
+
 int main(int argc, char** argv) {
   // Welcome message
   fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
@@ -50,9 +56,9 @@ int main(int argc, char** argv) {
 
   retrieve_art_works(client, s->handler->settings.name, s->handler->settings.art_work_collection);
 
-  // bool status = populate_collection(client, s->handler->settings.name, s->handler->settings.art_work_collection);
+  bool status = populate_collection(client, s->handler->settings.name, s->handler->settings.art_work_collection);
 
-  // printf("Status: %d", status);
+  printf("Status: %d", status);
 
   /*
   bson_t* filter = BCON_NEW("name", BCON_UTF8("NAME1"));
@@ -67,6 +73,8 @@ int main(int argc, char** argv) {
 
   */
   mongoc_client_pool_push(s->handler->instance.pool, client);
+
+  // usleep(50);
 
   destroy_server(s);
 
@@ -102,5 +110,4 @@ int main(int argc, char** argv) {
   bson_free(doc);
   bson_free(doc_u);
   */
-
 }

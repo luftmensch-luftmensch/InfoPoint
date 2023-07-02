@@ -41,6 +41,5 @@ void parse_data(const char* input, const char* delim_block, const char* delim_si
       _m(_msginfo, "[%s] (%s) Value: %s", __FILE_NAME__, __func__, value);
     }
   }
-
   free(copy);
 }

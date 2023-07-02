@@ -108,7 +108,11 @@ server* init_server(unsigned int port, const size_t max_workers, char* username,
 
   s->conn_count = 0;
 
-  // TODO: Thread pool setup
+  s->pool = init_thread_pool(max_workers);
+  if (s->pool == NULL)  {
+    _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server->pool! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
+    return NULL;
+  }
   
   return s;
 }
@@ -131,5 +135,6 @@ void destroy_server(server* s) {
   _m(_msgevent, "[%s] (%s) Goodbye!", __FILE_NAME__, __func__);
 
   destroy_handler(s->handler);
+  destroy_thread_pool(s->pool);
   free(s);
 }
