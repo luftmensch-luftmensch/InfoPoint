@@ -106,4 +106,7 @@
 
   payload_t* parse_bson_as_artwork(const bson_t*);
   payload_t* parse_bson_as_user(const bson_t*);
+
+  /** Helper method to test if the connection with the database is valid or not in order to inform the user */
+  bool test_connection(mongoc_client_t*);
 #endif

@@ -360,3 +360,28 @@ static void destroy_art_work(art_work* art) {
   if (art->description) free(art->description);
   free(art);
 }
+
+bool test_connection(mongoc_client_t* client) {
+  /* Test if the connection is valid by pinging the database (because obv there is no native way to do it :\ ) */
+  bson_error_t error;
+
+  bson_t* ping = BCON_NEW("ping", BCON_INT32(1));
+  bson_t reply;
+  bool status;
+
+  mongoc_database_t *database = mongoc_client_get_database(client, "admin");
+  if (mongoc_database_command_simple(database, ping, NULL, &reply, &error)) {
+    _m(_msginfo, "[%s] (%s) Successfully connected to mongodb instance!", __FILE_NAME__, __func__);
+    status = true;
+  } else {
+    _m(_msginfo, "[%s] (%s) Failed to connect to mongodb instance! Cause: %s", __FILE_NAME__, __func__, error.message);
+    status = false;
+  }
+
+  /* Cleanup operation */
+  bson_free(ping);
+  bson_destroy(&reply);
+  mongoc_database_destroy(database);
+
+  return status;
+}
