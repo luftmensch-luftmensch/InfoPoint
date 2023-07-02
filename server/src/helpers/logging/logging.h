@@ -35,11 +35,6 @@
   #define TIME_FORMAT_ARGS(tm) tm.tm_hour, tm.tm_min, tm.tm_sec
   #define DATETIME_FORMAT_ARGS(tm) tm.mday, tm.mon + 1, TIME_FORMAT_ARGS(tm)
 
-  #ifndef IPV4_ADDRESS_FORMAT
-      #define IPV4_ADDRESS_FORMAT "%d.%d.%d.%d"
-  #endif
-
-
   // Color definition
   #define ANSI_COLOR_RED      "\x1b[31m"
   #define ANSI_COLOR_GREEN    "\x1b[32m"

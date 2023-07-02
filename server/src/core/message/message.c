@@ -36,8 +36,8 @@ ssize_t msg_send(int sock_fd, const void* const buf, size_t len, int flags) {
   #endif
 
   return bytes;
-  
 }
+
 ssize_t msg_recv(int sock_fd, void* buf, ssize_t len, int flags, bool* const read_again) {
   memset(buf, 0, len);
 

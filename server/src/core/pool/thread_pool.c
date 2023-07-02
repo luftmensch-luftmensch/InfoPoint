@@ -127,15 +127,15 @@ void destroy_thread_pool(thread_pool* pool_to_destroy) {
   free(pool_to_destroy);
 }
 
-bool submit_task(thread_pool* pool, task_t* task) {
-  if ((pool == NULL) || (task == NULL))
+bool submit_task(thread_pool* pool, void* data) {
+  if ((pool == NULL) || (data == NULL))
     return false;
 
   /* ==== [Start of critical section] ==== */
   if(pthread_mutex_lock(&(pool->lock)) != 0)
     return false;
 
-  bool status = enqueue(pool->queue, task);
+  bool status = enqueue(pool->queue, data);
 
   /* Inform the threads that some task was added to the queue */
   if (pthread_cond_signal(&(pool->signal)) != 0)
@@ -149,28 +149,10 @@ bool submit_task(thread_pool* pool, task_t* task) {
   return status;
 }
 
-
-task_t* init_task(void* (*task_func)(void*), void* task_arg) {
-  task_t* new_task = malloc(sizeof(struct task));
-  if (new_task == NULL)
-    return NULL;
-
-  /* Task field initialization */
-  new_task->func = task_func;
-  new_task->arg = task_arg;
-
-  return new_task;
-}
-
-void destroy_task(task_t* task_to_destroy) {
-  if (task_to_destroy) free(task_to_destroy);
-}
-
-
 void* execute_task(void* arg) {
   thread_pool* pool = (thread_pool*) arg;
   // printf("Threads alive: %zu\n", pool->threads_alive);
-  // task_t* task;
+  // ssize_t fd;
 
   for(;;) {
     /* Lock must be taken to wait on conditional variable */
@@ -188,9 +170,9 @@ void* execute_task(void* arg) {
     if (!pool->active)
       break;
 
-    /* TODO: Handle task retrieve */
-    // task = (task_t*) dequeue(pool->queue);
-    // printf("Pulled task n° %p\n", task->arg);
+    /* TODO: Handle connection */
+    // fd = (ssize_t*) dequeue(pool->queue);
+    // printf("Pulled task n° %zu\n", fd);
 
     pthread_mutex_unlock(&(pool->lock));
     /* ==== [End of critical section] ==== */

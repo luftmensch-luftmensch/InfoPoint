@@ -17,6 +17,16 @@
 
   typedef enum connection_status { NEW, ALIVE, DEAD } connection_status;
 
+  #ifndef IPV4_ADDRESS_FORMAT
+     #define IPV4_ADDRESS_FORMAT "%d.%d.%d.%d"
+  #endif
+
+  #define IPV4(IP) \
+      (IP & 0x000000ff) >> 0, \
+      (IP & 0x0000ff00) >> 8, \
+      (IP & 0x00ff0000) >> 16,\
+      (IP & 0xff000000) >> 24 \
+
   /* Server structure */
   typedef struct server {
     ssize_t socket;

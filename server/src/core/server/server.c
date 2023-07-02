@@ -145,6 +145,7 @@ void destroy_server(server* s) {
 
 void server_loop(server* s) {
   _m(_msgevent, "[%s] (%s) Server is now entering server_loop and is polling for new events!", __FILE_NAME__, __func__);
+  /* TODO: Handle signal handler setup */
 }
 
 
@@ -161,13 +162,32 @@ bool _serve_new_conn(server* s) {
     return false;
   }
 
-  /* Create a new task */
-  task_t* task = init_task(NULL, (void*) socket);
+  /* Insert the new connection fd into the server->thread_pool */
+  bool status = submit_task(s->pool, (void*) socket);
 
-  /* Inser the new connection fd into the server->thread_pool */
-  submit_task(s->pool, task);
-
-  return true;
+  return status;
 }
 
-bool _refuse_conn(server*);
+bool _refuse_conn(server* s) {
+  static char msg[] = "Sorry, server is shutting down!\nPlease, try later!\n";
+  static const size_t msg_length = sizeof(msg);
+
+  ssize_t socket;
+  struct sockaddr_in transport;
+  socklen_t len = sizeof(transport);
+
+  if ((socket = accept(s->socket, (struct sockaddr*) &transport, &len) == -1)) {
+    _m(_msgwarn, "[%s] (%s) Failed on accept()! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
+    perror("accept: ");
+    close(socket);
+    return false;
+  }
+
+  msg_send(socket, msg, msg_length, 0);
+
+  _m(_msgevent, "Refusing socket <%ld> from <" IPV4_ADDRESS_FORMAT "> as the server connection queue is full!", socket, IPV4(transport.sin_addr.s_addr));
+
+  // Close socket
+  close(socket);
+  return true;
+}
