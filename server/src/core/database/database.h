@@ -89,22 +89,28 @@
     char* level;
   } user;
 
-  // Database Handler related functions
+  /** Database Handler constructor */
   db_handler* init_handler(char*, char*, char*, char*);
+
+  /** Database Handler destructor */
   void destroy_handler(db_handler*);
 
-  /* Collection population */
+  /** Collection population */
   bool populate_collection(mongoc_client_t*, char*, char*);
 
+  /** Retrieve art works from the database */
   void retrieve_art_works(mongoc_client_t*, char*, char*);
 
-  /* Check if a document is present */
+  /** Check if a document is present */
   bool is_present(mongoc_client_t*, bson_t*, bson_t*, char*, char*);
 
-  /* Insert a single document in a given collection */
+  /** Insert a single document in a given collection */
   bool insert_single(bson_t*, mongoc_client_t*, char*, char*);
 
+  /** Helper method to parse a given bson_t to a common payload in form of an artwork */
   payload_t* parse_bson_as_artwork(const bson_t*);
+
+  /** Helper method to parse a given bson_t to a common payload in form of an user */
   payload_t* parse_bson_as_user(const bson_t*);
 
   /** Helper method to test if the connection with the database is valid or not in order to inform the user */

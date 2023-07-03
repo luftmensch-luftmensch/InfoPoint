@@ -124,7 +124,9 @@ server* init_server(unsigned int port, const size_t max_clients, const size_t ma
     _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server->pool! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     return NULL;
   }
-  
+
+  _m(_msginfo, "[%s] (%s) Server ready, please use server_loop!", __FILE_NAME__, __func__);
+
   return s;
 }
 
@@ -205,7 +207,6 @@ bool _refuse_conn(server* s) {
   close(socket);
   return true;
 }
-
 
 static void handle_interrupt(int signal) {
   // Ignore the value of the signal -> We know that if the signal is catched the server is asked to shutdown

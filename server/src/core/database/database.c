@@ -234,6 +234,7 @@ bool insert_single(bson_t* document, mongoc_client_t* client, char* database_nam
   return true;
 }
 
+
 bool is_present(mongoc_client_t* client, bson_t* filter, bson_t* options, char* database_name, char* collection_name) {
   bson_error_t error;
 
@@ -385,3 +386,66 @@ bool test_connection(mongoc_client_t* client) {
 
   return status;
 }
+
+/**
+ * Example of usage (is_present):
+    ```
+    bson_t* filter = BCON_NEW("name", BCON_UTF8("NAME1"));
+    bson_t* opts = BCON_NEW("limit", BCON_INT64(1));
+
+    bool status = is_present(client, filter, opts, s->handler->settings.name, s->handler->settings.art_work_collection);
+
+    printf("Status: %d\n", status);
+
+    bson_free(filter);
+    bson_free(opts);
+    ```
+
+ * Example of usage (parse_bson_as_artwork):
+    ```
+    bson_t* doc = BCON_NEW("_id", BCON_INT32(0),
+			   "name", BCON_UTF8("NAME"),
+			   "author", BCON_UTF8("AUTHOR"),
+			   "description", BCON_UTF8("DESCRIPTION"));
+
+    bson_t* doc_u = BCON_NEW("_id", BCON_INT32(0),
+			   "name", BCON_UTF8("NAME"),
+			   "password", BCON_UTF8("PASSWORD"),
+			   "level", BCON_UTF8("LEVEL"));
+
+    payload_t* p = parse_bson_as_artwork(doc);
+
+    printf("%s\n", (char*) p->data);
+
+    free(p->data);
+    free(p);
+
+    payload_t* p_u = parse_bson_as_user(doc_u);
+
+    printf("%s\n", (char*) p_u->data);
+
+    free(p_u->data);
+    free(p_u);
+
+    bson_free(doc);
+    bson_free(doc_u);
+    ```
+
+ * Example of usage (populate_collection):
+    ```
+    mongoc_client_t* client = mongoc_client_pool_pop(s->handler->instance.pool);
+
+    bool status = populate_collection(client, s->handler->settings.name, s->handler->settings.art_work_collection);
+
+    printf("Status: %d", status);
+
+    mongoc_client_pool_push(s->handler->instance.pool, client);
+    ```
+
+ * Example of usage (retrieve_art_works):
+    ```
+    mongoc_client_t* client = mongoc_client_pool_pop(s->handler->instance.pool);
+    retrieve_art_works(client, s->handler->settings.name, s->handler->settings.art_work_collection);
+    mongoc_client_pool_push(s->handler->instance.pool, client);
+    ```
+*/

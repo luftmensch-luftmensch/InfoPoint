@@ -70,7 +70,7 @@ thread_pool* init_thread_pool(size_t amount) {
   _m(_msginfo, "[%s] (%s) Initialized thread_pool->signal", __FILE_NAME__, __func__);
 
   /* Start worker thread */
-  _m(_msginfo, "[%s] (%s) Initializing thread_pool->thread->routine\n", __FILE_NAME__, __func__);
+  _m(_msginfo, "[%s] (%s) Initializing thread_pool->thread->routine", __FILE_NAME__, __func__);
   for (size_t i = 0; i < amount; i++) {
     if (pthread_create(&(pool->threads[i]), NULL, execute_task, (void*) pool) != 0) {
       _m(_msgfatal, "[%s] (%s) Failed to spawn thread n° %zu! Cause: %s\n", __FILE_NAME__, __func__, i, strerror(errno));
