@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
   */
   mongoc_client_pool_push(s->handler->instance.pool, client);
 
-  // usleep(50);
+  server_loop(s);
 
   destroy_server(s);
 

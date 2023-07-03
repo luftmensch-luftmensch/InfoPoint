@@ -23,9 +23,16 @@
 
 #include "../message/message.h"
 #include "../../helpers/logging/logging.h"
+#include "../../helpers/handler/signal_handler.h"
 
 
 #define _m(type, format, ...) _msgcategory(type, " SERVER ", format __VA_OPT__(,) __VA_ARGS__)
+
+/* Control switch for gracefully shutdown (NB: This variable has to be volative!) */
+volatile sig_atomic_t _keep_alive = 1;
+
+/* Helper function for signal handler */
+static void handle_interrupt();
 
 /* Helpers functions */
 bool _serve_new_conn(server*);
@@ -142,10 +149,15 @@ void destroy_server(server* s) {
   free(s);
 }
 
-
 void server_loop(server* s) {
-  _m(_msgevent, "[%s] (%s) Server is now entering server_loop and is polling for new events!", __FILE_NAME__, __func__);
-  /* TODO: Handle signal handler setup */
+  _m(_msgevent, "[%s] (%s) Server is now setupping signals in order to get gracefully shutdown! (To make a hard shutdown kill pid n° %d)", __FILE_NAME__, __func__, getpid());
+  setup_signals(SIGINT, handle_interrupt);
+
+  _m(_msgevent, "[%s] (%s) Server is now entering server_loop waiting for new events!", __FILE_NAME__, __func__);
+
+  while(_keep_alive) {
+
+  }
 }
 
 
@@ -161,6 +173,8 @@ bool _serve_new_conn(server* s) {
     close(socket);
     return false;
   }
+
+  _m(_msgevent, "[%s] (%s) Received connection request <%ld> from <" IPV4_ADDRESS_FORMAT ">", __FILE_NAME__, __func__, socket, IPV4(transport.sin_addr.s_addr));
 
   /* Insert the new connection fd into the server->thread_pool */
   bool status = submit_task(s->pool, (void*) socket);
@@ -185,9 +199,17 @@ bool _refuse_conn(server* s) {
 
   msg_send(socket, msg, msg_length, 0);
 
-  _m(_msgevent, "Refusing socket <%ld> from <" IPV4_ADDRESS_FORMAT "> as the server connection queue is full!", socket, IPV4(transport.sin_addr.s_addr));
+  _m(_msgevent, "[%s] (%s) Refusing socket <%ld> from <" IPV4_ADDRESS_FORMAT "> as the server connection queue is full!", __FILE_NAME__, __func__, socket, IPV4(transport.sin_addr.s_addr));
 
   // Close socket
   close(socket);
   return true;
+}
+
+
+static void handle_interrupt(int signal) {
+  // Ignore the value of the signal -> We know that if the signal is catched the server is asked to shutdown
+  (void) signal;
+  _m(_msgevent, "[%s] (%s) Server is shutting down... Goodbye!", __FILE_NAME__, __func__, signal);
+  _keep_alive = 0;
 }
