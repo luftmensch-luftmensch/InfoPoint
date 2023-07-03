@@ -15,6 +15,7 @@
 #include "../message/message.h"
 #include "../../helpers/handler/signal_handler.h"
 #include "../../helpers/logging/logging.h"
+#include "../payload/payload.h"
 
 #define _m(type, format, ...) _msgcategory(type, "THREAD_POOL", format __VA_OPT__(,) __VA_ARGS__)
 
@@ -160,6 +161,10 @@ void* execute_task(void* arg) {
   // Socket File Descriptor - Value retrieved from the node
   ssize_t fd;
 
+  char buffer[256];
+  ssize_t bytes = 0;
+
+  memset(buffer, 0, sizeof(buffer));
 
   for(;;) {
     /* Lock must be taken to wait on conditional variable */
@@ -186,6 +191,16 @@ void* execute_task(void* arg) {
     /* And destroy the no more needed node to avoid leaks */
     free(node);
     msg_send(fd, initial_msg, sizeof(initial_msg), 0);
+
+    /* TODO: Handle dispatch about  */
+
+    bool read_again = true;
+    bytes = msg_recv(fd, buffer, sizeof(buffer), 0, &read_again);
+
+    // printf("Read: %zu, Content: %s", bytes, buffer);
+
+    parse_data(buffer, "<>", ",");
+
   }
 
   pthread_mutex_unlock(&(pool->lock));

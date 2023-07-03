@@ -36,5 +36,4 @@
   */
   void parse_data(const char*, const char*, const char*);
 
-
 #endif
