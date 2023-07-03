@@ -45,17 +45,18 @@
         [\folder{src}
           [{\folder[customOrange4]{core}}
             [{\folder[customPurple4]{database}}]
-            [{\folder[customPurple4]{handler}}]
             [{\folder[customPurple4]{message}}]
-            [{\folder[customPurple4]{payload}} [{\folder[customPink5]{artwork}}] [{\folder[customPink5]{artwork}}]]
+            [{\folder[customPurple4]{payload}}]
+            [{\folder[customPurple4]{pool}}]
             [{\folder[customPurple4]{server}}]
           ]
           [{\folder[customOrange5]{helpers}}
             [{\folder[customPurple4]{base}}]
             [{\folder[customPurple4]{cmr}}]
             [{\folder[customPurple4]{config}}]
+            [{\folder[customPurple4]{container}}]
+            [{\folder[customPurple4]{handler}}]
             [{\folder[customPurple4]{logging}}]
-            [{\folder[customPurple4]{pool}}]
             [{\folder[customPurple4]{utility}}]
           ]
         ]
@@ -68,7 +69,7 @@
       \begin{center}
         {\Huge Core}
 
-        (Contiene le componenti fondamentali alla definizione del progetto)
+        (Contiene le componenti fondamentali alla definizione del server)
       \end{center}
       \vspace{0.5cm}
 
@@ -105,4 +106,105 @@
     \newpage
   \section{Client}
     Di seguito riportiamo alcuni dettagli implementativi della struttura del Client.
-    \newpage
+    % \newpage
+
+    \begin{minipage}{0.45\textwidth}
+    \begin{forest}
+      for tree={
+        font=\sffamily,
+        minimum height=0.75cm,
+        rounded corners=4pt,
+        grow'=0,
+        inner ysep=8pt,
+        child anchor=west,
+        parent anchor=south,
+        anchor=west,
+        calign=first,
+        edge={rounded corners},
+        edge path={
+          \noexpand\path [draw, \forestoption{edge}]
+          (!u.south west) +(12.5pt,0) |- (.child anchor)\forestoption{edge label};
+        },
+        before typesetting nodes={
+          if n=1
+          {insert before={[,phantom,minimum height=18pt]}}
+          {}
+        },
+        fit=band,
+        s sep=12pt,
+        before computing xy={l=25pt},
+      }
+      [\folder{src}
+        [{\folder[customOrange4]{core}}
+          [{\folder[customPurple4]{builder}}]
+          [{\folder[customPurple4]{config}}]
+          [{\folder[customPurple4]{error}}]
+          [{\folder[customPurple4]{network}}]
+          [{\folder[customPurple4]{prefs}}]
+        ]
+        [{\folder[customOrange4]{model}}
+          [{\folder[customPurple4]{prop}}]
+        ]
+        [{\folder[customOrange5]{ui}}
+          [{\folder[customOrange5]{activity}}
+            [{\folder[customPurple4]{auth}}
+              [{\folder[customPurple4]{login}}]
+              [{\folder[customPurple4]{reg}}]
+            ]
+            [{\folder[customPurple4]{intro}}]
+          ]
+          [{\folder[customPurple4]{adapters}}]
+          [{\folder[customOrange5]{fragment}}]
+        ]
+      ]
+    \end{forest}
+    \end{minipage}
+    \hfill%
+    \hspace{1 cm}
+    \begin{minipage}{0.45\textwidth}
+      % Core
+      \begin{center}
+        {\Huge Core}
+
+        (Contiene le componenti fondamentali alla definizione del client)
+      \end{center}
+      \vspace{0.5cm}
+
+      \begin{itemize}
+        \setlength\itemsep{1em}
+        \item \hi{builder} \rightarrow Offre supporto alla costruzione di oggetti mediante Generics (Generic Builder);
+        \item \hi{config} \rightarrow Contiene tutte le informazioni necessarie alla configurazione dell'applicativo;
+        \item \hi{error} \rightarrow Offre supporto alla gestione degli errori che possono avvenire durante l'esecuzione dell'applicazione (Mette a disposizione una api per la gestione dello stack trace);
+        \item \hi{network} (networking) \rightarrow Offre supporto alle operazioni che richiedono l'utilizzo della rete
+        \item \hi{prefs} (preferences) \rightarrow Offre il supporto alle shared preferences in maniera semplice e sicura
+      \end{itemize}
+
+      \vspace{1cm}
+
+      % Model
+      \begin{center}
+        {\Huge Model}
+
+        (Contiene le componenti necessarie alla definizione dei modelli utilizzati e loro proprietà)
+      \end{center}
+      \vspace{0.5cm}
+
+      % UI
+      \begin{center}
+        {\Huge UI}
+
+        (Contiene le componenti necessarie alla definizione dell’infrastruttura grafica)
+      \end{center}
+      \vspace{0.5cm}
+
+      \begin{itemize}
+        \setlength\itemsep{1em}
+        \item \hi{activity} \rightarrow Contiene la definizione delle activity \footnotemark \footnotetext{La "finestra" grafica con cui l'utente interagisce} per \begin{itemize} \item Autenticazione, ovvero \begin{itemize} \item Login; \item Registrazione (reg) \end{itemize} \item Esposizione dell'applicazione (Intro) \end{itemize}
+
+        \item \hi{adapters} \rightarrow Offre gli adapters \footnotemark \footnotetext{Un ponte per il componente grafico e gli oggetti che lo compongono} utilizzati dalle activity per la gestione delle componenti grafiche che fanno uso di componenti oggetto
+        \item \hi{fragments} \rightarrow Contiene la definizione di tutti i fragment \footnotemark \footnotetext{La porzione "riusabile" della UI dell'applicazione} presenti nell'applicazione
+      \end{itemize}
+
+    \end{minipage}
+
+    
