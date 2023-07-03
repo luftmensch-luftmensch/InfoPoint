@@ -62,7 +62,7 @@ server* init_server(unsigned int port, const size_t max_clients, const size_t ma
   */
   s->socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
-  if (s->socket < 0) { // Check if the call socket was sussesfull
+  if (s->socket == -1) { // Check if the call socket was sussesfull
     _m(_msgfatal, "[%s] (%s) Failed to connect socket! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     perror("socket: ");
     exit(errno);
@@ -157,55 +157,20 @@ void server_loop(server* s) {
 
   _m(_msgevent, "[%s] (%s) Server is now entering server_loop waiting for new events!", __FILE_NAME__, __func__);
 
+  ssize_t socket;
+  struct sockaddr_in transport;
+  socklen_t len = sizeof(transport);
+
   while(_keep_alive) {
+    /* Wait until a new connection is accepted */
+    if ((socket = accept(s->socket, (struct sockaddr*) &transport, &len)) != -1) {
+      _m(_msginfo, "[%s] (%s) New client connected <%ld> from <" IPV4_ADDRESS_FORMAT ">", __FILE_NAME__, __func__, socket, IPV4(transport.sin_addr.s_addr));
 
+      /* Insert the new connection fd into the server->thread_pool in order to make the threads spawned execute tasks */
+      if (!submit_task(s->pool, (void*) socket))
+	_m(_msginfo, "[%s] (%s) Failed to submit task with id <%zu> in the server->pool", __FILE_NAME__, __func__, socket);
+    }
   }
-}
-
-
-bool _serve_new_conn(server* s) {
-  ssize_t socket;
-  struct sockaddr_in transport;
-  socklen_t len = sizeof(transport);
-
-  /* Accept a new connection */
-  if ((socket = accept(s->socket, (struct sockaddr*) &transport, &len) == -1)) {
-    _m(_msgwarn, "[%s] (%s) Failed on accept()! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
-    perror("accept: ");
-    close(socket);
-    return false;
-  }
-
-  _m(_msgevent, "[%s] (%s) Received connection request <%ld> from <" IPV4_ADDRESS_FORMAT ">", __FILE_NAME__, __func__, socket, IPV4(transport.sin_addr.s_addr));
-
-  /* Insert the new connection fd into the server->thread_pool */
-  bool status = submit_task(s->pool, (void*) socket);
-
-  return status;
-}
-
-bool _refuse_conn(server* s) {
-  static char msg[] = "Sorry, server is shutting down!\nPlease, try later!\n";
-  static const size_t msg_length = sizeof(msg);
-
-  ssize_t socket;
-  struct sockaddr_in transport;
-  socklen_t len = sizeof(transport);
-
-  if ((socket = accept(s->socket, (struct sockaddr*) &transport, &len) == -1)) {
-    _m(_msgwarn, "[%s] (%s) Failed on accept()! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
-    perror("accept: ");
-    close(socket);
-    return false;
-  }
-
-  msg_send(socket, msg, msg_length, 0);
-
-  _m(_msgevent, "[%s] (%s) Refusing socket <%ld> from <" IPV4_ADDRESS_FORMAT "> as the server connection queue is full!", __FILE_NAME__, __func__, socket, IPV4(transport.sin_addr.s_addr));
-
-  // Close socket
-  close(socket);
-  return true;
 }
 
 static void handle_interrupt(int signal) {

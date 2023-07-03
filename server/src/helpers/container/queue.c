@@ -7,7 +7,6 @@
   +  Dario Morace        (matr. N86003778)
   +  Lucia Brando        (matr. N86003382)
 */
-	
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -69,6 +68,7 @@ bool enqueue(queue_t* q, void* data) {
 
 void* dequeue(queue_t* q) {
   node_t* retrieved_node = q->head;
+
   switch(q->size) {
     case 0:	/* No nodes in the queue */
       break;
@@ -80,20 +80,24 @@ void* dequeue(queue_t* q) {
       q->head = q->head->next;
       q->size--;
   }
-
   return retrieved_node;
 }
-
 
 /*
 int main() {
   queue_t* q = init_queue();
+  ssize_t i = 1;
 
-  enqueue(q, (void*) 1);
-  enqueue(q, (void*) 2);
-  enqueue(q, (void*) 3);
-  enqueue(q, (void*) 4);
-  enqueue(q, (void*) 5);
+  enqueue(q, (void*) i);
+  i += 1;
+  enqueue(q, (void*) i);
+  i += 1;
+  enqueue(q, (void*) i);
+  i += 1;
+  enqueue(q, (void*) i);
+  i += 1;
+  enqueue(q, (void*) i);
+  i += 1;
 
 
 
@@ -101,7 +105,8 @@ int main() {
 
   while(!is_empty(q)) {
     node_t* n = dequeue(q);
-    printf("%p\n", (int*) n->data);
+    ssize_t k = (ssize_t) n->data;
+    printf("Value: %zu\n", k);
     free(n);
   }
   

@@ -12,16 +12,18 @@
 #include <string.h>
 
 #include "thread_pool.h"
+#include "../message/message.h"
 #include "../../helpers/handler/signal_handler.h"
 #include "../../helpers/logging/logging.h"
 
 #define _m(type, format, ...) _msgcategory(type, "THREAD_POOL", format __VA_OPT__(,) __VA_ARGS__)
 
+static char initial_msg[] = "<>Server is ready to communicate!<>";
+
 /* Retrieve the number of core/processors of the machine */
 static size_t retrieve_proc_num() { return sysconf(_SC_NPROCESSORS_ONLN); }
 
 void* execute_task(void* arg);
-
 
 thread_pool* init_thread_pool(size_t amount) {
   /**
@@ -151,8 +153,13 @@ bool submit_task(thread_pool* pool, void* data) {
 
 void* execute_task(void* arg) {
   thread_pool* pool = (thread_pool*) arg;
-  // printf("Threads alive: %zu\n", pool->threads_alive);
-  // ssize_t fd;
+
+  // Node retrieved from the pool->queue used to take the socket file descriptor used to communicate
+  node_t* node;
+
+  // Socket File Descriptor - Value retrieved from the node
+  ssize_t fd;
+
 
   for(;;) {
     /* Lock must be taken to wait on conditional variable */
@@ -170,12 +177,15 @@ void* execute_task(void* arg) {
     if (!pool->active)
       break;
 
-    /* TODO: Handle connection */
-    // fd = (ssize_t*) dequeue(pool->queue);
-    // printf("Pulled task n° %zu\n", fd);
-
+    node = dequeue(pool->queue);
     pthread_mutex_unlock(&(pool->lock));
     /* ==== [End of critical section] ==== */
+
+    /* Retrieve the socket fd from the node */
+    fd = (ssize_t) node->data;
+    /* And destroy the no more needed node to avoid leaks */
+    free(node);
+    msg_send(fd, initial_msg, sizeof(initial_msg), 0);
   }
 
   pthread_mutex_unlock(&(pool->lock));
