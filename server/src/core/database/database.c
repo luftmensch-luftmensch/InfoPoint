@@ -129,10 +129,19 @@ void destroy_handler(db_handler* handler) {
 }
 
 bool populate_collection(mongoc_client_t* client, char* database_name, char* collection_name) {
-  // Custom entry used to populate the ArtWork collection (TODO: Set meaningful values)
-  art_work artworks[] = { // Casting to char* in order to silence the warning (char* to const char[X])
-    {(char*)"NAME1", (char*)"AUTHOR1", (char*)"DESCRIPTION1"},
-    {(char*)"NAME2", (char*)"AUTHOR2", (char*)"DESCRIPTION2"}
+  // Custom entry used to populate the ArtWork collection
+  art_work artworks[] = {
+    {(char*) "Amore e Psiche",               (char*) "Antonio Canova",       (char*) "<TODO>"},
+    {(char*) "Gli Amanti",                   (char*) "René Magritte",        (char*) "<TODO>"},
+    {(char*) "La persistenza della memoria", (char*) "Salvador Dalì",        (char*) "<TODO>"},
+    {(char*) "Il Bacio",                     (char*) "Gustav Klimt",         (char*) "<TODO>"},
+    {(char*) "La Giuditta",                  (char*) "Gustav Klimt",         (char*) "<TODO>"},
+    {(char*) "La Notte Stellata",            (char*) "Vincent Van Gogh",     (char*) "<TODO>"},
+    {(char*) "Apollo e Dafne",               (char*) "Gian Lorenzo Bernini", (char*) "<TODO>"},
+    {(char*) "Il David",                     (char*) "Michelangelo",         (char*) "<TODO>"},
+    {(char*) "La Nascita di Venere",         (char*) "Sandro Botticelli",    (char*) "<TODO>"},
+    {(char*) "La Danza",                     (char*) "Henri Matisse",        (char*) "<TODO>"},
+    {(char*) "Cristo Velato",                (char*) "Giuseppe Sanmartino",  (char*) "<TODO>"},
   };
 
   bson_t* documents[ARRAY_SIZE(artworks)];
@@ -150,7 +159,6 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
 			    "name", BCON_UTF8(artworks[i].name),
 			    "author", BCON_UTF8(artworks[i].author),
 			    "description", BCON_UTF8(artworks[i].description));
-
   }
 
   // Retrieve the collection in which execute bulk insert
@@ -188,12 +196,11 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
   // Retrieve the collection in which execute bulk insert
   mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
 
-  bson_t* filter = BCON_NEW("name", BCON_REGEX("m","i") );
+  bson_t* filter = BCON_NEW("name", BCON_REGEX("m","i"));
 
-  mongoc_cursor_t *cursor = mongoc_collection_find_with_opts(collection, filter, NULL, NULL);
+  mongoc_cursor_t* cursor = mongoc_collection_find_with_opts(collection, filter, NULL, NULL);
 
   const bson_t* retrieved;
-
 
   while (mongoc_cursor_next(cursor, &retrieved)) {
     payload_t* p = parse_bson_as_artwork(retrieved);
@@ -273,8 +280,8 @@ payload_t* parse_bson_as_artwork(const bson_t* document) {
   if (bson_iter_init(&iter, document)) {
     while(bson_iter_next(&iter)) {
       const bson_value_t* value = bson_iter_value(&iter);
-      if (strcmp(bson_iter_key(&iter), "_id") == 0) {
-	// printf("ID\n");
+      if (strcmp(bson_iter_key(&iter), "_id") == 0) { /* TODO: Use this? */
+
       } else if (strcmp(bson_iter_key(&iter), "name") == 0) {
 	art->name = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
 	memcpy((void*) art->name, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
@@ -285,7 +292,7 @@ payload_t* parse_bson_as_artwork(const bson_t* document) {
 	art->description = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
 	memcpy((void*) art->description, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
       } else {
-	printf("Unknown key");
+	_m(_msginfo, "[%s] (%s) Unknown key <%s> while parsing artwork document!", __FILE_NAME__, __func__, bson_iter_key(&iter));
       }
     }
   }
@@ -314,8 +321,8 @@ payload_t* parse_bson_as_user(const bson_t* document) {
   if (bson_iter_init(&iter, document)) {
     while(bson_iter_next(&iter)) {
       const bson_value_t* value = bson_iter_value(&iter);
-      if (strcmp(bson_iter_key(&iter), "_id") == 0) {
-	// printf("ID\n");
+      if (strcmp(bson_iter_key(&iter), "_id") == 0) { /* TODO: Use this? */
+
       } else if (strcmp(bson_iter_key(&iter), "name") == 0) {
 	u->name = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
 	memcpy((void*) u->name, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
@@ -326,12 +333,12 @@ payload_t* parse_bson_as_user(const bson_t* document) {
 	u->level = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
 	memcpy((void*) u->level, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
       } else {
-	printf("Unknown key");
+	_m(_msginfo, "[%s] (%s) Unknown key <%s> while parsing user document!", __FILE_NAME__, __func__, bson_iter_key(&iter));
       }
     }
   }
 
-  size_t total_size = (strlen(u->name) + 1) + (strlen(u->password) + 1) + (strlen(u->level) + 1) + 9;;
+  size_t total_size = (strlen(u->name) + 1) + (strlen(u->password) + 1) + (strlen(u->level) + 1) + 9;
 
   payload->data = malloc(total_size);
   payload->size = total_size;
@@ -437,7 +444,7 @@ bool test_connection(mongoc_client_t* client) {
 
     bool status = populate_collection(client, s->handler->settings.name, s->handler->settings.art_work_collection);
 
-    printf("Status: %d", status);
+    printf("Status: %d\n", status);
 
     mongoc_client_pool_push(s->handler->instance.pool, client);
     ```

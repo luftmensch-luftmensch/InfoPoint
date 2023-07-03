@@ -31,10 +31,6 @@
       #define MONGO_DB_ARTWORK_COLLECTION_NAME "artwork"
   #endif
 
-  #ifndef MONGO_DB_COLLECTION_DATA_MAX_SIZE
-    #define MONGO_DB_COLLECTION_DATA_MAX_SIZE 128
-  #endif
-
   #ifndef REGEX_NICKNAME
     /**
      * User nickname boundaries:
@@ -49,10 +45,6 @@
     struct instance {
       mongoc_client_pool_t* pool;	/* Connection pool for multi-threaded programs */
       mongoc_uri_t* uri;		/* Abstraction on top of the MongoDB connection URI format */
-
-      //mongoc_cursor_t* cursor;
-      //bson_error_t error;
-      //mongoc_database_t* database;
     } instance;
 
     /**
@@ -68,11 +60,6 @@
     } settings;
 
   } db_handler;
-
-  typedef enum document_type {
-    ART_WORK,
-    USER
-  } document_type;
 
   /* ArtWork Collection structure */
   typedef struct art_work {

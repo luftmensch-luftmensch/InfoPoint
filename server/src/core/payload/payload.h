@@ -17,13 +17,14 @@
   typedef enum request_t {
     LOGIN,
     REGISTRATION,
-    ARTWORKS
+    RETRIEVE
   } request_t;
 
   typedef struct payload_t {
     request_t request;
     void* data;
     size_t size;
+    /* TODO: Handle basic function handler */
   } payload_t;
 
   /**
@@ -31,7 +32,7 @@
    *
    * Example of usage:
    *
-   * const char* input ="CALL,EXPECTED,v3,v4,v5<>w1,w2,<>x1,x2,x4<>y1,y2,y5,y6";
+   * const char* input ="<>CALL,EXPECTED<>v3,v4,v5<>w1,w2<>x1,x2,x4<>y1,y2,y5,y6";
    * parse_data(input, "<>", ",");
   */
   void parse_data(const char*, const char*, const char*);

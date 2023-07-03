@@ -34,10 +34,6 @@ volatile sig_atomic_t _keep_alive = 1;
 /* Helper function for signal handler */
 static void handle_interrupt();
 
-/* Helpers functions */
-bool _serve_new_conn(server*);
-bool _refuse_conn(server*);
-
 server* init_server(unsigned int port, const size_t max_clients, const size_t max_workers, char* username, char* password, char* host, char* database_name){
   // Allocate memory for the newly created server
   server* s = malloc(sizeof(struct server));
@@ -133,22 +129,17 @@ server* init_server(unsigned int port, const size_t max_clients, const size_t ma
 void destroy_server(server* s) {
   _m(_msginfo, "[%s] (%s) Shutting down the server <%ld> as requested", __FILE_NAME__, __func__, s->socket);
 
-  // static char msg_notice[] = "\n[SERVER] Server is shutting down... Goodbye!\n";
-  while(s->conn_count--) {
-    s->conn_count--;
-    _m(_msgdebug, "[%s] (%s) Disconnecting client %ld", __FILE_NAME__, __func__, s->conn_count);
-    // msg_send(s->connections[s->conn_count].client->fd, msg_notice, strlen(msg_notice), 0);
-    // free(s->connections[s->conn_count].client);
-  }
-
   close(s->socket);
   // Stopping and destroying the thread pool
 
-  _m(_msgevent, "[%s] (%s) Goodbye!", __FILE_NAME__, __func__);
-
+  _m(_msginfo, "[%s] (%s) Destroying server->handler", __FILE_NAME__, __func__);
   destroy_handler(s->handler);
+
+  _m(_msginfo, "[%s] (%s) Destroying server->pool", __FILE_NAME__, __func__);
   destroy_thread_pool(s->pool);
   free(s);
+
+  _m(_msgevent, "[%s] (%s) Goodbye!", __FILE_NAME__, __func__);
 }
 
 void server_loop(server* s) {
