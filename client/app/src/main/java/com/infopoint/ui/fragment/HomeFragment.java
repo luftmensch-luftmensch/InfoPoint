@@ -21,6 +21,9 @@
 package com.infopoint.ui.fragment;
 
 
+import static com.infopoint.core.networking.NetworkManager.retrieveArtwork;
+import static com.infopoint.core.networking.NetworkManager.test;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +35,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.infopoint.R;
+
+import es.dmoral.toasty.Toasty;
 
 /** Home of the InfoPoint application (where all the artworks are displayed) */
 public class HomeFragment extends Fragment {
@@ -47,5 +52,18 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
+        retrieveArtWorks();
+    }
+
+    private void retrieveArtWorks() {
+        Toasty.info(requireContext(), "Recupero delle opere in corso...", Toasty.LENGTH_LONG, true).show();
+        Thread task = new Thread(() -> {
+            // retrieveArtwork();
+            test();
+        });
+
+        task.setPriority(10);
+        task.start();
+
     }
 }

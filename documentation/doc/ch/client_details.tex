@@ -1,0 +1,206 @@
+\section{Client}
+  Di seguito riportiamo alcuni dettagli implementativi della struttura del \textbf{Client}.
+
+  \subsection{Struttura del client}
+  La struttura del client è così strutturata:
+  
+  \begin{minipage}{0.45\textwidth}
+    \begin{forest}
+      for tree={
+        font=\sffamily,
+        minimum height=0.75cm,
+        rounded corners=4pt,
+        grow'=0,
+        inner ysep=8pt,
+        child anchor=west,
+        parent anchor=south,
+        anchor=west,
+        calign=first,
+        edge={rounded corners},
+        edge path={
+          \noexpand\path [draw, \forestoption{edge}]
+          (!u.south west) +(12.5pt,0) |- (.child anchor)\forestoption{edge label};
+        },
+        before typesetting nodes={
+          if n=1
+          {insert before={[,phantom,minimum height=18pt]}}
+          {}
+        },
+        fit=band,
+        s sep=12pt,
+        before computing xy={l=25pt},
+      }
+      [\folder{src}
+        [{\folder[customOrange4]{core}}
+          [{\folder[customPurple4]{builder}}]
+          [{\folder[customPurple4]{config}}]
+          [{\folder[customPurple4]{error}}]
+          [{\folder[customPurple4]{network}}]
+          [{\folder[customPurple4]{prefs}}]
+        ]
+        [{\folder[customOrange4]{model}}
+          [{\folder[customPurple4]{prop}}]
+        ]
+        [{\folder[customOrange5]{ui}}
+          [{\folder[customOrange5]{activity}}
+            [{\folder[customPurple4]{auth}}
+              [{\folder[customPurple4]{login}}]
+              [{\folder[customPurple4]{reg}}]
+            ]
+            [{\folder[customPurple4]{intro}}]
+          ]
+          [{\folder[customPurple4]{adapters}}]
+          [{\folder[customOrange5]{fragment}}]
+        ]
+      ]
+    \end{forest}
+  \end{minipage}
+  \hfill%
+  \hspace{1 cm}
+  \begin{minipage}{0.45\textwidth}
+    % Core
+    \begin{center}
+      {\Huge Core}
+
+      (Contiene le componenti fondamentali alla definizione del client)
+    \end{center}
+    \vspace{0.5cm}
+
+    \begin{itemize}
+      \setlength\itemsep{1em}
+    \item \hi{builder} \rightarrow Offre supporto alla costruzione di oggetti mediante Generics (Generic Builder);
+    \item \hi{config} \rightarrow Contiene tutte le informazioni necessarie alla configurazione dell'applicativo;
+    \item \hi{error} \rightarrow Offre supporto alla gestione degli errori che possono avvenire durante l'esecuzione dell'applicazione (Mette a disposizione una api per la gestione dello stack trace);
+    \item \hi{network} (networking) \rightarrow Offre supporto alle operazioni che richiedono l'utilizzo della rete
+    \item \hi{prefs} (preferences) \rightarrow Offre il supporto alle shared preferences in maniera semplice e sicura
+    \end{itemize}
+
+    \vspace{1cm}
+
+    % Model
+    \begin{center}
+      {\Huge Model}
+
+      (Contiene le componenti necessarie alla definizione dei modelli utilizzati e loro proprietà)
+    \end{center}
+    \vspace{0.5cm}
+
+    % UI
+    \begin{center}
+      {\Huge UI}
+
+      (Contiene le componenti necessarie alla definizione dell’infrastruttura grafica)
+    \end{center}
+    \vspace{0.5cm}
+
+    \begin{itemize}
+      \setlength\itemsep{1em}
+    \item \hi{activity} \rightarrow Contiene la definizione delle activity \footnotemark per \begin{itemize} \item Autenticazione, ovvero \begin{itemize} \item Login; \item Registrazione (reg) \end{itemize} \item Esposizione dell'applicazione (Intro) \end{itemize}
+
+    \item \hi{adapters} \rightarrow Offre gli adapters \footnotemark utilizzati dalle activity per la gestione delle componenti grafiche che fanno uso di componenti oggetto
+    \item \hi{fragments} \rightarrow Contiene la definizione di tutti i fragment \footnotemark presenti nell'applicazione
+    \end{itemize}
+
+  \end{minipage}
+
+  \footnotetext{La "finestra" grafica con cui l'utente interagisce}
+  \footnotetext{Un ponte per il componente grafico e gli oggetti che lo compongono}
+  \footnotetext{La porzione "riusabile" della UI dell'applicazione}
+
+
+  \subsection{Compilazione ed Esecuzione}
+    Entrambe le operazioni sono effettuabili dall'IDE \hi{Android Studio} in seguito all'apertura del progetto \footnotemark \footnotetext{Per maggiori informazioni visitare il seguente \href{https://developer.android.com/studio/run/}{\hi{link}}}.
+    
+  \subsection{Analisi del codice sviluppato}
+    In questa fase andremo quindi ad analizzare nello specifico i concetti chiave alla base dell'applicazione Android che fa da client.
+
+    \begin{center} \hi{SharedPreferences} \end{center}
+    Le \href{https://developer.android.com/reference/android/content/SharedPreferences}{\hi{Shared Preferences}} sono fondamentali per la memorizzazione delle informazioni all'interno di una applicazione Android. Proprio per questo motivo si è scelto di farne uso facendo affidamento alla classe wrapper \file{StorageManager} da noi così strutturata:
+
+    \begin{lstlisting}[language={[POSIX]JAVA}, style=wnumbers]
+    public class StorageManager {
+        private static final String _TAG = "[StorageManager] ";
+        private static final String PREF_NAME = "app_settings";
+        private static StorageManager instance;
+        private static SharedPreferences preferences;
+
+        private StorageManager(@NonNull Context context) {
+          preferences = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        }
+
+        private StorageManager(@NonNull Context context, String key) {
+          preferences = context.getApplicationContext().getSharedPreferences(key, Context.MODE_PRIVATE);
+        }
+
+        public static StorageManager with(@NonNull Context context) {
+            if (instance == null)
+                instance = new StorageManager(context);
+            return instance;
+        }
+
+        public static StorageManager with(@NonNull Context context, boolean forceInstantiation) {
+            if (forceInstantiation)
+                instance = new StorageManager(context);
+            return instance;
+        }
+
+        public static StorageManager with(@NonNull Context context, String preferencesName) {
+            if (instance == null)
+                instance = new StorageManager(context, preferencesName);
+            return instance;
+        }
+
+        public String read(String key, String defaultValue){return preferences.getString(key, defaultValue);}
+
+        public Integer read(String key, Integer defaultValue){return preferences.getInt(key, defaultValue);}
+        public Long read(String key, Long defaultValue){return preferences.getLong(key, defaultValue);}
+        public Boolean read(String key, Boolean defaultValue){return preferences.getBoolean(key, defaultValue);}
+
+        public boolean contains(String key){ return preferences.contains(key); }
+
+        public <T> void write(String key, T value) {
+            SharedPreferences.Editor editor = preferences.edit();
+
+            // Retrieve the type of value using the simple name of the underlying class as given in the source code
+            // avoiding using instanceof for each possible type (Supported type are String, Integer, Long, Boolean)
+            switch (value.getClass().getSimpleName()) {
+                case "String" -> editor.putString(key, (String) value);
+                case "Integer" -> editor.putInt(key, (Integer) value);
+                case "Long" -> editor.putLong(key, (Long) value);
+                case "Boolean" -> editor.putBoolean(key, (Boolean) value);
+                default -> Log.d(_TAG, "Unknown type <" + value.getClass().getSimpleName() + "> was given");
+            }
+            editor.apply();
+        }
+
+        public void clear() { preferences.edit().clear().apply(); }
+    }
+    \end{lstlisting}
+
+    \begin{center} \hi{Modelli} \end{center}
+
+    Rappresentazione ad Oggetti del concetto di Utente ed Opere e le loro rispettive proprietà.
+
+    Vengono utilizzati come contenitori di conversione dei dati passati tra client e server. Sono così strutturati:
+    
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=24, lastline=68]{../../client/app/src/main/java/com/infopoint/model/User.java}
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=26, lastline=46]{../../client/app/src/main/java/com/infopoint/model/ArtWork.java}
+
+
+    \begin{center} \hi{Properties} \end{center}
+    Per una migliore gestione dei Models si è scelto di utilizzare delle classi di supporto.
+
+    In particolare:
+
+    \begin{itemize}
+      \item \file{ArtworkUtil} $\rightarrow$ Ha il compito di gestire tutte le opere sfruttando l'uso delle Shared Preferences mediante la classe \file{StorageManager}
+      \item \file{UserType} $\rightarrow$ Permette di descrivere il livello dell'utente loggato
+    \end{itemize}
+
+    Di seguito riportiamo la loro struttura:
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=36, lastline=58]{../../client/app/src/main/java/com/infopoint/model/properties/ArtworkUtil.java}
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=24]{../../client/app/src/main/java/com/infopoint/model/properties/UserType.java}

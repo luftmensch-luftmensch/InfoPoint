@@ -22,8 +22,8 @@ package com.infopoint.core.config;
 
 /** Utility class used to define constants around the Application */
 public class Constants {
-    public static final String SERVER_ADDR = "";
-    public static final int SERVER_PORT = 0;
+    public static final String SERVER_ADDR = "192.168.1.171";
+    public static final int SERVER_PORT = 9090;
 
     // Network Related
     public static final String NETWORK_REQUEST = "Network Request Status";

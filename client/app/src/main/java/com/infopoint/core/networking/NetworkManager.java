@@ -51,26 +51,55 @@ public class NetworkManager {
         return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
     }
 
-    public static ArrayList<ArtWork> retrieveArtwork(String fmt) {
-        ArrayList<ArtWork> artworks = new ArrayList<>();
+    public static void test() {
         try {
             InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
             if(address.isReachable(2000)){ // Check if the server is reachable
                 Socket s = new Socket(address, Constants.SERVER_PORT);
-                // Create the writer in order to write to the socket just opened
-                PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
-                // Write the request
-                out.println(fmt);
 
                 // Read the response received from the server
                 BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
-                // TODO: Handle read
+                // Wait until something is written to the socket
+                while(s.getInputStream().available() < 1) {
+                    Log.d(_TAG, "Waiting...");
+                }
+
+                String msg = reader.readLine();
+                Log.d(_TAG, "Message: " + msg);
+
+                // Create the writer in order to write to the socket just opened
+                PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
+                out.println("<>HELLO,WORLD<>\n");
 
                 Log.d(_TAG, "Closing socket");
                 s.close();
             }
         }catch (IOException e){
+            Log.d(_TAG, e.getLocalizedMessage());
+        }
+    }
+
+    public static ArrayList<ArtWork> retrieveArtwork() {
+        ArrayList<ArtWork> artworks = new ArrayList<>();
+        try {
+            InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
+            if(address.isReachable(2000)){ // Check if the server is reachable
+                Socket s = new Socket(address, Constants.SERVER_PORT);
+                // Read the response received from the server
+                BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+                while(s.getInputStream().available() < 1) { // Wait until something is written to the socket
+
+                }
+
+                String msg = reader.readLine();
+                Log.d(_TAG, "Message: " + msg);
+
+                Log.d(_TAG, "Closing socket");
+                s.close();
+            }
+        } catch (IOException e){
             Log.d(_TAG, e.getLocalizedMessage());
         }
         return artworks;

@@ -439,7 +439,7 @@
 \geometry{ a4paper, 
 	margin = 7.5mm,
 	bottom = 12mm,
-	footskip = 3mm,
+	footskip = 10mm,
 	heightrounded,
 	nohead,
 	nomarginpar }
@@ -693,55 +693,115 @@
 	morecomment=[l][commentstyle]{\#},%
 }
 
+\lstdefinelanguage{ini} {
+  xleftmargin=1cm,
+  numbers=left,
+  numberstyle=\Lato\scriptsize\color{orange!80!black},
+  frame=l,
+  framesep=0.5cm,
+  framexleftmargin=0.3cm,
+  morecomment=[s][\color{violet!60!white}\bfseries]{[}{]},
+  morecomment=[l]{\#},
+  morecomment=[l]{;},
+  commentstyle=\color{gray}\ttfamily,
+  morekeywords={},
+  otherkeywords={=,:},
+  keywordstyle={\color{turquoise!70!black}\bfseries}
+}
+
+\lstdefinelanguage[POSIX]{JAVA}
+                  []{}
+                  { alsoletter={\#},
+                    sensitive=true,
+                    %% Handle directives
+                    moredelim=*[s][{\color{violet!60!white}}]package,
+                    moredelim=*[l][{\color{blue!65!white}}]import,
+                    %% Comments
+                    comment=[l]//,
+                    morecomment=[s]{/*}{*/},
+                    % Strings
+                    string=[b]{"},
+                    morestring=[b]{'},
+                    % Modifiers
+                    keywords=[0]{class, public, private, static, volatile, typedef, struct, union, enum, atomic_t},
+                    % Primitives
+                    keywords=[1]{int, Integer, String, double, long, short, char, void, bool},
+                    % Logical constructs
+                    keywords=[2]{if, else, return, for, while, do},
+                    % Operators
+                    otherkeywords={*, &},
+                    keywords=[3]{*, &},
+                    % API structs
+                    keywords=[8]{sockaddr\_in, sockaddr, transport, pthread\_t, ssize\_t, size\_t, epoll\_event, timeval},
+                    % API functions
+                    keywords=[9]{epoll\_event, epoll\_wait, epoll\_ctl, send, recv, close, open, read, write, exit, assert, perror, gettimeofday},
+                    % API Constants
+                    keywords=[10]{EPOLLIN, EPOLLET, EPOLL\_CTL\_ADD, EPOLL\_CTL\_DEL, false, true, errno, NULL, MSG\_PEEK, MSG\_NOSIGNAL},
+                    % OWN structs
+                    keywords=[11]{handler, socket, server, event, client, connection, conn, status, conn\_status, waiting\_room},
+                    % OWN structs
+                    keywords=[12]{READY, CHAT},
+                    % Colors
+                    directivestyle=\color{blue!85!white},
+                    keywordstyle=[0]\color{cherryred},
+                    keywordstyle=[1]\color{green!75!black},
+                    keywordstyle=[2]\color{cherryred},
+                    keywordstyle=[3]\color{naplesyellow!75!black},
+                    keywordstyle=[8]\color{seagreen!80!black},
+                    keywordstyle=[9]\color{pink!70!black},
+                    keywordstyle=[10]\color{turquoise!80!black},
+                    keywordstyle=[11]\color{sapphire!80!black},
+                    keywordstyle=[12]\color{turquoise!70!black},
+                  }[keywords,comments,strings,directives]
+
 \lstdefinelanguage[POSIX]{C}
-	[]{}
-	{ alsoletter={\#}, 
-		sensitive=true, 
-		%% Handle directives
-		moredelim=*[s][{\color{violet!60!white}}]{\#include\ <}{.h>},
-		moredelim=*[l][{\color{blue!65!white}}]\#if,
-		moredelim=*[l][{\color{blue!65!white}}]\#endif,
-		moredelim=*[s][{\color{violet!60!white!70!black}}]{\#include\ "}{.h"},
-		moredelim=*[l][{\color{blue!90!white!70!black}}]\#define,
-		moredelim=*[s][{\color{turquoise!70!black}}]{[}{]},
-		%% Comments
-		comment=[l]//,
-		morecomment=[s]{/*}{*/},
-		% Strings
-		string=[b]{"},
-		morestring=[b]{'},
-		% Modifiers 
-		keywords=[0]{const, unsigned, signed, static, volatile, typedef, struct, union, enum, atomic_t},
-		% Primitives 
-		keywords=[1]{int, float, double, long, short, char, void, bool},
-		% Logical constructs 
-		keywords=[2]{if, else, return, for, while, do},
-		% Operators
-		otherkeywords={*, &},
-		keywords=[3]{*, &},
-		% API structs
-		keywords=[8]{sockaddr\_in, sockaddr, transport, pthread\_t, ssize\_t, size\_t, epoll\_event, timeval},
-		% API functions 
-  	keywords=[9]{epoll\_event, epoll\_wait, epoll\_ctl, send, recv, close, open, read, write, exit, assert, perror, gettimeofday},
-		% API Constants 
-		keywords=[10]{EPOLLIN, EPOLLET, EPOLL\_CTL\_ADD, EPOLL\_CTL\_DEL, false, true, errno, NULL, MSG\_PEEK, MSG\_NOSIGNAL},
-		% OWN structs
-		keywords=[11]{handler, socket, server, event, client, connection, conn, status, conn\_status, waiting\_room},
-		% OWN structs
-		keywords=[12]{PRCLEAR, PRCHAT, READY, CHAT},
-		% Colors
-		%  TODO: Move elsewhere
-		directivestyle=\color{blue!85!white},
-		keywordstyle=[0]\color{cherryred},
-		keywordstyle=[1]\color{green!75!black},
-		keywordstyle=[2]\color{cherryred},
-		keywordstyle=[3]\color{naplesyellow!75!black},
-		keywordstyle=[8]\color{seagreen!80!black},
-		keywordstyle=[9]\color{pink!70!black},
-		keywordstyle=[10]\color{turquoise!80!black},
-		keywordstyle=[11]\color{sapphire!80!black},
-		keywordstyle=[12]\color{turquoise!70!black},
-		}[keywords,comments,strings,directives]
+                  []{}
+                  { alsoletter={\#},
+                    sensitive=true,
+                    %% Handle directives
+                    moredelim=*[s][{\color{violet!60!white}}]{\#include\ <}{.h>},
+                    moredelim=*[l][{\color{blue!65!white}}]\#if,
+                    moredelim=*[l][{\color{blue!65!white}}]\#endif,
+                    moredelim=*[s][{\color{violet!60!white!70!black}}]{\#include\ "}{.h"},
+                    moredelim=*[l][{\color{blue!90!white!70!black}}]\#define,
+                    moredelim=*[s][{\color{turquoise!70!black}}]{[}{]},
+                    %% Comments
+                    comment=[l]//,
+                    morecomment=[s]{/*}{*/},
+                    % Strings
+                    string=[b]{"},
+                    morestring=[b]{'},
+                    % Modifiers
+                    keywords=[0]{const, unsigned, signed, static, volatile, typedef, struct, union, enum, atomic_t},
+                    % Primitives
+                    keywords=[1]{int, float, double, long, short, char, void, bool},
+                    % Logical constructs
+                    keywords=[2]{if, else, return, for, while, do},
+                    % Operators
+                    otherkeywords={*, &},
+                    keywords=[3]{*, &},
+                    % API structs
+                    keywords=[8]{sockaddr\_in, sockaddr, transport, pthread\_t, ssize\_t, size\_t, epoll\_event, timeval},
+                    % API functions
+                    keywords=[9]{epoll\_event, epoll\_wait, epoll\_ctl, send, recv, close, open, read, write, exit, assert, perror, gettimeofday},
+                    % API Constants
+                    keywords=[10]{EPOLLIN, EPOLLET, EPOLL\_CTL\_ADD, EPOLL\_CTL\_DEL, false, true, errno, NULL, MSG\_PEEK, MSG\_NOSIGNAL},
+                    % OWN structs
+                    keywords=[11]{handler, socket, server, event, client, connection, conn, status, conn\_status, waiting\_room},
+                    % OWN structs
+                    keywords=[12]{READY, CHAT},
+                    % Colors
+                    directivestyle=\color{blue!85!white},
+                    keywordstyle=[0]\color{cherryred},
+                    keywordstyle=[1]\color{green!75!black},
+                    keywordstyle=[2]\color{cherryred},
+                    keywordstyle=[3]\color{naplesyellow!75!black},
+                    keywordstyle=[8]\color{seagreen!80!black},
+                    keywordstyle=[9]\color{pink!70!black},
+                    keywordstyle=[10]\color{turquoise!80!black},
+                    keywordstyle=[11]\color{sapphire!80!black},
+                    keywordstyle=[12]\color{turquoise!70!black},
+                  }[keywords,comments,strings,directives]
 
 % Itemize, Enumerate, Description
 \setlist{leftmargin=*,noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt, after=\vspace{0.5em}}

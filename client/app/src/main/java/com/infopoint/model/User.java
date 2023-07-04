@@ -20,12 +20,23 @@
 
 package com.infopoint.model;
 
+import androidx.annotation.NonNull;
+
 /** Model representing user properties */
 public class User {
     private String id;
     private String name;
     private String password;
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 
     public String validateName(String name) {
         if (name.trim().length() == 0) {

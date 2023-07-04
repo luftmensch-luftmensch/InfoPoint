@@ -1,0 +1,368 @@
+\chapter{Dettagli implementativi}
+  \begin{abstract}
+    In questo capitolo tratteremo l'implementazione e il funzionamento delle componenti che hanno reso possibile lo sviluppo della piattaforma \hi{InfoPoint}, prestando particolare attenzione alle funzionalità richieste da programma
+  \end{abstract}
+  \section{Server}
+    Di seguito riportiamo alcuni dettagli implementativi della struttura del \textbf{Server}. In particolare:
+
+    \begin{itemize}
+      \item Analisi della struttura del progetto;
+      \item Analisi e controllo delle principali system call che il C mette a disposizione per la programmazione tramite socket\footnotemark; \footnotetext{Per un'analisi più completa si faccia riferimento al codice sorgente, come indicato nel capitolo successivo}
+      \item Analisi delle funzioni di logging e controllo degli stati utilizzate;
+      \item Analisi e controllo delle principali system call per la gestione del Database utilizzato;
+      \item Analisi e gestione della coda dei client connessi che richiedono uno scambio di informazioni.
+    \end{itemize}
+
+    \subsection{Struttura del server}
+    La struttura del server è così strutturata:
+
+    \begin{minipage}{0.45\textwidth}
+      \begin{forest}
+        for tree={
+          font=\sffamily,
+          minimum height=0.75cm,
+          rounded corners=4pt,
+          grow'=0,
+          inner ysep=8pt,
+          child anchor=west,
+          parent anchor=south,
+          anchor=west,
+          calign=first,
+          edge={rounded corners},
+          edge path={
+            \noexpand\path [draw, \forestoption{edge}]
+            (!u.south west) +(12.5pt,0) |- (.child anchor)\forestoption{edge label};
+          },
+          before typesetting nodes={
+            if n=1
+            {insert before={[,phantom,minimum height=18pt]}}
+            {}
+          },
+          fit=band,
+          s sep=12pt,
+          before computing xy={l=25pt},
+        }
+        [\folder{src}
+          [{\folder[customOrange4]{core}}
+            [{\folder[customPurple4]{database}}]
+            [{\folder[customPurple4]{message}}]
+            [{\folder[customPurple4]{payload}}]
+            [{\folder[customPurple4]{pool}}]
+            [{\folder[customPurple4]{server}}]
+          ]
+          [{\folder[customOrange5]{helpers}}
+            [{\folder[customPurple4]{base}}]
+            [{\folder[customPurple4]{cmr}}]
+            [{\folder[customPurple4]{config}}]
+            [{\folder[customPurple4]{container}}]
+            [{\folder[customPurple4]{handler}}]
+            [{\folder[customPurple4]{logging}}]
+            [{\folder[customPurple4]{utility}}]
+          ]
+        ]
+      \end{forest}
+    \end{minipage}
+    \hfill%
+    \hspace{1 cm}
+    \begin{minipage}{0.45\textwidth}
+      % Core
+      \begin{center}
+        {\Huge Core}
+
+        (Contiene le componenti fondamentali alla definizione del server)
+      \end{center}
+      \vspace{0.5cm}
+
+      \begin{itemize}
+        \setlength\itemsep{1em}
+        \item \hi{server} \rightarrow È il cuore dell’applicativo. Svolge il compito di orchestratore di tutto il programma;
+        \item \hi{database} \rightarrow Contiene la struttura e la logica del gestore (handler) che ha il compito di comunicare con l’istanza del Database NOSQL MongoDB;
+        \item \hi{message} \rightarrow Contiene delle funzioni wrapper utili alla comunicazione tramite socket (di cui l’applicativo fa largo uso);
+        \item \hi{payload} \rightarrow Prendendo ispirazione dal protocollo HTTP facciamo uso del concetto di Payload, oggetto che rappresenta informazioni (su Utenti e Opere) che i client e il server si scambieranno.
+      \end{itemize}
+
+      \vspace{1cm}
+
+      % Helpers
+      \begin{center}
+        {\Huge Helpers}
+
+        (Contiene le componenti necessarie alla definizione dell’infrastruttura)
+      \end{center}
+      \vspace{0.5cm}
+
+      \begin{itemize}
+        \setlength\itemsep{1em}
+        \item \hi{base} \rightarrow Contiene la definizione di \begin{itemize} \item Alias di tipi comuni (sfruttando la keyword typedef) per una più facile modifica nel tempo; \item Macro per operazioni elementari; \end{itemize}
+
+        \item \hi{cmr} (command\_line\_runner) \rightarrow Fa da wrapper alla libreria argp.h per il parsing dei parametri passati all’eseguibile prodotto in fase di compilazione;
+        \item \hi{config} \rightarrow Ha il compito di recuperare le informazioni presenti all’interno del file di configurazione (in formato ini) messo a dispozione per il settaggio delle opzioni necessarie all’esecuzione del server;
+        \item \hi{pool} \rightarrow Thread-Pool utilizzata dal server per soddisfare le richieste in ingresso;
+        \item \hi{utility} \rightarrow Contiene la definizione di funzioni per \begin{itemize} \item Lettura e recupero informazioni di file; \item Definizione di Regex utilizzate dal programma; \item Manipolazione di buffer (trimming e concatenazione). \end{itemize}
+      \end{itemize}
+
+    \end{minipage}
+
+    \newpage
+  \subsection{File di configurazione}
+    Il server mette a disposizione la possibilità di essere configurato mediante l'uso di un file di configurazione in formato \href{https://it.wikipedia.org/wiki/File_INI}{\hi{ini}} che permette di customizzare ogni aspetto del server. Di seguito riportiamo il suo contenuto:
+
+    \lstinputlisting[language=ini]{../../server/src/info_point.ini}
+
+  \subsection{Compilazione}
+  Tutti i file sorgente necessari alla compilazione del server sono contenuti nella directory \dir{server/src}.
+
+  Il processo risulterà particolarmente semplificato in quanto, come ampiamente presentato nelle sezioni precedenti, faremo totale affidamento allo strumento cmake.
+
+  Con un \qterm e una shell qualsiasi andiamo quindi ad eseguire i seguenti comandi:
+
+  \begin{lstlisting}[language=bash]
+    # Per costruire le informazioni necessarie a cmake per la futura compilazione
+    cmake -S . -B build/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    # Per compilare il server
+    cmake --build build/
+    # Per l'operazione di clean up dei file generati da CMake
+    cmake --build build/ --target clean
+  \end{lstlisting}
+
+  L'output ottenuto sarà da ricercare nella directory \dir{bin/} sotto il nome di \hi{InfoPointServer} \footnotemark \footnotetext{Modificabile dal file di configurazione di cmake}.
+
+  \subsection{Esecuzione}
+    L'utilizzo del server prevede la sola esecuzione dell'eseguibile in quanto è un sistema totalmente autonomo.
+
+    Attraverso l'uso della libreria \qfunction{argp.h} il server mette a disposizione una serie di flags in modo da poter:
+
+    \begin{itemize}
+     \item Personalizzare l'esecuzione del server stesso;
+     \item Avere informazioni
+       \begin{itemize}
+         \item Sulla versione dell'applicativo;
+         \item Attraverso \hi{Help Menu} stile \href{https://en.wikipedia.org/wiki/Man_page}{man};
+       \end{itemize}
+    \end{itemize}
+
+    \begin{lstlisting}[language=bash]
+      # Esecuzione del server utilizzando il file di configurazione
+      ./build/InfoPointServer -c src/info_point.ini
+      # Esecuzione del server utilizzando facendo uso della configurazione di default (-d o -use-default-config)
+      ./build/InfoPointServer -d
+      # Esecuzione del server per mostrare l'help menu
+      ./build/InfoPointServer --help/--usage/-?
+      # Esecuzione del server per ottenere informazioni sulla versione del server
+      ./build/InfoPointServer -V
+    \end{lstlisting}
+
+  \subsection{Analisi del codice sviluppato}
+  In questa fase andremo quindi ad analizzare nello specifico le strutture e il codice sviluppato per l'esecuzione del server, a partire dal chiamante (\file{main}):
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+    #include "core/server/server.h"
+    #include "helpers/config/info_point_config.h"
+    #include "helpers/command_line_runner/command_line_runner.h"
+
+    int main(int argc, char** argv) {
+      // Welcome message
+      fprintf(stdout, ANSI_COLOR_BMAGENTA "%s" ANSI_COLOR_RESET "\n", welcome_msg);
+
+      // Parse command line arguments
+      char* config_file = parse_command_line_arguments(argc, argv);
+
+      // Initialize the configuration structure based on how the user invoke the server:
+      // + If no config file is passed (server invoked with the -d flag) -> Populate the configuration using a default one
+      // + If a config file is passed (server invoked with the -c <FILE>) -> Populate the configuration using the given <FILE>
+      info_point_config* cfg = (config_file != NULL) ? provide_config(config_file) : provide_default_config();
+
+      // Show the settings getted from the file
+      cfg_pretty_print(cfg, stdout);
+
+      server* s = init_server(cfg->ns.port, cfg->cs.max_clients, cfg->cs.max_workers, cfg->ds.username, cfg->ds.password, cfg->ds.host, cfg->ds.database_name);
+
+      // Finally free the cfg, as we no more need it
+      free(cfg);
+
+      server_loop(s);
+
+      destroy_server(s);
+    }
+  \end{lstlisting}
+
+  \begin{center} \hi{Payload} \end{center}
+  Per una più semplice gestione nel passaggio delle informazioni \hi{server} $\Longleftrightarrow$ \hi{client} si è pensato di utilizzare una classe wrapper che andasse a simulare il concetto di \href{https://it.wikipedia.org/wiki/Carico_utile_(informatica)}{\hi{Payload}}, costituita da:
+  \begin{itemize}
+    \item Tipo di richiesta;
+    \item Contenuto effettivo del payload \footnotemark \footnotetext{Per una generalizzazione massima del contenuto si fa uso del tipo \hi{void*}}
+    \item Dimensione del payload.
+  \end{itemize}
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+    typedef enum request_t {
+      LOGIN,
+      REGISTRATION,
+      RETRIEVE
+    } request_t;
+
+    typedef struct payload_t {
+      request_t request;
+      void* data;
+      size_t size;
+    } payload_t;
+  \end{lstlisting}
+
+  Per una semplice manipolazione del dato viene offerta la funzione \qfunction{parse\_data} che effettua il parsing in base a 2 delimitatori.
+
+  \begin{center} \hi{Database Handler} \end{center}
+
+  La struct \hi{db\_handler} è da considerarsi una "classe" wrapper \footnotemark \footnotetext{Per wrapper si intende un oggetto che incapsula funzionalità di più basso livello affinchè possa semplificarne l’utilizzo ai fini produttivi} $\rightarrow$ Fa da tramite per la comunicazione con il database NOSQL MongoDB.
+
+  Di seguito ne riportiamo una descrizione ad alto livello:
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+    typedef struct db_handler {
+      struct instance {
+        mongoc_client_pool_t* pool;	// Connection pool for multi-threaded programs
+        mongoc_uri_t* uri;		// Abstraction on top of the MongoDB connection URI format
+      } instance;
+
+      // Structure representing information used to:
+      // Connect & authenticate to a given mongodb instance
+      // Do basic operation with the speciefied documents used by the service
+      struct mongo_db_settings {
+        char  name[100];		// Database name identifier
+        char  database_uri[100];	// String used to connect to the mongodb instance
+        char* user_collection;		// Identifier of the collection used to store & retrieve data of the users
+        char* art_work_collection;	// Identifier of the collection used to store & retrieve data of the artworks
+      } settings;
+
+    } db_handler;
+
+  \end{lstlisting}
+  Seguendo le \textbf{good pratices} per la programmazione di una corretta API vengono esposte una serie di metodi che vengono di seguito descritte:
+
+  \begin{itemize}
+    \item \qfunction{init\_handler} $\rightarrow$ Ha il compito di inizializzare delle risorse dell'handler ad esso associato;
+    \item \qfunction{destroy\_handler} $\rightarrow$ Ha il compito di liberare le risorse dell'handler ad esso associato;
+    \item \qfunction{retrieve\_art\_works} $\rightarrow$ Ha il compito di recuperare dal database associato tutte le informazioni presenti relative alle opere (artworks);
+    \item \qfunction{is\_present} $\rightarrow$ Ha il compito di controllare se il documento specificato sia presente o meno nella collezione specificata;
+    \item \qfunction{insert\_single} $\rightarrow$ Ha il compito di inserire il documento specificato nella collezione specificata controllando lo stato dell'operazione;
+    \item \qfunction{parse\_bson\_as\_artwork} $\rightarrow$ Ha il compito di convertire il documento \hi{bson\_t} (binary json format) $\Longleftrightarrow$ ad \hi{artwork} wrappata nella struttura \hi{payload\_t}
+    \item \qfunction{parse\_bson\_as\_user} $\rightarrow$ Ha il compito di convertire il documento \hi{bson\_t} (binary json format) $\Longleftrightarrow$ ad \hi{user} wrappata nella struttura \hi{payload\_t}
+    \item \qfunction{test\_connection} $\rightarrow$ Ha il compito di testare se la connessione al database definito sia valida o meno.
+  \end{itemize}
+
+  \begin{center} \hi{Thread Pool} \end{center}
+  Per una gestione concorrente e parallela il server fa uso di una \href{https://it.wikipedia.org/wiki/Thread_pool}{\hi{Thread Pool}} che attende che uno specifico lavoro venga inserito nella coda di task da eseguire. La struttura è così definita:
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+  typedef struct thread_pool_t {
+    pthread_t* threads;		// Array of threads spawned by the thread pool
+    size_t threads_alive;	// N° of threads currently active
+
+    pthread_mutex_t lock;	// Mutex of the thread pool
+    pthread_cond_t signal;	// Conditional variable for the thread pool
+    queue_t* queue;		// Queue containing all the tasks that has to be executed
+
+    bool active;		// Control switch for the worker threads
+    bool on_shutdown;		// Control switch for the worker threads in order to signal shutdown
+  } thread_pool;
+  \end{lstlisting}
+  Analogamente alle altre strutture anche per la Thread Pool vengono offerti dei metodi di supporto:
+
+  \begin{itemize}
+    \item \qfunction{init\_thread\_pool} $\rightarrow$ Ha il compito di inizializzare delle risorse della thread pool ad esso associato;
+    \item \qfunction{destroy\_thread\_pool} $\rightarrow$ Ha il compito di liberare le risorse della thread pool ad esso associato;
+    \item \qfunction{submit\_task} $\rightarrow$ Ha il compito di aggiungere alla coda di lavori della thread pool un nuovo task da eseguire;
+  \end{itemize}
+
+  \begin{center} \hi{Message} \end{center}
+  Mette a disposizione 2 funzioni utili per un rapido invio/ricezione di dati mediante socket.
+
+  \begin{center} \hi{Server} \end{center}
+  È l'orchestratore di tutto l'applicativo. Fa da wrapper per tutte le strutture sopra citate, rendendo più snella e semplice la gestione dell'intera struttura del server. È così definito:
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+  typedef struct server {
+    ssize_t socket;
+    struct sockaddr_in transport;
+    size_t conn_count;
+    db_handler* handler;
+    thread_pool* pool;
+  } server;
+  \end{lstlisting}
+
+  Anche in questo caso sono presenti dei metodi supporto all'utilizzo della struttura:
+
+  \begin{itemize}
+    \item \qfunction{init\_server} $\rightarrow$ Ha il compito di inizializzare delle risorse del server ad esso associato;
+    \item \qfunction{destroy\_server} $\rightarrow$ Ha il compito di liberare le risorse del server ad esso associato;
+    \item \qfunction{server\_loop} $\rightarrow$ Ha il compito di inizializzare l'handler per la terminazione "gracefully" del programma e fare da dispatcher per l'arrivo di nuove richieste di connessione;
+  \end{itemize}
+
+  Finito l'analisi della struttura centrale del server passiamo ora all'analisi delle strutture di supporto di cui le prime fanno uso.
+
+  \begin{center} \hi{Base} \end{center}
+  Contiene la definizione di:
+  \begin{itemize}
+    \item Macro;
+    \item Abbreviazioni di tipi.
+  \end{itemize}
+
+  \begin{center} \hi{Command Line Runner} \end{center}
+  Classe wrapper per la libreria \qfunction{argp.h}
+
+  \begin{center} \hi{Config} \end{center}
+  Classe utility che:
+
+  \begin{enumerate}
+    \item Effettua il parsing del file di configurazione (se specificato);
+    \item Costruisce la configurazione in base ai dati ottenuti.
+  \end{enumerate}
+
+  \begin{center} \hi{Container} \end{center}
+
+  Contiene la definizione e la struttura della \hi{queue} \footnotemark \footnotetext{Per ovvi motivi risulta comodo utilizzare una struttura di tipo FIFO (First In - First Out)} utilizzato dalla thread pool per la gestione dei task. È così definita
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+  typedef struct node {
+    struct node* next;	// Reference to the next node
+    void* data;		// Content of the node
+  } node_t;
+
+  typedef struct queue {
+    node_t* head;	// Reference to the head of the queue
+    node_t* tail;	// Reference to the tail of the queue
+    size_t size;	// Size of the queue
+  } queue_t;
+  \end{lstlisting}
+
+  Per un più semplice utilizzo la struttura offre i seguenti metodi di supporto:
+
+  \begin{itemize}
+    \item \qfunction{init\_queue} $\rightarrow$ Ha il compito di inizializzare delle risorse della queue ad essa associata;
+    \item \qfunction{destroy\_queue} $\rightarrow$ Ha il compito di liberare le risorse della queue ad essa associata;
+    \item \qfunction{enqueue} $\rightarrow$ Ha il compito di inserire un nodo all'interno della queue;
+    \item \qfunction{enqueue} $\rightarrow$ Ha il compito di recuperare un nodo all'interno della queue;
+    \item \qfunction{retrieve\_queue\_size} $\rightarrow$ Ha il compito di recuperare la dimensione corrente della queue;
+    \item \qfunction{is\_empty} $\rightarrow$ Ha il compito di controllare se la queue sia vuota o meno;
+  \end{itemize}
+
+
+  \begin{center} \hi{Handler} \end{center}
+  Contiene la definizione per l'inizializzazione dell'handler utilizzato dal server per la terminazione in caso di ricezione di un determinato segnale (in questo caso si è utilizzato il segnale \hi{SIGINT}).
+
+  \begin{center} \hi{Logging} \end{center}
+  Contiene la definizione delle funzioni necessarie per il logging delle informazioni, che permea in tutto il progetto.
+
+  Si noti come si fa largo uso di funzioni variadiche, permettendo una struttura dinamica del logging.
+
+  È presente inoltre anche un messaggio di benvenuto generato mediante l'utility \hi{xxd}
+
+  \begin{center} \hi{Utility} \end{center}
+  Contiene funzioni di supporto generiche utilizzate all'interno del progetto, tra cui:
+
+  \begin{itemize}
+    \item Funzioni di \href{https://it.wikipedia.org/wiki/Sequenziamento}{\hi{trimming}};
+    \item Validazione di \hi{regex};
+    \item Operazioni su file;
+    \item Operazioni su "stringhe";
+  \end{itemize}
+  \newpage

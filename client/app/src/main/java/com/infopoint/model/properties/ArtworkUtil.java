@@ -45,7 +45,7 @@ public class ArtworkUtil {
             Gson gson = new GsonBuilder().create();
             ArtWork[] artworks = gson.fromJson(key, ArtWork[].class);
         } else {
-            retrieveArtwork(null);
+            retrieveArtwork();
         }
     }
 

@@ -19,7 +19,7 @@
 
 #define _m(type, format, ...) _msgcategory(type, "THREAD_POOL", format __VA_OPT__(,) __VA_ARGS__)
 
-static char initial_msg[] = "<>Server is ready to communicate!<>";
+static char initial_msg[] = "<>Server is ready to communicate!<>\n";
 
 /* Retrieve the number of core/processors of the machine */
 static size_t retrieve_proc_num() { return sysconf(_SC_NPROCESSORS_ONLN); }
