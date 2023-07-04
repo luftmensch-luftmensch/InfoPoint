@@ -25,14 +25,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
+import com.infopoint.core.config.Constants;
 import com.infopoint.core.networking.NetworkManager;
+import com.infopoint.core.preferences.StorageManager;
+import com.infopoint.core.validator.Validator;
+import com.infopoint.ui.activity.MainActivity;
 import com.infopoint.ui.activity.authentication.registration.RegistrationActivity;
 
 import es.dmoral.toasty.Toasty;
@@ -41,8 +45,9 @@ import es.dmoral.toasty.Toasty;
 public class LoginActivity extends AppCompatActivity {
     private final static String _TAG = "[LoginActivity] ";
 
-    private TextInputLayout usernameTextInputLayout, passwordTextInputLayout;
-    private TextInputEditText usernameEditText, passwordEditText;
+    private EditText usernameEditText, passwordEditText;
+
+    private Boolean loginStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setUI() {
-        usernameTextInputLayout = findViewById(R.id.login_username_text_input_layout);
-        passwordTextInputLayout = findViewById(R.id.login_password_text_input_layout);
+        usernameEditText = findViewById(R.id.login_username_text_input_layout);
+        passwordEditText = findViewById(R.id.login_password_text_input_layout);
 
         Button loginButton = findViewById(R.id.login_button);
         Button forgotPassword = findViewById(R.id.login_forgot_password_button);
@@ -71,9 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
-        // TODO: Add Login logic
-        loginButton.setOnClickListener(view -> {
-        });
+        loginButton.setOnClickListener(view -> handleLogin(usernameEditText.getText().toString(), passwordEditText.getText().toString()));
 
         forgotPassword.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -89,5 +92,30 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         Log.d(_TAG, "onResume: Checking internet connection");
         NetworkManager.checkConnection(this);
+    }
+
+    private void handleLogin(String username, String password) {
+        if (!Validator.validate(username) || !Validator.validate(password)) {
+            Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
+            return;
+        }
+
+        Thread task = new Thread(() -> {
+            if (NetworkManager.login(username, password)) {
+                // Save crendials and then move to HomePage
+                StorageManager.with(this).write(Constants.USERNAME, username);
+                StorageManager.with(this).write(Constants.PASSWORD, password);
+
+                // Then move to the MainActivity
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finishAffinity();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            } else {
+                runOnUiThread(() -> Toasty.info(this, "Non sono state trovate buche nella zona intorno a te", Toast.LENGTH_LONG, true).show());
+            }
+        });
+
+        task.setPriority(10);
+        task.start();
     }
 }

@@ -21,9 +21,6 @@
 package com.infopoint.ui.fragment;
 
 
-import static com.infopoint.core.networking.NetworkManager.retrieveArtwork;
-import static com.infopoint.core.networking.NetworkManager.test;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.infopoint.R;
+import com.infopoint.core.networking.NetworkManager;
 
 import es.dmoral.toasty.Toasty;
 
@@ -59,11 +57,10 @@ public class HomeFragment extends Fragment {
         Toasty.info(requireContext(), "Recupero delle opere in corso...", Toasty.LENGTH_LONG, true).show();
         Thread task = new Thread(() -> {
             // retrieveArtwork();
-            test();
+            NetworkManager.test();
         });
 
         task.setPriority(10);
         task.start();
-
     }
 }

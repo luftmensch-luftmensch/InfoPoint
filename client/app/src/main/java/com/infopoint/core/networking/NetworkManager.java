@@ -54,13 +54,13 @@ public class NetworkManager {
     public static void test() {
         try {
             InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
-            if(address.isReachable(2000)){ // Check if the server is reachable
+            if(address.isReachable(Constants.SERVER_TIMEOUT)){ // Check if the server is reachable
                 Socket s = new Socket(address, Constants.SERVER_PORT);
 
                 // Read the response received from the server
                 BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
-                // Wait until something is written to the socket
+                // Wait until the server inform us that is ready to perform communication
                 while(s.getInputStream().available() < 1) {
                     Log.d(_TAG, "Waiting...");
                 }
@@ -72,10 +72,11 @@ public class NetworkManager {
                 PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
                 out.println("<>HELLO,WORLD<>\n");
 
+                // TODO: Read response
                 Log.d(_TAG, "Closing socket");
                 s.close();
             }
-        }catch (IOException e){
+        } catch (IOException e){
             Log.d(_TAG, e.getLocalizedMessage());
         }
     }
@@ -106,6 +107,32 @@ public class NetworkManager {
     }
 
     public static boolean login(String username, String password) {
+        try {
+            InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
+            if (address.isReachable(Constants.SERVER_TIMEOUT)) { // Check if the server is reachable
+                Socket s = new Socket(address, Constants.SERVER_PORT);
+
+                // Reader of the socket
+                BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+                // Wait until the server inform us that is ready to perform communication
+                while(s.getInputStream().available() < 1) {
+                    Log.d(_TAG, "Waiting...");
+                }
+
+                String msg = reader.readLine();
+                Log.d(_TAG, "Message: " + msg);
+
+                // Create the writer in order to write to the socket just opened
+                PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
+                out.println(String.format("<>LOGIN<>%s,%s<>\n", username, password));
+                // TODO: Read response
+                Log.d(_TAG, "Closing socket");
+                s.close();
+            }
+        } catch (IOException e){
+            Log.d(_TAG, e.getLocalizedMessage());
+        }
 
         return false;
     }

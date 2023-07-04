@@ -14,27 +14,25 @@
  * limitations under the License.
  *
  *   @author Valentino Bocchetti
- *   First written in 13/6/2023 at 20:59
+ *   First written in 4/7/2023 at 17:18
  *
  */
 
-package com.infopoint.model;
+package com.infopoint.core.validator;
 
-import androidx.annotation.NonNull;
+public class Validator {
 
-/** Model representing user properties */
-public class User {
-    private String id;
-    private String name;
-    private String password;
+    public static Boolean validate(String s) {
+        if (s.trim().length() == 0) {
+            return false;
+        } else if (!s.trim().matches("^[a-zA-Z0-9]+[_@#]?[a-zA-Z0-9]+$")) {
+            return false;
+        } else if ((s.trim().length() < 8) || (s.trim().length() > 15)) {
+            return false;
+        } else if (s.trim().contains(" ")) {
+            return false;
+        }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return true;
     }
 }

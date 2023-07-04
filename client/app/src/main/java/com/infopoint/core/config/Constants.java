@@ -25,27 +25,20 @@ public class Constants {
     public static final String SERVER_ADDR = "192.168.1.171";
     public static final int SERVER_PORT = 9090;
 
-    // Network Related
-    public static final String NETWORK_REQUEST = "Network Request Status";
-    public static final String NETWORK_ERROR = "Network Error";
-    public static final String SERVER_ERROR = "Server unreachable";
+    public static final int SERVER_TIMEOUT = 2000;
 
-    // Login/Registration Related
-    public static final String LOGIN_STATE = "Login process";
-    public static final String REGISTRATION_STATE = "Sign Up process";
-    public static final String PASSWORD_RESET = "Password reset process";
+    public static final String BLOCK_DELIMITER = "<>";
+    public static final String SINGLE_DELIMITER = ",";
 
     public static final int PASSWORD_LENGTH = 8;
-
-    // Comunication tokens
-    public static final String LOGIN = "<LOGIN>";
-    public static final String REGISTRATION = "<REGISTRATION>";
-    public static final String USERNAME = "<USERNAME>";
-    public static final String PASSWORD = "<PASSWORD>";
 
     public static String IS_LOGGED = "IS_LOGGED";
     public static String INTRO_VIEWED = "INTRO_VIEWED";
 
     public static String ARTWORKS_RETRIEVED = "ARTWORKS_RETRIEVED";
     public static String ARTWORKS_LIST = "ARTWORKS_LIST";
+
+
+    public static String USERNAME = "USERNAME";
+    public static String PASSWORD = "PASSWORD";
 }
