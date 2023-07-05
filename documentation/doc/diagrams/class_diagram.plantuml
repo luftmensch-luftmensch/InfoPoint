@@ -1,0 +1,277 @@
+' Compile with (plantuml -tsvg)
+' Available themes: https://bschwarz.github.io/puml-themes/gallery.html
+' Favorites themes: amiga, cyborg, materia, minty, reddress-darkgreen, sandstone, toy, vibrant
+@startuml core
+!theme vibrant
+
+' -----------------------------------------------------
+skinparam defaultTextAlignment center
+skinparam FrameBackgroundColor white
+skinparam FrameBorderColor gray
+' -----------------------------------------------------
+' left to right direction
+
+frame core {
+  frame builder {
+    class Builder<T> {
+      + {field} instantiator: Supplier<T>
+      + {field} instanceModifiers: List<Consumer<T>>
+      + {method} of(Supplier<T> instantiator): Builder<T>
+      + {method} with(BiConsumer<T, U> consumer, U value): Builder<T>
+      + {method} build(): <T>
+    }
+  }
+
+  frame config {
+    class Constants {
+      + {field} SERVER_ADDR: String
+      + {field} SERVER_PORT: int
+      + {field} SERVER_TIMEOUT: int
+      + {field} BLOCK_DELIMITER:  String
+      + {field} SINGLE_DELIMITER: String
+      + {field} PASSWORD_LENGTH: int
+      + {field} IS_LOGGED: String
+      + {field} INTRO_VIEWED: String
+      + {field} ARTWORKS_RETRIEVED: String
+      + {field} ARTWORKS_LIST: String
+      + {field} USERNAME: String
+      + {field} PASSWORD: String
+    }
+
+    class GlideConfiguration extends AppGlideModule {
+      + {method} applyOptions(Context context, GlideBuilder builder): void
+    }
+  }
+
+  frame error {
+    class CrashReportWriter {
+      + {method} uncaughtException(Thread t, Throwable e): void
+      + {method} write(Throwable e): void
+      + {method} getSystemInfo(): String
+    }
+  }
+
+  frame networking {
+    class NetworkManager {
+      - {field} _TAG: String
+      + {method} checkConnection(Context context): Boolean
+      + {method} retrieveArtwork(): ArrayList<ArtWork>
+      + {method} authenticate(String username, String password): Boolean
+    }
+  }
+
+  frame preferences {
+    class StorageManager {
+	- {field} _TAG: String
+	- {field} PREF_NAME: String
+	- {method} StorageManager(Context context): StorageManager
+	- {method} StorageManager(Context context, String key): StorageManager
+	+ {method} with(Context context): StorageManager
+	+ {method} with(Context context, boolean force): StorageManager
+	+ {method} with(Context context, String prefs_name): StorageManager
+	+ {method} read(String key, String defaultValue): String
+	+ {method} read(String key, Integer defaultValue): Integer
+	+ {method} read(String key, Long defaultValue): Long
+	+ {method} read(String key, Boolean defaultValue): Boolean
+	+ {method} contains(String key): Boolean
+	+ {method} write(String key, T value): <T>
+	+ {method} clear(): void
+    }
+  }
+
+  frame validator {
+    class Validator {
+      + validate(String s): Boolean
+    }
+  }
+
+
+ '' Positioning
+ StorageManager -d[hidden]-> NetworkManager
+ NetworkManager -u[hidden]-> StorageManager
+
+ Validator -d[hidden]-> CrashReportWriter
+ CrashReportWriter -u[hidden]-> Validator
+}
+hide AppGlideModule
+
+@enduml												
+
+@startuml models
+' -----------------------------------------------------
+skinparam defaultTextAlignment center
+' -----------------------------------------------------
+frame model {
+  '' top to bottom direction
+  class ArtWork {
+	name: String
+	author: String
+	description: String
+	+ ArtWork(String name, String author, String description): ArtWork
+  }
+
+  class User {
+	id: String
+	name: String
+	password: String
+	type: UserType
+	+ User(String name, String password): User
+  }
+
+  frame properties {
+	   class ArtworkUtil {
+		  + loadOrRetrieveArtWorks(Context context): void
+		  + saveArtworks(Context context, List<ArtWork> artworks): void
+
+	   }
+
+	   enum UserType {
+		  STUDENT,
+		  EXPERT
+	   }
+  }
+}
+@enduml
+
+
+@startuml ui
+' -----------------------------------------------------
+skinparam defaultTextAlignment center
+' -----------------------------------------------------
+' left to right direction
+frame ui {
+  frame activity {
+	   class MainActivity extends AppCompatActivity {
+		  _TAG: String
+		  navController: NavController
+		  options: NavOptions
+		  bar: ChipNavigationBar
+		  - setUI(): void
+		  + onCreate(Bundle bundle): void
+		  + onBackPressed(): void
+		  + onResume(): void
+	   }
+
+	   frame authentication {
+		   frame login {
+		       class LoginActivity extends AppCompatActivity {
+			      _TAG: String
+			      usernameEditText: EditText
+			      passwordEditText: EditText
+			      loginStatus: Boolean
+
+			      - setUI(): void
+			      - handleLogin(String u, String p): void
+			      + onCreate(Bundle bundle): void
+			      + onResume(): void
+		       }
+		   }
+
+		   frame registration {
+		       class RegistrationActivity extends AppCompatActivity {
+			      _TAG: String
+			      usernameEditText: EditText
+			      passwordEditText: EditText
+			      confirmPasswordEditText: EditText
+
+			      - setUI(): void
+			      - handleRegistration(String u, String p, String cp): void
+			      + onCreate(Bundle b): void
+			      + onBackPressed(): void
+		       }
+		   }
+	   }
+
+	   frame intro {
+		   class SlideItem {
+			  title: String
+			  image: int
+
+			  + SlideItem(String t, int i): SlideItem
+			  + getTitle(): String
+			  + getImage(): int
+
+		   }
+
+		   class IntroActivity extends AppCompatActivity {
+			  - _TAG: String
+			  - pager: ViewPager
+			  - nextButton: Button
+			  - gettingStartedButton: Button
+			  - skipButton: Button
+			  - currPos: int
+			  - items: List<SlideItem>
+
+			  - setUI(): void
+			  - loadLastScreen(): void
+			  + onCreate(Bundle b): void
+		   }
+	   }
+
+	   RegistrationActivity -d[hidden]-> MainActivity
+	   MainActivity -u[hidden]-> RegistrationActivity
+
+	   MainActivity -r[hidden]-> IntroActivity
+	   IntroActivity -l[hidden]-> MainActivity
+  }
+
+  frame adapters {
+	   class IntroAdapter extends PagerAdapter {
+		  context: Context
+		  items: List<SlideItem>
+		  + IntroAdapter(Context ctx, List<SlideItem> slides): IntroAdapter
+		  + instantiateItem(ViewGroup c, int p): Object
+		  + getCount(): int
+		  + isViewFromObject(View v, Object o): boolean
+		  + destroyItem(ViewGroup c, int pos, Object o): void
+	   }
+
+	   class ArtWorkAdapter extends PagerAdapter {
+		  - context: Context
+		  + ArtWorkAdapter(Context ctx): ArtWorkAdapter
+		  + instantiateItem(ViewGroup c, int p): Object
+		  + getCount(): int
+		  + isViewFromObject(View v, Object o): boolean
+		  + destroyItem(ViewGroup c, int p, Object o): void
+	   }
+
+	   ArtWorkAdapter -d[hidden]-> IntroAdapter
+	   IntroAdapter -u[hidden]-> ArtWorkAdapter
+  }
+
+  frame fragment {
+	   class HomeFragment extends Fragment {
+		  - _TAG: String
+		  + onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + onViewCreated(View v, Bundle b): void
+		  - retrieveArtWorks(): void
+	   }
+
+	   class ProfileFragment extends Fragment {
+		  - _TAG: String
+		  - chip: Chip;
+		  - toolbar: MaterialToolbar
+
+		  + onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + onViewCreated(View v, Bundle b): void
+		  - showDialog(): void
+	   }
+
+	   class SearchFragment extends Fragment {
+		  - _TAG: String
+		  + onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + onViewCreated(View v, Bundle b): void
+		  + onPause(): void
+		  + onResume(): void
+		  + setupMenu(): void
+	   }
+
+	   HomeFragment -d[hidden]-> ProfileFragment
+	   ProfileFragment -u[hidden]-> HomeFragment
+  }
+}
+
+hide AppCompatActivity
+hide PagerAdapter
+hide Fragment
+@enduml
