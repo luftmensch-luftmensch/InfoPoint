@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class ArtWorkFragment extends Fragment {
     private ShapeableImageView artWorkImage;
 
     private TextView titleTextView, descriptionTextView;
+    private Button moreActions;
 
 
     @Nullable
@@ -61,9 +63,16 @@ public class ArtWorkFragment extends Fragment {
 
         });
 
-        artWorkImage = view.findViewById(R.id.art_work_item_title_image_view);
+        toolbar.setTitle("HELLO"); // TODO: Update from the current value
+
+        artWorkImage = view.findViewById(R.id.art_work_item_image_view);
         titleTextView = view.findViewById(R.id.art_work_item_title_text_view);
         descriptionTextView = view.findViewById(R.id.art_work_item_description_text_view);
 
+        moreActions = view.findViewById(R.id.art_work_item_button);
+
+        moreActions.setOnClickListener(click -> {
+            // TODO: Exec research on click for the current art work
+        });
     }
 }
