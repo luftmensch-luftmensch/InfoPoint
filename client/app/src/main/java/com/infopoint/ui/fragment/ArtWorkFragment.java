@@ -42,7 +42,7 @@ public class ArtWorkFragment extends Fragment {
     private MaterialToolbar toolbar;
     private ShapeableImageView artWorkImage;
 
-    private TextView titleTextView, descriptionTextView;
+    private TextView authorTextView, descriptionTextView;
     private Button moreActions;
 
 
@@ -66,7 +66,7 @@ public class ArtWorkFragment extends Fragment {
         toolbar.setTitle("HELLO"); // TODO: Update from the current value
 
         artWorkImage = view.findViewById(R.id.art_work_item_image_view);
-        titleTextView = view.findViewById(R.id.art_work_item_title_text_view);
+        authorTextView = view.findViewById(R.id.art_work_item_author_text_view);
         descriptionTextView = view.findViewById(R.id.art_work_item_description_text_view);
 
         moreActions = view.findViewById(R.id.art_work_item_button);

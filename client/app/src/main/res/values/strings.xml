@@ -204,5 +204,6 @@
     <string name="art_work">Opera</string>
     <string name="art_work_description">Descrizione Opera</string>
     <string name="art_work_title">Titolo Opera</string>
-    <string name="more_action">Scopri altro</string>
+    <string name="more_action">Scopri</string>
+    <string name="art_work_date">Data Creazione</string>
 </resources>
