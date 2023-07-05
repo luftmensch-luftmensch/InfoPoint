@@ -125,7 +125,7 @@ public class NetworkManager {
 
                 // Create the writer in order to write to the socket just opened
                 PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
-                out.println(String.format("<>LOGIN<>%s,%s<>\n", username, password));
+                out.println(String.format("<>REQUEST:LOGIN<>%s:s<>\n", username, password));
                 // TODO: Read response
                 Log.d(_TAG, "Closing socket");
                 s.close();

@@ -14,17 +14,16 @@
   #include <stdlib.h>
   #include <stdbool.h>
 
-  typedef enum request_t {
-    LOGIN,
-    REGISTRATION,
-    RETRIEVE
-  } request_t;
+  typedef struct request_t {
+    char* request_type;		/* Type of the request: One of LOGIN, REGISTRATION, RETRIEVE, DELETE */
+    char* credential_id;	/* Id of the caller */
+    char* credential_username;	/* Username of the caller */
+    char* credential_password;	/* Password of the caller */
+  } request;
 
   typedef struct payload_t {
-    request_t request;
     void* data;
     size_t size;
-    /* TODO: Handle basic function handler */
   } payload_t;
 
   /**
@@ -35,6 +34,9 @@
    * const char* input ="<>CALL,EXPECTED<>v3,v4,v5<>w1,w2<>x1,x2,x4<>y1,y2,y5,y6";
    * parse_data(input, "<>", ",");
   */
-  void parse_data(const char*, const char*, const char*);
+  request* parse_data(const char*, const char*, const char*);
+
+  /** Destructor for the request */
+  void destroy_request(request*);
 
 #endif

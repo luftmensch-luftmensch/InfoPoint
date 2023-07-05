@@ -192,15 +192,15 @@ void* execute_task(void* arg) {
     free(node);
     msg_send(fd, initial_msg, sizeof(initial_msg), 0);
 
-    /* TODO: Handle dispatch about  */
-
     bool read_again = true;
     bytes = msg_recv(fd, buffer, sizeof(buffer), 0, &read_again);
 
-    // printf("Read: %zu, Content: %s", bytes, buffer);
+    request* r = parse_data(buffer, "<>", ":");
 
-    parse_data(buffer, "<>", ",");
+    printf("Request:\n\t%s\n\t%s\n\t%s\n\t%s\n", r->request_type, r->credential_username, r->credential_password, r->credential_id);
+    // TODO: Handle request
 
+    destroy_request(r);
   }
 
   pthread_mutex_unlock(&(pool->lock));

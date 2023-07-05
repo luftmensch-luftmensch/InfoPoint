@@ -33,10 +33,10 @@ public class Constants {
     public static final int SERVER_TIMEOUT = 2000;
 
     /** Delimiter used to distinguish blocks */
-    public static final String BLOCK_DELIMITER = "<>";
+    public static final String OUTER_DELIMITER = "<>";
 
     /** Delimiter used to distinguish items iside a block */
-    public static final String ITEM_DELIMITER = ",";
+    public static final String INNER_DELIMITER = ":";
 
     public static String FIRST_RUN = "FIRST_RUN";
 
