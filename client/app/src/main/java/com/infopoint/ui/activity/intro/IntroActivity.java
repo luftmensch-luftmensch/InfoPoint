@@ -90,14 +90,14 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         gettingStartedButton.setOnClickListener(click -> {
-            StorageManager.with(this).write(Constants.INTRO_VIEWED, true);
+            StorageManager.with(this).write(Constants.FIRST_RUN, true);
             startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             finish();
         });
 
         skipButton.setOnClickListener(v -> {
             Log.d(_TAG, "Skipping intro");
-            StorageManager.with(this).write(Constants.INTRO_VIEWED, true);
+            StorageManager.with(this).write(Constants.FIRST_RUN, true);
             startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             finish();
         });

@@ -16,29 +16,41 @@
  *   @author Valentino Bocchetti
  *   First written in 13/6/2023 at 21:36
  *
- */
+*/
 
 package com.infopoint.core.config;
 
 /** Utility class used to define constants around the Application */
 public class Constants {
+
+    /** Address of the server */
     public static final String SERVER_ADDR = "192.168.1.171";
+
+    /** Port of the server */
     public static final int SERVER_PORT = 9090;
 
+    /** Timeout for the server */
     public static final int SERVER_TIMEOUT = 2000;
 
+    /** Delimiter used to distinguish blocks */
     public static final String BLOCK_DELIMITER = "<>";
-    public static final String SINGLE_DELIMITER = ",";
 
-    public static final int PASSWORD_LENGTH = 8;
+    /** Delimiter used to distinguish items iside a block */
+    public static final String ITEM_DELIMITER = ",";
 
-    public static String IS_LOGGED = "IS_LOGGED";
-    public static String INTRO_VIEWED = "INTRO_VIEWED";
+    public static String FIRST_RUN = "FIRST_RUN";
 
+    /** Key to inform that artworks are loaded into the devices */
     public static String ARTWORKS_RETRIEVED = "ARTWORKS_RETRIEVED";
+
+    /** Access key for the artworks on the devices */
     public static String ARTWORKS_LIST = "ARTWORKS_LIST";
 
-
+    /** Access key for the user username */
     public static String USERNAME = "USERNAME";
+
+    /** Access key for the user password */
     public static String PASSWORD = "PASSWORD";
+
+    public static String PROFILE_PIC = "PROFILE_PIC";
 }

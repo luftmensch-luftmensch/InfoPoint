@@ -201,4 +201,5 @@
     <string name="already_registered">Già iscritto?</string>
     <string name="splash_screen_title">Visita l\'arte in un modo</string>
     <string name="splash_screen_body">tutto nuovo</string>
+    <string name="art_work">Opera</string>
 </resources>

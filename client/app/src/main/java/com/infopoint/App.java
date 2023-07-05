@@ -51,11 +51,12 @@ public class App extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Log.d(_TAG, "Finished splashscreen...");
 
-            // startActivity(new Intent(App.this, MainActivity.class)); finish();
-            if (StorageManager.with(this).contains(Constants.INTRO_VIEWED)) {
+            // If this is not the first run (we are sure that's the user is logged) move the ui to the Homepage
+            // Otherwise show the Intro
+            if (!StorageManager.with(this).contains(Constants.FIRST_RUN)) {
                 startActivity(new Intent(App.this, MainActivity.class));
                 finishAffinity();
-            } else {
+            }  else {
                 startActivity(new Intent(App.this, IntroActivity.class));
                 finishAffinity();
             }

@@ -47,7 +47,7 @@
 
         <!-- Profile pic -->
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profile_photo"
+            android:id="@+id/profile_fragment_profile_photo"
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginTop="14dp"
@@ -62,17 +62,17 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/change_photo"
+            android:id="@+id/profile_fragment_change_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/colorTertiary"
             android:src="@drawable/camera_icon"
             android:tint="?attr/colorTertiaryContainer"
             app:contentPadding="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_photo"
-            app:layout_constraintEnd_toEndOf="@+id/profile_photo"
-            app:layout_constraintStart_toStartOf="@+id/profile_photo"
-            app:layout_constraintTop_toBottomOf="@+id/profile_photo"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_fragment_profile_photo"
+            app:layout_constraintEnd_toEndOf="@+id/profile_fragment_profile_photo"
+            app:layout_constraintStart_toStartOf="@+id/profile_fragment_profile_photo"
+            app:layout_constraintTop_toBottomOf="@+id/profile_fragment_profile_photo"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
             tools:ignore="PrivateResource" />
 
@@ -87,9 +87,9 @@
             android:text="@string/placeholder_username"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             app:layout_constraintBottom_toTopOf="@id/about_us_chip"
-            app:layout_constraintEnd_toEndOf="@id/profile_photo"
-            app:layout_constraintStart_toStartOf="@id/profile_photo"
-            app:layout_constraintTop_toBottomOf="@id/profile_photo" />
+            app:layout_constraintEnd_toEndOf="@id/profile_fragment_profile_photo"
+            app:layout_constraintStart_toStartOf="@id/profile_fragment_profile_photo"
+            app:layout_constraintTop_toBottomOf="@id/profile_fragment_profile_photo" />
 
         <!-- User level -->
         <TextView
@@ -116,14 +116,14 @@
             android:text="@string/chip_text_about"
             app:chipIcon="@drawable/about_us_icon"
             app:ensureMinTouchTargetSize="true"
-            app:layout_constraintBottom_toTopOf="@+id/view_pager"
+            app:layout_constraintBottom_toTopOf="@+id/profile_fragment_view_pager_starred"
             app:layout_constraintEnd_toEndOf="@id/textview_user_level"
             app:layout_constraintStart_toStartOf="@id/textview_user_level"
             app:layout_constraintTop_toBottomOf="@id/textview_user_level" />
 
         <!-- View pager for the art work starred by the user -->
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+            android:id="@+id/profile_fragment_view_pager_starred"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

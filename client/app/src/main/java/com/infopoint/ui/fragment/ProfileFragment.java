@@ -20,14 +20,20 @@
 
 package com.infopoint.ui.fragment;
 
+import android.accessibilityservice.GestureDescription;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -36,15 +42,23 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.infopoint.R;
+import com.infopoint.core.config.Constants;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.MainActivity;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 /** Fragment used to show info about the current user logged */
 public class ProfileFragment extends Fragment {
     private final static String _TAG = "[ProfileFragment] ";
     private Chip chip;
     private MaterialToolbar toolbar;
+
+    private ActivityResultLauncher<Intent> selectImageLauncher;
+    private ShapeableImageView selectImage, profilePic;
 
     @Nullable
     @Override
@@ -59,11 +73,9 @@ public class ProfileFragment extends Fragment {
         chip = view.findViewById(R.id.about_us_chip);
         chip.setOnClickListener(click -> showDialog());
 
-
         toolbar = view.findViewById(R.id.top_app_bar_profile);
 
         toolbar.setOnMenuItemClickListener(item -> {
-
             new MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.confirm_logout)
                     .setMessage(R.string.confirm_logout_body)
@@ -77,11 +89,54 @@ public class ProfileFragment extends Fragment {
                     })
                     .setNegativeButton(R.string.cancel_request, (dialogInterface, i) -> Log.d(_TAG, "Logout request cancelled"))
                     .show();
-
             return false;
+        });
+
+        profilePic = view.findViewById(R.id.profile_fragment_profile_photo);
+
+        selectImage = view.findViewById(R.id.profile_fragment_change_photo);
+
+        if (StorageManager.with(requireContext()).contains(Constants.PROFILE_PIC))
+            profilePic.setImageBitmap(stringToBitmap(StorageManager.with(requireContext()).read(Constants.PROFILE_PIC, Constants.PROFILE_PIC)));
+
+        selectImage.setOnClickListener(click -> {
+            Log.d(_TAG, "Change photo");
+            selectImageLauncher.launch(Intent.createChooser(
+                    new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT),
+                    "Seleziona la foto per il profilo"));
+        });
+
+        selectImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if ((result.getResultCode() == -1) && (result.getData() != null)) {
+                loadImageFromURI(result.getData().getData());
+            }
         });
     }
 
+
+    private void loadImageFromURI(Uri u) {
+        try {
+            InputStream input = requireActivity().getContentResolver().openInputStream(u);
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            input.close();
+            StorageManager.with(requireContext()).write(Constants.PROFILE_PIC, bitmapToString(bitmap));
+            profilePic.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            Log.d(_TAG, "Failed to open/close InputStream: " + e.getMessage());
+        }
+    }
+
+    private String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte[] b = baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    private Bitmap stringToBitmap(String s) {
+        byte[] bytes = Base64.decode(s,Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
 
     // Custom dialog used to show Authors info & Github links
     private void showDialog() {
