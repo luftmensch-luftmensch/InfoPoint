@@ -53,11 +53,11 @@ public class App extends AppCompatActivity {
 
             // If this is not the first run (we are sure that's the user is logged) move the ui to the Homepage
             // Otherwise show the Intro
-            if (!StorageManager.with(this).contains(Constants.FIRST_RUN)) {
-                startActivity(new Intent(App.this, MainActivity.class));
+            if (StorageManager.with(this).contains(Constants.FIRST_RUN)) {
+                startActivity(new Intent(App.this, IntroActivity.class));
                 finishAffinity();
             }  else {
-                startActivity(new Intent(App.this, IntroActivity.class));
+                startActivity(new Intent(App.this, MainActivity.class));
                 finishAffinity();
             }
         }, 2000);

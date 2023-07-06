@@ -24,7 +24,7 @@ package com.infopoint.core.config;
 public class Constants {
 
     /** Address of the server */
-    public static final String SERVER_ADDR = "192.168.1.171";
+    public static final String SERVER_ADDR = "192.168.1.203";
 
     /** Port of the server */
     public static final int SERVER_PORT = 9090;
@@ -51,6 +51,9 @@ public class Constants {
 
     /** Access key for the user password */
     public static String PASSWORD = "PASSWORD";
+
+    /** Access key for the user token */
+    public static String TOKEN = "TOKEN";
 
     public static String PROFILE_PIC = "PROFILE_PIC";
 }

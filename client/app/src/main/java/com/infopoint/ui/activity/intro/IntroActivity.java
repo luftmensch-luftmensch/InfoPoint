@@ -33,8 +33,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infopoint.R;
-import com.infopoint.core.config.Constants;
-import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.authentication.login.LoginActivity;
 import com.infopoint.ui.adapters.IntroAdapter;
 
@@ -90,14 +88,12 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         gettingStartedButton.setOnClickListener(click -> {
-            StorageManager.with(this).write(Constants.FIRST_RUN, true);
             startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             finish();
         });
 
         skipButton.setOnClickListener(v -> {
             Log.d(_TAG, "Skipping intro");
-            StorageManager.with(this).write(Constants.FIRST_RUN, true);
             startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             finish();
         });

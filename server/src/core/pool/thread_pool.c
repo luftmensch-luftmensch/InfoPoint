@@ -21,14 +21,13 @@
 
 static char token[] = "token";
 static char token_msg[] = "<>TOKEN:token<>\n";
-static char invalid_token_msg[] = "<>Invalid token received!<>\n";
-static char initial_msg[] = "<>Server is ready to communicate!<>\n";
-static char unknown_request_recv[] = "<>Unknown request received!<>\n";
-static char not_authenticated_request[] = "<>User is not authenticated!<>\n";
-static char failed_operation[] = "<>Failed to execute request!<>\n";
-static char successful_operation[] = "<>Operation successful executed!<>\n";
 
-static char successful_login[] = "<>Login operation completed<>\n";
+static char initial_msg[]		= "<>STATUS:Server ready<>\n";
+static char successful_response[]	= "<>RESPONSE:SUCCESS<>\n";
+static char failed_response[]		= "<>RESPONSE:FAIL<>\n";
+static char invalid_token[]		= "<>RESPONSE:Invalid token<>\n";
+static char invalid_request[]		= "<>RESPONSE:Invalid request<>\n";
+static char unauthorized_user[]		= "<>RESPONSE:Unauthorized user<>\n";
 
 /* Retrieve the number of core/processors of the machine */
 static size_t retrieve_proc_num() { return sysconf(_SC_NPROCESSORS_ONLN); }
@@ -240,13 +239,23 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
     return;
   }
 
+  printf("Request: <%s> <%s> <%s>\n", r->request_type, r->credential_username, r->credential_password);
+
+
   /* Parse the token received in order to remove any new line \n */
   r->token[strcspn(r->token, "\n")] = '\0';
 
 
+  // <>REQUEST:POPULATE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
+  if (strcmp(r->request_type, "POPULATE") == 0) {
+    populate_collection(client, db_name, art_work_collection);
+    msg_send(fd, successful_response, sizeof(successful_response), 0);
+  }
+
+
   if ((strcmp(r->request_type, "REGISTRATION") != 0) && (strcmp(r->token, token) != 0)) { /* If the token mismatched inform the user of the invalid token setted */
     _m(_msgevent, "[%s] (%s) Client on socket n° <%zu> made a request with a wrong token value <%s>!", __FILE_NAME__, __func__, fd, token);
-    msg_send(fd, invalid_token_msg, sizeof(invalid_token_msg), 0);
+    msg_send(fd, invalid_token, sizeof(invalid_token), 0);
     return;
   }
 
@@ -277,7 +286,7 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
     if (status) {
       _m(_msginfo, "[%s] (%s) The user is correctly authenticated!", __FILE_NAME__, __func__);
     } else {
-      msg_send(fd, not_authenticated_request, sizeof(not_authenticated_request), 0);
+      msg_send(fd, unauthorized_user, sizeof(unauthorized_user), 0);
       return;
     }
   } else if (strcmp(r->request_type, "REGISTRATION") == 0) { /* Special operation for registration */
@@ -293,9 +302,9 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
     if (status) {
       _m(_msginfo, "[%s] (%s) The user is correctly inserted! Informing the user...", __FILE_NAME__, __func__);
       msg_send(fd, token_msg, sizeof(token_msg), 0);
-      msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+      msg_send(fd, successful_response, sizeof(successful_response), 0);
     } else {
-      msg_send(fd, failed_operation, sizeof(failed_operation), 0);
+      msg_send(fd, failed_response, sizeof(failed_response), 0);
     }
 
     /* Nothing to do here, so return */
@@ -304,14 +313,14 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
   } else {
     _m(_msgevent, "[%s] (%s) Client on socket n° <%zu> is asking for an unknown request!", __FILE_NAME__, __func__, fd);
     /* Inform the user for the wrong request received */
-    msg_send(fd, unknown_request_recv, sizeof(unknown_request_recv), 0);
+    msg_send(fd, invalid_request, sizeof(invalid_request), 0);
     return;
   }
 
   /* Specific operation for LOGIN request */
   // <>REQUEST:LOGIN<>USERNAME:u<>PASSWORD:p<>TOKEN:i
   if (strcmp(r->request_type, "LOGIN") == 0) {
-    msg_send(fd, successful_login, sizeof(successful_login), 0);
+    msg_send(fd, successful_response, sizeof(successful_response), 0);
   }
 
   // <>REQUEST:DELETE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
@@ -322,9 +331,9 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
 
     if (status) {
       _m(_msginfo, "[%s] (%s) The user is correctly removed! Informing the user...", __FILE_NAME__, __func__);
-      msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+      msg_send(fd, successful_response, sizeof(successful_response), 0);
     } else {
-      msg_send(fd, failed_operation, sizeof(failed_operation), 0);
+      msg_send(fd, failed_response, sizeof(failed_response), 0);
     }
 
   }
@@ -332,13 +341,8 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
   // <>REQUEST:RETRIEVE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
   if (strcmp(r->request_type, "RETRIEVE") == 0) {
     retrieve_art_works(client, db_name, art_work_collection, fd);
-    msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+    msg_send(fd, successful_response, sizeof(successful_response), 0);
   }
 
-  // <>REQUEST:POPULATE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
-  // if (strcmp(r->request_type, "POPULATE") == 0) {
-  //   populate_collection(client, db_name, art_work_collection);
-  //   msg_send(fd, successful_operation, sizeof(successful_operation), 0);
-  // }
 
 }

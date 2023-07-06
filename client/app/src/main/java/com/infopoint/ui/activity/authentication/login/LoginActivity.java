@@ -20,17 +20,18 @@
 
 package com.infopoint.ui.activity.authentication.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
 import com.infopoint.core.config.Constants;
 import com.infopoint.core.networking.NetworkManager;
@@ -44,8 +45,9 @@ import es.dmoral.toasty.Toasty;
 /** Activity used to perform authentication operation [login] */
 public class LoginActivity extends AppCompatActivity {
     private final static String _TAG = "[LoginActivity] ";
+    private final static String _REQUEST_TYPE = "LOGIN";
 
-    private EditText usernameEditText, passwordEditText;
+    private TextInputLayout usernameTextInputLayout, passwordTextInputLayout;
 
     private Boolean loginStatus = false;
 
@@ -58,12 +60,14 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(_TAG, "Checking internet connection...");
         if (!NetworkManager.checkConnection(this))
             Toasty.error(this, "Nessun connessione ad internet!\nRiprova più tardi", Toasty.LENGTH_LONG).show();
+
+        // StorageManager.with(this).write(Constants.FIRST_RUN, true);
         setUI();
     }
 
     private void setUI() {
-        usernameEditText = findViewById(R.id.login_username_text_input_layout);
-        passwordEditText = findViewById(R.id.login_password_text_input_layout);
+        usernameTextInputLayout = findViewById(R.id.login_username_text_input_layout);
+        passwordTextInputLayout = findViewById(R.id.login_password_text_input_layout);
 
         Button loginButton = findViewById(R.id.login_button);
         Button forgotPassword = findViewById(R.id.login_forgot_password_button);
@@ -76,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
-        loginButton.setOnClickListener(view -> handleLogin(usernameEditText.getText().toString(), passwordEditText.getText().toString()));
+        loginButton.setOnClickListener(view -> handleLogin(usernameTextInputLayout.getEditText().getText().toString(), passwordTextInputLayout.getEditText().getText().toString(), this));
 
         forgotPassword.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -94,14 +98,15 @@ public class LoginActivity extends AppCompatActivity {
         NetworkManager.checkConnection(this);
     }
 
-    private void handleLogin(String username, String password) {
-        if (!Validator.validate(username) || !Validator.validate(password)) {
-            Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
-            return;
-        }
+    private void handleLogin(String username, String password, Context ctx) {
+        Log.d(_TAG, "Username: " + username + "Password: " + password);
+        // if (!Validator.validate(username) || !Validator.validate(password)) {
+        //     Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
+        //     return;
+        // }
 
         Thread task = new Thread(() -> {
-            if (NetworkManager.login(username, password)) {
+            if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, "")) {
                 // Save crendials and then move to HomePage
                 StorageManager.with(this).write(Constants.USERNAME, username);
                 StorageManager.with(this).write(Constants.PASSWORD, password);

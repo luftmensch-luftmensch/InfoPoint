@@ -34,6 +34,13 @@ public class ArtWork {
         this.description = description;
     }
 
+    public String getName() { return name; }
+    public String getAuthor() { return author; }
+    public String getDescription() { return description; }
+    public void setName(String name) { this.name = name; }
+    public void setAuthor(String author) { this.author = author; }
+    public void setDescription(String description) { this.description = description; }
+
     @NonNull
     @Override
     public String toString() {

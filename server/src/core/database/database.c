@@ -207,11 +207,13 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
 
   while (mongoc_cursor_next(cursor, &retrieved)) {
     payload_t* p = parse_bson_as_artwork(retrieved);
-    // printf("Payload: %s Size: <%zu> Len: <%zu>\n", (char*) p->data, sizeof(p->data), strlen(p->data));
-    msg_send(fd, p->data, strlen(p->data), 0);
+    // printf("Payload: <%s> Size: <%zu> Len: <%zu>\n", (char*) p->data, sizeof(p->data), strlen(p->data));
+    msg_send(fd, (char*) p->data, strlen(p->data), 0);
     free(p->data);
     free(p);
   }
+
+  // msg_send(fd, "<>DONE<>", sizeof("<>DONE<>"), 0);
 
   if (mongoc_cursor_error(cursor, &error)) {
     _m(_msgwarn, "[%s] (%s) An error occurred! Cause: %s\n", __FILE_NAME__, __func__, error.message);
@@ -226,6 +228,7 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
 
   /* Cursor cleanup */
   mongoc_cursor_destroy(cursor);
+
 }
 
 

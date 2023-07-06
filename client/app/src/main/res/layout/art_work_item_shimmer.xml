@@ -39,7 +39,7 @@
             android:paddingVertical="13dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/author_photo"
+                android:id="@+id/art_work_item_shimmer_author_photo"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -54,7 +54,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/art_work_name"
+                    android:id="@+id/art_work_item_shimmer_art_work_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#dddddd"
@@ -63,7 +63,7 @@
                     android:textColor="#616161" />
 
                 <TextView
-                    android:id="@+id/art_work_author"
+                    android:id="@+id/art_work_shimmer_author_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -78,7 +78,7 @@
 
         <!-- Media -->
         <ImageView
-            android:id="@+id/image_slider"
+            android:id="@+id/art_work_item_shimmer_image_view"
             android:layout_width="match_parent"
             android:background="#dddddd"
             android:layout_height="279dp"
@@ -92,7 +92,7 @@
 
             <!-- Title, secondary and supporting text -->
             <TextView
-                android:id="@+id/description"
+                android:id="@+id/art_work_item_shimmer_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#dddddd"
