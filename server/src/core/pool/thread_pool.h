@@ -12,6 +12,7 @@
 #define _THREAD_POOL_H_
 
   #include <pthread.h>
+  #include "../database/database.h"
   #include "../../helpers/container/queue.h"
 
   /* =================================== Types ======================================= */
@@ -30,6 +31,7 @@
 
     bool active;		/* Control switch for the worker threads */
     bool on_shutdown;		/* Control switch for the worker threads in order to signal shutdown */
+    db_handler* handler;
   } thread_pool;
 
   /* =================================== Function Prototyes [Thread Pool] ======================================= */
@@ -39,7 +41,7 @@
      An amount is request to initialize n° threads as requested
      If 0 is passed the n° of threads is handled automatically
   */
-  thread_pool* init_thread_pool(size_t);
+  thread_pool* init_thread_pool(size_t, char*, char*, char*, char*);
 
   /** Destructor of a given thread pool */
   void destroy_thread_pool(thread_pool*);

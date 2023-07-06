@@ -14,6 +14,7 @@
 #include "database.h"
 
 #include "../../helpers/base/macros.h"
+#include "../message/message.h"
 
 #define _m(type, format, ...) _msgcategory(type, "DATABASE_HANDLER", format __VA_OPT__(,) __VA_ARGS__)
 
@@ -72,7 +73,7 @@ db_handler* init_handler(char* username, char* password, char* host, char* datab
    */
   mongoc_client_pool_set_appname(handler->instance.pool, MONGO_DB_APP_NAME);
 
-  _m(_msginfo, "[%s] (%s) Database handler successfully destroyed!", __FILE_NAME__, __func__);
+  _m(_msginfo, "[%s] (%s) Database handler successfully initialized!", __FILE_NAME__, __func__);
   return handler;
 }
 
@@ -86,11 +87,11 @@ void destroy_handler(db_handler* handler) {
 
   _m(_msginfo, "[%s] (%s) Shutting down the database handler as requested", __FILE_NAME__, __func__);
 
-  _m(_msginfo, "[%s] (%s) Destroying client handler: <%s>", __FILE_NAME__, __func__, handler->instance.pool);
+  _m(_msginfo, "[%s] (%s) Destroying client handler...", __FILE_NAME__, __func__);
   mongoc_client_pool_destroy(handler->instance.pool);
 
   /* Release handlers and make clean up operation */
-  _m(_msginfo, "[%s] (%s) Destroying URI handler: <%s>", __FILE_NAME__, __func__, handler->instance.uri);
+  _m(_msginfo, "[%s] (%s) Destroying URI handler...", __FILE_NAME__, __func__);
   mongoc_uri_destroy(handler->instance.uri);
 
   /*
@@ -190,13 +191,15 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
   return status;
 }
 
-void retrieve_art_works(mongoc_client_t* client, char* database_name, char* collection_name) {
+void retrieve_art_works(mongoc_client_t* client, char* database_name, char* collection_name, ssize_t fd) {
   bson_error_t error;
 
   // Retrieve the collection in which execute bulk insert
   mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
 
-  bson_t* filter = BCON_NEW("name", BCON_REGEX("m","i"));
+  bson_t* filter = BCON_NEW("name", BCON_REGEX("[^\n]+", "i")); /* Other regex: (.*?) */
+
+  // bson_t* opts = BCON_NEW("limit", BCON_INT64(15));
 
   mongoc_cursor_t* cursor = mongoc_collection_find_with_opts(collection, filter, NULL, NULL);
 
@@ -204,7 +207,8 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
 
   while (mongoc_cursor_next(cursor, &retrieved)) {
     payload_t* p = parse_bson_as_artwork(retrieved);
-    printf("Payload: %s\n", (char*) p->data);
+    // printf("Payload: %s Size: <%zu> Len: <%zu>\n", (char*) p->data, sizeof(p->data), strlen(p->data));
+    msg_send(fd, p->data, strlen(p->data), 0);
     free(p->data);
     free(p);
   }
@@ -215,6 +219,7 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
 
   /* Query cleanup */
   bson_free(filter);
+  // bson_free(opts);
 
   /* Collection clenaup */
   mongoc_collection_destroy(collection);
@@ -224,7 +229,7 @@ void retrieve_art_works(mongoc_client_t* client, char* database_name, char* coll
 }
 
 
-bool insert_single(bson_t* document, mongoc_client_t* client, char* database_name, char* collection_name) {
+bool insert_single(mongoc_client_t* client, bson_t* document, char* database_name, char* collection_name) {
   mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
 
   bson_error_t error; // Error handler
@@ -241,6 +246,25 @@ bool insert_single(bson_t* document, mongoc_client_t* client, char* database_nam
   return true;
 }
 
+bool delete_single(mongoc_client_t* client, bson_t* document, char* database_name, char* collection_name) {
+  mongoc_collection_t* collection = mongoc_client_get_collection(client, database_name, collection_name);
+
+  bson_error_t error; // Error handler
+  bson_t* opts = BCON_NEW("limit", BCON_INT64(1));
+
+  if (!mongoc_collection_delete_one(collection, document, opts, NULL, &error)) {
+    _m(_msginfo, "[%s] (%s) Failed to delete document from collection %s! Cause: %s\n", __FILE_NAME__, __func__, collection_name , error.message);
+    return false;
+  }
+
+  /* Destroy options */
+  bson_free(opts);
+
+  /* Collection clenaup */
+  mongoc_collection_destroy(collection);
+
+  return true;
+}
 
 bool is_present(mongoc_client_t* client, bson_t* filter, bson_t* options, char* database_name, char* collection_name) {
   bson_error_t error;
@@ -297,12 +321,12 @@ payload_t* parse_bson_as_artwork(const bson_t* document) {
     }
   }
 
-  size_t total_size = (strlen(art->name) + 1) + (strlen(art->author) + 1) + (strlen(art->description) + 1) + 9;
+  size_t total_size = (strlen(art->name) + 1) + (strlen(art->author) + 1) + (strlen(art->description) + 1) + 35; // Delimiters + key
 
   payload->data = malloc(total_size);
   payload->size = total_size;
 
-  snprintf(payload->data, total_size, "<>%s<>%s<>%s<>", art->name, art->author, art->description);
+  snprintf(payload->data, total_size, "<>NAME:%s<>AUTHOR:%s<>DESCRIPTION:%s<>\n", art->name, art->author, art->description);
 
   destroy_art_work(art);
   return payload;

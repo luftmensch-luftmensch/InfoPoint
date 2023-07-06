@@ -16,7 +16,7 @@
 
   typedef struct request_t {
     char* request_type;		/* Type of the request: One of LOGIN, REGISTRATION, RETRIEVE, DELETE */
-    char* credential_id;	/* Id of the caller */
+    char* token;		/* Token of the caller */
     char* credential_username;	/* Username of the caller */
     char* credential_password;	/* Password of the caller */
   } request;

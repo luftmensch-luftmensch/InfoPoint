@@ -19,14 +19,26 @@
 
 #define _m(type, format, ...) _msgcategory(type, "THREAD_POOL", format __VA_OPT__(,) __VA_ARGS__)
 
+static char token[] = "token";
+static char token_msg[] = "<>TOKEN:token<>\n";
+static char invalid_token_msg[] = "<>Invalid token received!<>\n";
 static char initial_msg[] = "<>Server is ready to communicate!<>\n";
+static char unknown_request_recv[] = "<>Unknown request received!<>\n";
+static char not_authenticated_request[] = "<>User is not authenticated!<>\n";
+static char failed_operation[] = "<>Failed to execute request!<>\n";
+static char successful_operation[] = "<>Operation successful executed!<>\n";
+
+static char successful_login[] = "<>Login operation completed<>\n";
 
 /* Retrieve the number of core/processors of the machine */
 static size_t retrieve_proc_num() { return sysconf(_SC_NPROCESSORS_ONLN); }
 
+/* Request handler used by the worker threads */
+static void handle_request(request*, mongoc_client_t*, char*, char*, char*, ssize_t);
+
 void* execute_task(void* arg);
 
-thread_pool* init_thread_pool(size_t amount) {
+thread_pool* init_thread_pool(size_t amount, char* username, char* password, char* host, char* database_name) {
   /**
      If 0 is passed as parameter we are going to define the
      number of threads based on the specifics of the machine
@@ -52,6 +64,14 @@ thread_pool* init_thread_pool(size_t amount) {
   _m(_msginfo, "[%s] (%s) Initializing thread_pool->queue", __FILE_NAME__, __func__);
   if ((pool->queue = init_queue()) == NULL) { /* On failure deallocate the space of the pool to avoid leaks */
     _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->queue!", __FILE_NAME__, __func__);
+    free(pool);
+    return NULL;
+  }
+
+  /* Thread Pool database handler initialization */
+  if ((pool->handler = init_handler(username, password, host, database_name)) == NULL) { /* On failure deallocate the space of the pool to avoid leaks */
+    _m(_msgfatal, "[%s] (%s) Failed to allocate memory for the thread_pool->handler!", __FILE_NAME__, __func__);
+    destroy_queue(pool->queue);
     free(pool);
     return NULL;
   }
@@ -121,6 +141,9 @@ void destroy_thread_pool(thread_pool* pool_to_destroy) {
 
   /* Destroy the queue */
   destroy_queue(pool_to_destroy->queue);
+
+  _m(_msginfo, "[%s] (%s) Destroying server->handler", __FILE_NAME__, __func__);
+  destroy_handler(pool_to_destroy->handler);
 
   /* Destroy the mutex & the condition variable as we don't need it */
   pthread_mutex_destroy(&(pool_to_destroy->lock));
@@ -195,15 +218,127 @@ void* execute_task(void* arg) {
     bool read_again = true;
     bytes = msg_recv(fd, buffer, sizeof(buffer), 0, &read_again);
 
-    request* r = parse_data(buffer, "<>", ":");
+    if (bytes != 0) { 		/* Handle request only if something was received */
+      request* r = parse_data(buffer, "<>", ":");
 
-    printf("Request:\n\t%s\n\t%s\n\t%s\n\t%s\n", r->request_type, r->credential_username, r->credential_password, r->credential_id);
-    // TODO: Handle request
+      mongoc_client_t* client = mongoc_client_pool_pop(pool->handler->instance.pool);
+      handle_request(r, client, pool->handler->settings.name, pool->handler->settings.art_work_collection, pool->handler->settings.user_collection, fd);
+      mongoc_client_pool_push(pool->handler->instance.pool, client);
 
-    destroy_request(r);
+      destroy_request(r);
+    }
   }
 
   pthread_mutex_unlock(&(pool->lock));
   pthread_exit(NULL);
   return NULL;
+}
+
+static void handle_request(request* r, mongoc_client_t* client, char* db_name, char* art_work_collection, char* user_collection, ssize_t fd) {
+  if ((r == NULL) || (client == NULL)) {
+    _m(_msginfo, "[%s] (%s) Invalid request!", __FILE_NAME__, __func__);
+    return;
+  }
+
+  /* Parse the token received in order to remove any new line \n */
+  r->token[strcspn(r->token, "\n")] = '\0';
+
+
+  if ((strcmp(r->request_type, "REGISTRATION") != 0) && (strcmp(r->token, token) != 0)) { /* If the token mismatched inform the user of the invalid token setted */
+    _m(_msgevent, "[%s] (%s) Client on socket n° <%zu> made a request with a wrong token value <%s>!", __FILE_NAME__, __func__, fd, token);
+    msg_send(fd, invalid_token_msg, sizeof(invalid_token_msg), 0);
+    return;
+  }
+
+  /*
+    Request type comparison for the type of task to do
+    Unfortunately we cannot use a switch statement for this task,
+    but a series of if/else if/else statement (more verbose, but certainly effective)
+    is good enought
+  */
+
+  /* Before making any specific operation check for common operation between valid requests (RETIREVE, LOGIN, DELETE) */
+  if ((strcmp(r->request_type, "RETRIEVE") == 0) ||
+      (strcmp(r->request_type, "LOGIN") == 0)    ||
+      (strcmp(r->request_type, "DELETE") == 0)) {
+    _m(_msgevent, "[%s] (%s) Client on socket n° <%zu> is asking for a valid request [%s]", __FILE_NAME__, __func__, fd, r->request_type);
+
+    /* Validate client credentials */
+    bson_t* filter = BCON_NEW("name", BCON_UTF8(r->credential_username), "password", BCON_UTF8(r->credential_password));
+    bson_t* opts = BCON_NEW("limit", BCON_INT64(1));
+
+    bool status = is_present(client, filter, opts, db_name, user_collection);
+
+    /* Don't forget to free the filter & the options used to avoid annoying leaks */
+    bson_free(filter);
+    bson_free(opts);
+
+    /* If the user is not authenticate return, otherwise continue */
+    if (status) {
+      _m(_msginfo, "[%s] (%s) The user is correctly authenticated!", __FILE_NAME__, __func__);
+    } else {
+      msg_send(fd, not_authenticated_request, sizeof(not_authenticated_request), 0);
+      return;
+    }
+  } else if (strcmp(r->request_type, "REGISTRATION") == 0) { /* Special operation for registration */
+    bson_oid_t oid;
+    bson_oid_init(&oid, NULL);
+    bson_t* document = BCON_NEW("_id", BCON_OID(&oid),
+				"name", BCON_UTF8(r->credential_username),
+				"password", BCON_UTF8(r->credential_password));
+
+    bool status = insert_single(client, document, db_name, user_collection);
+    bson_free(document);
+
+    if (status) {
+      _m(_msginfo, "[%s] (%s) The user is correctly inserted! Informing the user...", __FILE_NAME__, __func__);
+      msg_send(fd, token_msg, sizeof(token_msg), 0);
+      msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+    } else {
+      msg_send(fd, failed_operation, sizeof(failed_operation), 0);
+    }
+
+    /* Nothing to do here, so return */
+    return;
+
+  } else {
+    _m(_msgevent, "[%s] (%s) Client on socket n° <%zu> is asking for an unknown request!", __FILE_NAME__, __func__, fd);
+    /* Inform the user for the wrong request received */
+    msg_send(fd, unknown_request_recv, sizeof(unknown_request_recv), 0);
+    return;
+  }
+
+  /* Specific operation for LOGIN request */
+  // <>REQUEST:LOGIN<>USERNAME:u<>PASSWORD:p<>TOKEN:i
+  if (strcmp(r->request_type, "LOGIN") == 0) {
+    msg_send(fd, successful_login, sizeof(successful_login), 0);
+  }
+
+  // <>REQUEST:DELETE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
+  if (strcmp(r->request_type, "DELETE") == 0) {
+    bson_t* document = BCON_NEW("name", BCON_UTF8(r->credential_username), "password", BCON_UTF8(r->credential_password));
+    bool status = delete_single(client, document, db_name, user_collection);
+    bson_free(document);
+
+    if (status) {
+      _m(_msginfo, "[%s] (%s) The user is correctly removed! Informing the user...", __FILE_NAME__, __func__);
+      msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+    } else {
+      msg_send(fd, failed_operation, sizeof(failed_operation), 0);
+    }
+
+  }
+
+  // <>REQUEST:RETRIEVE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
+  if (strcmp(r->request_type, "RETRIEVE") == 0) {
+    retrieve_art_works(client, db_name, art_work_collection, fd);
+    msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+  }
+
+  // <>REQUEST:POPULATE<>USERNAME:u<>PASSWORD:p<>TOKEN:i
+  // if (strcmp(r->request_type, "POPULATE") == 0) {
+  //   populate_collection(client, db_name, art_work_collection);
+  //   msg_send(fd, successful_operation, sizeof(successful_operation), 0);
+  // }
+
 }

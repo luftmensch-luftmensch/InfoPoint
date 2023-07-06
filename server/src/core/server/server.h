@@ -32,7 +32,6 @@
     ssize_t socket;
     struct sockaddr_in transport;
     size_t conn_count;
-    db_handler* handler;
     thread_pool* pool;
   } server;
 

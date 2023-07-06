@@ -56,9 +56,9 @@ request* parse_data(const char* input, const char* outer_block, const char* inne
 	r->credential_password = malloc(sizeof(char) * (strlen(value) + 1));
 	memcpy(r->credential_password, value, (strlen(value) + 1));
 	break;
-      case 7:			/* Retrieve ID */
-	r->credential_id = malloc(sizeof(char) * (strlen(value) + 1));
-	memcpy(r->credential_id, value, (strlen(value) + 1));
+      case 7:			/* Retrieve TOKEN */
+	r->token = malloc(sizeof(char) * (strlen(value) + 1));
+	memcpy(r->token, value, (strlen(value) + 1));
 	break;
       case 2:
       case 4:
@@ -84,7 +84,7 @@ void destroy_request(request* r) {
   if (r->request_type) free(r->request_type);
   if (r->credential_username) free(r->credential_username);
   if (r->credential_password) free(r->credential_password);
-  if (r->credential_id) free(r->credential_id);
+  if (r->token) free(r->token);
 
   free(r);
 }

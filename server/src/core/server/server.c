@@ -42,14 +42,6 @@ server* init_server(unsigned int port, const size_t max_clients, const size_t ma
     return NULL;
   }
 
-  // Database Handler setup
-  s->handler = init_handler(username, password, host, database_name);
-  if (s->handler == NULL) {
-    _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server->handler! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
-    return NULL;
-  }
-
-  // Define type of socket
   /*
     Define the type of the socket:
     + AF_INET -> IP v4;
@@ -115,8 +107,7 @@ server* init_server(unsigned int port, const size_t max_clients, const size_t ma
 
   s->conn_count = 0;
 
-  s->pool = init_thread_pool(max_workers);
-  if (s->pool == NULL)  {
+  if ((s->pool = init_thread_pool(max_workers, username, password, host, database_name)) == NULL) {
     _m(_msgfatal, "[%s] (%s) Failed to allocate enought space for the server->pool! Cause: %s", __FILE_NAME__, __func__, strerror(errno));
     return NULL;
   }
@@ -130,11 +121,8 @@ void destroy_server(server* s) {
   _m(_msginfo, "[%s] (%s) Shutting down the server <%ld> as requested", __FILE_NAME__, __func__, s->socket);
 
   close(s->socket);
+
   // Stopping and destroying the thread pool
-
-  _m(_msginfo, "[%s] (%s) Destroying server->handler", __FILE_NAME__, __func__);
-  destroy_handler(s->handler);
-
   _m(_msginfo, "[%s] (%s) Destroying server->pool", __FILE_NAME__, __func__);
   destroy_thread_pool(s->pool);
   free(s);
