@@ -22,7 +22,6 @@ package com.infopoint.ui.adapters;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,36 +31,50 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.infopoint.R;
 import com.infopoint.model.ArtWork;
 
 import java.util.List;
 
-/** Helper Adapter Class used for the {@link com.infopoint.ui.fragment.HomeFragment HomeFragment} & {@link com.infopoint.ui.fragment.ProfileFragment ProfileFragment} */
+/** Helper Adapter Class used for the {@link com.infopoint.ui.fragment.HomeFragment HomeFragment} */
 public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<ArtWork> items;
-    private final Context ctx;
 
-    public ArtWorkAdapter(List<ArtWork> items, Context context) {
+    public ArtWorkAdapter(List<ArtWork> items) {
         this.items = items;
-        this.ctx = context;
     }
 
 
     private class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView artWorkImageView;
-        private TextView nameTextView, authorTextView, descriptionTextView, dateOfProductionTextView;
+        private ImageView image;
+        private TextView name, author, date;
         public ViewHolder(@NonNull View v) {
             super(v);
-            nameTextView = v.findViewById(R.id.art_work_card_name);
-            authorTextView = v.findViewById(R.id.art_work_card_author);
-            dateOfProductionTextView = v.findViewById(R.id.art_work_card_date);
+            image = v.findViewById(R.id.art_work_card_image);
+            name = v.findViewById(R.id.art_work_card_name);
+            author = v.findViewById(R.id.art_work_card_author);
+            date = v.findViewById(R.id.art_work_card_date);
         }
         void bind(ArtWork art) {
-            nameTextView.setText(art.getName());
-            authorTextView.setText(art.getAuthor());
-            dateOfProductionTextView.setText("TEST");
-            // TODO: Add others
+            int imageId = switch (art.getName()) {
+                case "Amore e Psiche" -> R.drawable.amore_e_psiche;
+                case "Cristo Velato" -> R.drawable.cristo_velato;
+                case "Il David" -> R.drawable.david;
+                case "Gli Amanti" -> R.drawable.gli_amanti;
+                case "Il Bacio" -> R.drawable.il_bacio;
+                case "La Danza" -> R.drawable.la_danza;
+                case "La Giuditta" -> R.drawable.la_giuditta;
+                case "La Nascita di Venere" -> R.drawable.nascita_di_venere;
+                case "La Notte Stellata" -> R.drawable.notte_stellata;
+                case "La persistenza della memoria" -> R.drawable.persistenza_della_memoria;
+                default -> R.drawable.logo_no_background;
+            };
+
+            Glide.with(image.getContext()).load(imageId).centerCrop().into(image);
+            name.setText(art.getName());
+            author.setText(art.getAuthor());
+            date.setText((art.getDateOfProduction().length() > 4 ? "Data di produzione: " : "Periodo di produzione: ") + art.getDateOfProduction());
         }
     }
 
@@ -74,7 +87,6 @@ public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.d("T", "POS: " + position);
         ArtWork item = items.get(position);
         ((ViewHolder) holder).bind(item);
     }

@@ -65,6 +65,7 @@
   typedef struct art_work {
     char* name;
     char* author;
+    char* date;
     char* description;
   } art_work;
 

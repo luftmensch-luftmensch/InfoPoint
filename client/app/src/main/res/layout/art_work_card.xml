@@ -26,7 +26,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="15dp"
-    >
+    app:strokeColor="@color/md_theme_dark_inversePrimary"
+    app:cardElevation="50dp"
+    app:cardMaxElevation="50dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +40,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="13dp">
+            android:paddingVertical="13dp"
+            android:background="@color/md_theme_dark_inversePrimary" >
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/art_work_card_propic"
@@ -78,17 +81,20 @@
 
         <!-- Media -->
         <ImageView
-            android:id="@+id/art_work_card_image_view"
+            android:id="@+id/art_work_card_image"
             android:layout_width="match_parent"
-            android:src="@drawable/logo_no_background"
-            android:layout_height="279dp"
+            android:layout_height="400dp"
+            android:background="@color/md_theme_dark_onPrimaryContainer"
             tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:background="@color/md_theme_dark_inversePrimary"
+
+            >
 
             <!-- Date of production -->
             <TextView

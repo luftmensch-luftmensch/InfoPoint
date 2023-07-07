@@ -21,6 +21,8 @@
 package com.infopoint.ui.fragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,15 +38,17 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.infopoint.R;
+import com.infopoint.model.ArtWork;
 
 public class ArtWorkFragment extends Fragment {
     private final static String _TAG = "[ArtWorkFragment] ";
-    private MaterialToolbar toolbar;
-    private ShapeableImageView artWorkImage;
 
-    private TextView authorTextView, descriptionTextView;
-    private Button moreActions;
+    private ArtWork item;
 
+
+    public ArtWorkFragment(ArtWork art) {
+        this.item = art;
+    }
 
     @Nullable
     @Override
@@ -57,22 +61,26 @@ public class ArtWorkFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
 
-        toolbar = view.findViewById(R.id.top_app_bar_art_work_item);
-        toolbar.setNavigationOnClickListener(click -> {
-            Log.d(_TAG, "Navigation Icon clicked");
+        MaterialToolbar toolbar = view.findViewById(R.id.top_app_bar_art_work_item);
+        toolbar.setNavigationOnClickListener(click -> Log.d(_TAG, "Navigation Icon clicked"));
 
-        });
+        toolbar.setTitle(item.getName());
 
-        toolbar.setTitle("HELLO"); // TODO: Update from the current value
+        ShapeableImageView image = view.findViewById(R.id.art_work_item_image_view);
 
-        artWorkImage = view.findViewById(R.id.art_work_item_image_view);
-        authorTextView = view.findViewById(R.id.art_work_item_author_text_view);
-        descriptionTextView = view.findViewById(R.id.art_work_item_description_text_view);
+        TextView author = view.findViewById(R.id.art_work_item_author_text_view);
+        TextView description = view.findViewById(R.id.art_work_item_description_text_view);
+        TextView date = view.findViewById(R.id.art_work_item_date_text_view);
 
-        moreActions = view.findViewById(R.id.art_work_item_button);
+        author.setText(item.getAuthor());
+        date.setText(item.getDateOfProduction());
+        description.setText(item.getDescription());
 
-        moreActions.setOnClickListener(click -> {
-            // TODO: Exec research on click for the current art work
-        });
+        Button moreActions = view.findViewById(R.id.art_work_item_button);
+
+        moreActions.setOnClickListener(click -> requireActivity().startActivity(Intent.createChooser(
+                new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://www.google.com/search?q=" + item.getName())),
+                "Ricerca aggiuntiva"
+        )));
     }
 }

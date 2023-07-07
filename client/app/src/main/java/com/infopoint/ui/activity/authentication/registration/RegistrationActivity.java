@@ -23,28 +23,41 @@ package com.infopoint.ui.activity.authentication.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
+import com.infopoint.core.config.Constants;
+import com.infopoint.core.networking.NetworkManager;
+import com.infopoint.core.preferences.StorageManager;
+import com.infopoint.core.validator.Validator;
+import com.infopoint.ui.activity.MainActivity;
 import com.infopoint.ui.activity.authentication.login.LoginActivity;
+
+import es.dmoral.toasty.Toasty;
 
 /** Activity used to perform authentication operation [registration] */
 public class RegistrationActivity extends AppCompatActivity {
     private final static String _TAG = "[RegistrationActivity] ";
 
-    private TextInputLayout usernameTextInputLayout, passwordTextInputLayout, confirmPasswordTextInputLayout;
+    private final static String _REQUEST_TYPE = "REGISTRATION";
 
-    private Button registrationButton;
+    private TextInputLayout usernameTextInputLayout, passwordTextInputLayout, confirmPasswordTextInputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(_TAG, "Starting Activity...");
         setContentView(R.layout.registration_activity);
+
+        Log.d(_TAG, "Checking internet connection...");
+        if (!NetworkManager.checkConnection(this))
+            Toasty.error(this, "Nessun connessione ad internet!\nRiprova più tardi", Toasty.LENGTH_LONG).show();
+
+        StorageManager.with(this).write(Constants.FIRST_RUN, true);
         setUI();
     }
 
@@ -55,12 +68,19 @@ public class RegistrationActivity extends AppCompatActivity {
 
         TextView registrationToLoginTextView = findViewById(R.id.signup_login_text_view);
 
+
         registrationToLoginTextView.setOnClickListener(click -> {
             Log.d(_TAG, "Moving to Login");
             startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
             finishAffinity();
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
+
+        findViewById(R.id.registration_button).setOnClickListener(click -> handleRegistration(
+                usernameTextInputLayout.getEditText().getText().toString(),
+                passwordTextInputLayout.getEditText().getText().toString(),
+                confirmPasswordTextInputLayout.getEditText().getText().toString()
+        ));
     }
 
     @Override
@@ -68,5 +88,40 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(_TAG, "Creating animation...");
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(_TAG, "onResume: Checking internet connection");
+        NetworkManager.checkConnection(this);
+    }
+
+    private void handleRegistration(String username, String password, String confirmPassword) {
+        if (!Validator.validate(username) || !Validator.validate(password)) {
+            Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toasty.error(this, "Attenzione!\nLe password inserite non corrispondono!", Toasty.LENGTH_LONG).show();
+            return;
+        }
+
+        Thread task = new Thread(() -> {
+            if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, "dummy_token", this)) {
+                Log.d(_TAG, "Successfull registration! Moving to HomePage...");
+                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                finishAffinity();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            } else {
+                runOnUiThread(() -> Toasty.error(this, "Attenzione! L'username selezionato è già esistente!", Toast.LENGTH_LONG, true).show());
+            }
+        });
+
+        // The higher the better
+        task.setPriority(10);
+        task.start();
+
     }
 }

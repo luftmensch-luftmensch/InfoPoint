@@ -239,8 +239,7 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
     return;
   }
 
-  printf("Request: <%s> <%s> <%s>\n", r->request_type, r->credential_username, r->credential_password);
-
+  printf("Request: %s\n", r->request_type);
 
   /* Parse the token received in order to remove any new line \n */
   r->token[strcspn(r->token, "\n")] = '\0';
@@ -289,7 +288,7 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
       msg_send(fd, unauthorized_user, sizeof(unauthorized_user), 0);
       return;
     }
-  } else if (strcmp(r->request_type, "REGISTRATION") == 0) { /* Special operation for registration */
+  } else if (strcmp(r->request_type, "REGISTRATION") == 0) { /* Special operation for registration (<>REQUEST:REGISTRATION<>USERNAME:u<>PASSWORD:p<>TOKEN:i) */
     bson_oid_t oid;
     bson_oid_init(&oid, NULL);
     bson_t* document = BCON_NEW("_id", BCON_OID(&oid),
@@ -298,18 +297,15 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
 
     bool status = insert_single(client, document, db_name, user_collection);
     bson_free(document);
-
     if (status) {
       _m(_msginfo, "[%s] (%s) The user is correctly inserted! Informing the user...", __FILE_NAME__, __func__);
-      msg_send(fd, token_msg, sizeof(token_msg), 0);
       msg_send(fd, successful_response, sizeof(successful_response), 0);
+      msg_send(fd, token_msg, sizeof(token_msg), 0);
     } else {
       msg_send(fd, failed_response, sizeof(failed_response), 0);
     }
-
     /* Nothing to do here, so return */
     return;
-
   } else {
     _m(_msgevent, "[%s] (%s) Client on socket n° <%zu> is asking for an unknown request!", __FILE_NAME__, __func__, fd);
     /* Inform the user for the wrong request received */
@@ -343,6 +339,4 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
     retrieve_art_works(client, db_name, art_work_collection, fd);
     msg_send(fd, successful_response, sizeof(successful_response), 0);
   }
-
-
 }

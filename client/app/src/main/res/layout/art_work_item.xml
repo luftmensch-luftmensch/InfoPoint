@@ -38,6 +38,23 @@
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <!-- Date of production -->
+    <TextView
+        android:id="@+id/art_work_item_date_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="?attr/textInputOutlinedDenseStyle"
+        android:hint="@string/art_work_date"
+        app:endIconMode="clear_text"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toTopOf="@+id/guideline14"
+        app:layout_constraintVertical_chainStyle="spread" />
+
     <!-- Author -->
     <TextView
         android:id="@+id/art_work_item_author_text_view"
@@ -48,14 +65,13 @@
         app:endIconMode="clear_text"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/art_work_item_description_text_view"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="@+id/guideline14"
-        app:layout_constraintVertical_chainStyle="spread"
-        />
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <!-- DESCRIPTION -->
     <TextView

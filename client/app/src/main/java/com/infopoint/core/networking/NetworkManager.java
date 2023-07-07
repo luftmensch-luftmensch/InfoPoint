@@ -27,6 +27,7 @@ import android.net.NetworkCapabilities;
 import android.util.Log;
 
 import com.infopoint.core.config.Constants;
+import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.model.ArtWork;
 
 import java.io.BufferedReader;
@@ -86,23 +87,24 @@ public class NetworkManager {
                         break;
                     }
 
+                    if (buffer.equals("<>RESPONSE:Invalid token<>") || buffer.equals("<>RESPONSE:FAILED<>")) {
+                        Log.d(_TAG, "An error as occurred while retrieving");
+                        return null;
+                    }
+
                     // Log.d(_TAG, "Buffer: " + buffer);
                     String[] fields = buffer.split(Constants.OUTER_DELIMITER);
                     // Log.d(_TAG, "Fields: " + Arrays.toString(fields));
                     Log.d(_TAG, "Name: " + fields[1].replace("NAME:", "") +
-                            "Author: " + fields[2].replace("AUTHOR:", "") +
-                            "Description" + fields[2].replace("DESCRIPTION:", ""));
+                            " Author: " + fields[2].replace("AUTHOR:", "") +
+                            " Date: " + fields[3].replace("DATE:", "") +
+                            " Description" + fields[4].replace("DESCRIPTION:", ""));
 
                     result.add(new ArtWork(fields[1].replace("NAME:", ""),
-                                    fields[2].replace("AUTHOR:", ""),
-                                    fields[3].replace("DESCRIPTION:", "")));
-
-                    // Log.d(_TAG,
-                    //         new ArtWork(fields[1].replace("NAME:", ""),
-                    //                 fields[2].replace("AUTHOR:", ""),
-                    //                 fields[3].replace("DESCRIPTION:", "")).toString());
+                            fields[2].replace("AUTHOR:", ""),
+                            fields[3].replace("DATE:", ""),
+                            fields[4].replace("DESCRIPTION:", "")));
                 }
-                // Log.d(_TAG, "Buffer: " + buffer);
 
                 Log.d(_TAG, "Closing socket");
                 s.close();
@@ -113,79 +115,7 @@ public class NetworkManager {
         return result;
     }
 
-    public static boolean registration(String username, String password) {
-        try {
-            InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
-            if (address.isReachable(Constants.SERVER_TIMEOUT)) { // Check if the server is reachable
-                Socket s = new Socket(address, Constants.SERVER_PORT);
-
-                // Reader of the socket
-                BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-
-                // Wait until the server inform us that is ready to perform communication
-                while(s.getInputStream().available() < 1) {
-                    Log.d(_TAG, "Waiting...");
-                }
-
-                String msg = reader.readLine();
-                Log.d(_TAG, "Message: " + msg);
-
-                // Create the writer in order to write to the socket just opened
-                PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
-
-                out.println(String.format("<>REQUEST:REGISTRATION<>USERNAME:%s<>PASSWORD:%s<>TOKEN:dummy_token\n", username, password));
-                out.println("\n");
-                Log.d(_TAG, "WRITTEN");
-
-                String buffer;
-                buffer = reader.readLine();
-                Log.d(_TAG, "Buffer: " + buffer);
-                String[] params = buffer.split(Constants.OUTER_DELIMITER);
-                Log.d(_TAG, "Parameters: " + params[1]);
-                Log.d(_TAG, "Closing socket");
-                s.close();
-            }
-        } catch (IOException e){
-            Log.d(_TAG, "Cause: " + e.getLocalizedMessage());
-        }
-
-        return true;
-    }
-
-    public static boolean login(String username, String password, String token) {
-        try {
-            InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
-            if (address.isReachable(Constants.SERVER_TIMEOUT)) { // Check if the server is reachable
-                Socket s = new Socket(address, Constants.SERVER_PORT);
-
-                // Reader of the socket
-                BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-
-                // Wait until the server inform us that is ready to perform communication
-                while(s.getInputStream().available() < 1) {
-                    Log.d(_TAG, "Waiting...");
-                }
-
-                String msg = reader.readLine();
-                Log.d(_TAG, "Message: " + msg);
-
-                // Create the writer in order to write to the socket just opened
-                PrintWriter out = new PrintWriter(new BufferedWriter( new OutputStreamWriter(s.getOutputStream())), true);
-
-                out.println(String.format("<>REQUEST:LOGIN<>USERNAME:%s<>PASSWORD:%s<>TOKEN:%s\n", username, password, token));
-                out.println("\n");
-
-                Log.d(_TAG, "Closing socket");
-                s.close();
-            }
-        } catch (IOException e){
-            Log.d(_TAG, "Cause: " + e.getLocalizedMessage());
-        }
-
-        return false;
-    }
-
-    public static boolean user_operation(String requestType, String username, String password, String token) {
+    public static boolean user_operation(String requestType, String username, String password, String token, Context ctx) {
         try {
             InetAddress address = InetAddress.getByName(Constants.SERVER_ADDR);
             if (address.isReachable(Constants.SERVER_TIMEOUT)) { // Check if the server is reachable
@@ -210,14 +140,40 @@ public class NetworkManager {
                     case "LOGIN" -> "LOGIN";
                     case "REGISTRATION" -> "REGISTRATION";
                     case "DELETE" -> "DELETE";
-                    default -> null;
+                    default -> "";
                 };
 
                 out.println(String.format("<>REQUEST:%s<>USERNAME:%s<>PASSWORD:%s<>TOKEN:%s\n", actualRequestType, username, password, token));
                 out.println("\n");
 
                 String buffer = reader.readLine();
-                Log.d(_TAG, "Buffer: " + buffer);
+                buffer = buffer.replace("\u0000", "");
+                String[] fields = buffer.split(Constants.OUTER_DELIMITER);
+                Log.d(_TAG, "[RESPONSE]: " + fields[1].replace("RESPONSE:", ""));
+
+                if (fields[1].replace("RESPONSE:", "").equals("SUCCESS")) {
+
+                    // Save crendials and then move to HomePage
+                    StorageManager.with(ctx).write(Constants.USERNAME, username);
+                    StorageManager.with(ctx).write(Constants.PASSWORD, password);
+                    StorageManager.with(ctx).write(Constants.TOKEN, token);
+                } else {
+                    return false;
+                }
+
+                if (actualRequestType.equals("REGISTRATION")) {
+                    buffer = reader.readLine();
+                    buffer = buffer.replace("\u0000", "");
+                    fields = buffer.split(Constants.OUTER_DELIMITER);
+                    // Log.d(_TAG, "[TOKEN]: " + fields[1].replace("TOKEN:", ""));
+
+                    if (!fields[1].replace("TOKEN:", "").isEmpty()){
+                        // Save crendials and then move to HomePage
+                        StorageManager.with(ctx).write(Constants.TOKEN, fields[1].replace("TOKEN:", ""));
+                    } else {
+                        return false;
+                    }
+                }
 
                 Log.d(_TAG, "Closing socket");
                 s.close();

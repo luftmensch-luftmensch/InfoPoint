@@ -40,11 +40,11 @@ import com.infopoint.core.config.Constants;
 import com.infopoint.core.networking.NetworkManager;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.model.ArtWork;
+import com.infopoint.model.properties.ArtworkUtil;
 import com.infopoint.ui.adapters.ArtWorkAdapter;
+import com.infopoint.ui.adapters.ItemSelector;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import es.dmoral.toasty.Toasty;
 
@@ -55,7 +55,6 @@ public class HomeFragment extends Fragment {
     private List<ArtWork> artWorks;
 
     private ShimmerFrameLayout shimmer;
-    private ArtWorkAdapter adapter;
     private RecyclerView rv;
 
     @Nullable
@@ -72,15 +71,22 @@ public class HomeFragment extends Fragment {
         shimmer.startShimmer();
 
         rv = view.findViewById(R.id.recycler_view_home);
-        retrieveArtWorks("u", "p", "token");
-        // retrieveArtWorks(
-        //         StorageManager.with(requireContext()).read(Constants.USERNAME, ""),
-        //         StorageManager.with(requireContext()).read(Constants.PASSWORD, ""),
-        //         StorageManager.with(requireContext()).read(Constants.TOKEN, "")
-        // );
+
+        // If there is no artworks saved retrieve from the server, otherwise retrieve from shared preferences
+        if (StorageManager.with(requireContext()).contains(Constants.ARTWORKS_RETRIEVED)) {
+            loadView(ArtworkUtil.retrieveArtWorks(requireContext()));
+        }  else {
+            retrieveArtWorks(
+                    StorageManager.with(requireContext()).read(Constants.USERNAME, ""),
+                    StorageManager.with(requireContext()).read(Constants.PASSWORD, ""),
+                    StorageManager.with(requireContext()).read(Constants.TOKEN, "")
+            );
+        }
+
     }
 
     private void retrieveArtWorks(String username, String password, String token) {
+        Log.d(_TAG, "Values: " + username + "  " + password + "  " +  token);
         Toasty.info(requireContext(), "Recupero delle opere in corso...", Toasty.LENGTH_LONG, true).show();
         Thread task = new Thread(() -> {
             artWorks = NetworkManager.retrieveArtwork(username, password, token);
@@ -90,24 +96,39 @@ public class HomeFragment extends Fragment {
                         Toasty.info(requireContext(), "Attenzione! Non sono state ritrovate opere! Controlla più tardi",
                                 Toast.LENGTH_LONG, true).show());
             } else {
-                requireActivity().runOnUiThread(this::loadView);
+                ArtworkUtil.saveArtworks(requireContext(), artWorks);
+                requireActivity().runOnUiThread(() -> loadView(artWorks));
             }
         });
         task.setPriority(10);
         task.start();
     }
 
-    private void loadView() {
+    private void loadView(List<ArtWork> list) {
         Log.d(_TAG, "Loading view...");
         shimmer.stopShimmer();
         shimmer.setVisibility(View.GONE);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-        rv.setLayoutManager(manager);
 
-        adapter = new ArtWorkAdapter(artWorks, requireActivity());
-        rv.setAdapter(adapter);
-    }
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv.setAdapter(new ArtWorkAdapter(list));
 
-    private void getSelectedItem(List<ArtWork> items) {
+        // Add a way to show the single item
+        rv.addOnItemTouchListener(
+                new ItemSelector(requireContext(), rv, new ItemSelector.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Log.d(_TAG, "Artwork selected: " + list.get(position).getName());
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        Toasty.info(requireContext(), "Per visualizzare le informazioni sull'opera " +
+                                        list.get(position).getName() +
+                                        " clicca senza tenere premuto",
+                                Toast.LENGTH_SHORT, true).show();
+
+                    }
+                })
+        );
     }
 }

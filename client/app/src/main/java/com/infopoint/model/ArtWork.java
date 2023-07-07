@@ -26,19 +26,27 @@ import androidx.annotation.NonNull;
 public class ArtWork {
     private String name;
     private String author;
+
+
+    private String dateOfProduction;
     private String description;
 
-    public ArtWork(String name, String author, String description) {
+    public ArtWork(String name, String author, String dateOfProduction, String description) {
         this.name = name;
         this.author = author;
+        this.dateOfProduction = dateOfProduction;
         this.description = description;
     }
 
     public String getName() { return name; }
     public String getAuthor() { return author; }
+    public String getDateOfProduction() { return dateOfProduction; }
     public String getDescription() { return description; }
+
     public void setName(String name) { this.name = name; }
     public void setAuthor(String author) { this.author = author; }
+
+    public void setDateOfProduction(String dateOfProduction) { this.dateOfProduction = dateOfProduction; }
     public void setDescription(String description) { this.description = description; }
 
     @NonNull
@@ -47,6 +55,7 @@ public class ArtWork {
         return "ArtWork{" +
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
+                ", dateOfProduction='" + dateOfProduction + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

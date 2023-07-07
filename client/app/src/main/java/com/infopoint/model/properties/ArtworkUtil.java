@@ -23,36 +23,39 @@ package com.infopoint.model.properties;
 import static com.infopoint.core.networking.NetworkManager.retrieveArtwork;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.infopoint.core.config.Constants;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.model.ArtWork;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** Utility class used to perform operation on artwork (retrieve, load, ...) */
 public class ArtworkUtil {
-    /**
-     * Helper method used to retrieve or load the ArtWorks
-     * If the artwork are already retrieved load from Shared Preferences
-     * Otherwise retrieve them from the network
-    */
-    public static void loadOrRetrieveArtWorks(Context context) {
-        if (StorageManager.with(context).contains(Constants.ARTWORKS_RETRIEVED)) {
-            String key = StorageManager.with(context).read(Constants.ARTWORKS_LIST, "");
-            Gson gson = new GsonBuilder().create();
-            ArtWork[] artworks = gson.fromJson(key, ArtWork[].class);
-        } else {
-            // retrieveArtwork();
-        }
+    private final static String _TAG = "[ArtworkUtil] ";
+
+    /** Helper method used to retrieve the ArtWorks from Shared Preferences */
+    public static ArrayList<ArtWork> retrieveArtWorks(Context ctx) {
+        Log.d(_TAG, "Retrieving artworks...");
+        String key = StorageManager.with(ctx).read(Constants.ARTWORKS_LIST, "");
+        Gson gson = new GsonBuilder().create();
+        return gson.fromJson(key, new TypeToken<ArrayList<ArtWork>>() {}.getType());
     }
 
     /** Helper method used to save the retrieved artworks from the Shared Preferences */
     public static void saveArtworks(Context context, List<ArtWork> artworks) {
+        Log.d(_TAG, "Saving artworks... " + artworks.get(1).getDateOfProduction());
         Gson gson = new GsonBuilder().create();
         String value = gson.toJson(artworks);
         StorageManager.with(context).write(Constants.ARTWORKS_LIST, value);
+        StorageManager.with(context).write(Constants.ARTWORKS_RETRIEVED, true);
     }
 }

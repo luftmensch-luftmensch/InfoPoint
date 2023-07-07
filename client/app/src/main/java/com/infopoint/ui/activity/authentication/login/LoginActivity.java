@@ -20,7 +20,6 @@
 
 package com.infopoint.ui.activity.authentication.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout usernameTextInputLayout, passwordTextInputLayout;
 
-    private Boolean loginStatus = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!NetworkManager.checkConnection(this))
             Toasty.error(this, "Nessun connessione ad internet!\nRiprova più tardi", Toasty.LENGTH_LONG).show();
 
-        // StorageManager.with(this).write(Constants.FIRST_RUN, true);
+        StorageManager.with(this).write(Constants.FIRST_RUN, true);
         setUI();
     }
 
@@ -80,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
-        loginButton.setOnClickListener(view -> handleLogin(usernameTextInputLayout.getEditText().getText().toString(), passwordTextInputLayout.getEditText().getText().toString(), this));
+        loginButton.setOnClickListener(view -> handleLogin(usernameTextInputLayout.getEditText().getText().toString(), passwordTextInputLayout.getEditText().getText().toString()));
 
         forgotPassword.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -98,20 +95,15 @@ public class LoginActivity extends AppCompatActivity {
         NetworkManager.checkConnection(this);
     }
 
-    private void handleLogin(String username, String password, Context ctx) {
-        Log.d(_TAG, "Username: " + username + "Password: " + password);
-        // if (!Validator.validate(username) || !Validator.validate(password)) {
-        //     Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
-        //     return;
-        // }
+    private void handleLogin(String username, String password) {
+        if (!Validator.validate(username) || !Validator.validate(password)) {
+            Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
+            return;
+        }
 
         Thread task = new Thread(() -> {
-            if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, "")) {
-                // Save crendials and then move to HomePage
-                StorageManager.with(this).write(Constants.USERNAME, username);
-                StorageManager.with(this).write(Constants.PASSWORD, password);
-
-                // Then move to the MainActivity
+            if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, "", this)) {
+                Log.d(_TAG, "Successfull registration! Moving to HomePage...");
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finishAffinity();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

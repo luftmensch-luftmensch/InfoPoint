@@ -131,34 +131,44 @@ void destroy_handler(db_handler* handler) {
 
 bool populate_collection(mongoc_client_t* client, char* database_name, char* collection_name) {
   // Custom entry used to populate the ArtWork collection
-  art_work artworks[] = {
-    {(char*) "Amore e Psiche",               (char*) "Antonio Canova",       (char*) "<TODO>"},
-    {(char*) "Gli Amanti",                   (char*) "René Magritte",        (char*) "<TODO>"},
-    {(char*) "La persistenza della memoria", (char*) "Salvador Dalì",        (char*) "<TODO>"},
-    {(char*) "Il Bacio",                     (char*) "Gustav Klimt",         (char*) "<TODO>"},
-    {(char*) "La Giuditta",                  (char*) "Gustav Klimt",         (char*) "<TODO>"},
-    {(char*) "La Notte Stellata",            (char*) "Vincent Van Gogh",     (char*) "<TODO>"},
-    {(char*) "Apollo e Dafne",               (char*) "Gian Lorenzo Bernini", (char*) "<TODO>"},
-    {(char*) "Il David",                     (char*) "Michelangelo",         (char*) "<TODO>"},
-    {(char*) "La Nascita di Venere",         (char*) "Sandro Botticelli",    (char*) "<TODO>"},
-    {(char*) "La Danza",                     (char*) "Henri Matisse",        (char*) "<TODO>"},
-    {(char*) "Cristo Velato",                (char*) "Giuseppe Sanmartino",  (char*) "<TODO>"},
+  art_work artworks[] = {	/* Name, Author, Date of Production, Description */
+    {(char*) "Amore e Psiche",               (char*) "Antonio Canova",       (char*) "1787-1793", (char*) "Gruppo scultoreo commissionato dal colonello inglese John Campbell. Rappresenta in pieno lo stile neoclassico, mostrando i due protagonisti nel momento precedente all'azione del bacio."},
+
+    {(char*) "Gli Amanti",                   (char*) "René Magritte",        (char*) "1928", (char*) "Il quadro raffigura due amanti che si baciano, con le teste coperte da un panno bianco. L'immagine parla di morte e di impossibilità di comunicare quasi a rappresentare un ultimo bacio da parte delle due figure"},
+
+    {(char*) "La persistenza della memoria", (char*) "Salvador Dalì",        (char*) "1931", (char*) "L'opera surrealista mostra come lo scorrere del tempo non sia lo stesso per uomini, animali e vegetali tramite un paesaggio disabitato e privo di vegetazione ma popolato da diversi oggetti: un parallelepidedo, un ulivo senza foglie, un occhio addormentato e degli orologi."},
+
+    {(char*) "Il Bacio",                     (char*) "Gustav Klimt",         (char*) "1907-1908", (char*) "L'opera rappresenta due amanti che si abbandonano ad un bacio intenso. Tema dominante è l'amore e le passioni umane rappresentato nel modo più semplice possibile."},
+
+    {(char*) "La Giuditta",                  (char*) "Gustav Klimt",         (char*) "1901", (char*) "Tra le prime opere dell'artista, rappresenta l'eroina biblica utilizzando il volto di Adele Bloch-Bauer, esponente dell'alta società viennese. Indica la metafora del potere della seduzione delle donne che riesce a vincere anche la forza virile più bruta."},
+
+    {(char*) "La Notte Stellata",            (char*) "Vincent Van Gogh",     (char*) "1889", (char*) "L'opera rappresenta ciò che si poteva vedere dalla finestra della stanza del manicomio in cui si trovava l'artista. Van Gogh manipola questa veduta trasformandola in una potente visione in cui poter far affiorare le sue emozioni, le sue paure e i suoi viaggi dell'anima."},
+
+    {(char*) "Apollo e Dafne",               (char*) "Gian Lorenzo Bernini", (char*) "1622-1625", (char*) "Commissionata dal cardinale Scipione Caffarelli-Borghese, essa rappresenta l'istante in cui Apollo raggiunge la ninfa Dafne che per sfuggire al dio, si trasforma in pianta di alloro. L'opera, ricca di pathos, trasmette equilibrio ed armonia dovuto al gioco di luci ed ombre creato da Bernini."},
+
+    {(char*) "Il David",                     (char*) "Michelangelo",         (char*) "1501-1504", (char*) "L'opera ritrae l'eroe biblico nel momento in cui affronta Golia. Considerato l'ideale di bellezza maschile indica il simbolo della Repubblica Fiorentina vigile e vittoriosa contro i nemici."},
+
+    {(char*) "La Nascita di Venere",         (char*) "Sandro Botticelli",    (char*) "1482-1485", (char*) "Simbolo del Rinascimento italiano l'opera raffigura la dea emergere dal mare su una conchiglia, spinta dal soffio di Zefiro, mentre sulla riva Primavera le porge un manto. L'opera incarna l'ideale di bellezza femminile, con Simonetta Vespucci come musa ispiratrice per l'artista."},
+
+    {(char*) "La Danza",                     (char*) "Henri Matisse",        (char*) "1909", (char*) "Simbolo del fauvismo e dell'arte moderna, l'opera rappresenta un gruppo di figure umane che si abbracciano e che danzano in una cerchia. I colori sono vivaci ed i contorni risultano stilizzati donando, cosi, un senso di movimento e vitalità."},
+
+    {(char*) "Cristo Velato",                (char*) "Giuseppe Sanmartino",  (char*) "1753", (char*) "La statua raffigura il Cristo deposto, avvolto in un velo di marmo che sembra quasi traslucido, creando un effetto di delicatezza. L'opera è caratterizzata da una maestria tecnica straordinaria e una forte espressione emotiva, diventando un'icona del barocco napoletano."},
   };
 
   bson_t* documents[ARRAY_SIZE(artworks)];
 
   bson_error_t error; // Error handler
 
-
   // Inizialize the document
   for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
     bson_oid_t oid;
     bson_oid_init (&oid, NULL);
 
-    // { "_id" : { "$oid" : "<&oid>" }, "name" : <VALUE>, "author" : <VALUE>, "description" : <VALUE> }
+    // { "_id" : { "$oid" : "<&oid>" }, "name" : <VALUE>, "author" : <VALUE>, "description" : <VALUE>, "date": <VALUE> }
     documents[i] = BCON_NEW("_id", BCON_OID(&oid),
 			    "name", BCON_UTF8(artworks[i].name),
 			    "author", BCON_UTF8(artworks[i].author),
+			    "date", BCON_UTF8(artworks[i].date),
 			    "description", BCON_UTF8(artworks[i].description));
   }
 
@@ -173,13 +183,12 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
   }
 
   // Only for debug purpose (Decomment to show the structure of the artwork documents)
-  // for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
-  //   char* str;
-  //   str = bson_as_canonical_extended_json (documents[i], NULL);
-  //   printf("Item n° %zu: %s\n", i, str);
-  //   bson_free(str);
-  // }
-
+  for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
+    char* str;
+    str = bson_as_canonical_extended_json (documents[i], NULL);
+    printf("Item n° %zu: %s\n", i, str);
+    bson_free(str);
+  }
 
   /* Document cleanup */
   for (size_t i = 0; i < ARRAY_SIZE(artworks); i++)
@@ -238,6 +247,11 @@ bool insert_single(mongoc_client_t* client, bson_t* document, char* database_nam
   bson_error_t error; // Error handler
 
   /* Insert the document & check for errors */
+  // if (!mongoc_collection_insert_one(collection, document, NULL, NULL, &error)) {
+  //   _m(_msginfo, "[%s] (%s) Failed to insert into collection %s! Cause: %s\n", __FILE_NAME__, __func__, collection_name , error.message);
+  //   return false;
+  // }
+
   if (!mongoc_collection_insert_one(collection, document, NULL, NULL, &error)) {
     _m(_msginfo, "[%s] (%s) Failed to insert into collection %s! Cause: %s\n", __FILE_NAME__, __func__, collection_name , error.message);
     return false;
@@ -315,6 +329,9 @@ payload_t* parse_bson_as_artwork(const bson_t* document) {
       } else if (strcmp(bson_iter_key(&iter), "author") == 0) {
 	art->author = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
 	memcpy((void*) art->author, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
+      } else if (strcmp(bson_iter_key(&iter), "date") == 0) {
+	art->date = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
+	memcpy((void*) art->date, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
       } else if (strcmp(bson_iter_key(&iter), "description") == 0) {
 	art->description = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
 	memcpy((void*) art->description, (void*) value->value.v_utf8.str, (strlen(value->value.v_utf8.str) + 1));
@@ -323,13 +340,12 @@ payload_t* parse_bson_as_artwork(const bson_t* document) {
       }
     }
   }
-
-  size_t total_size = (strlen(art->name) + 1) + (strlen(art->author) + 1) + (strlen(art->description) + 1) + 35; // Delimiters + key
+  size_t total_size = (strlen(art->name) + 1) + (strlen(art->author) + 1) + (strlen(art->date) + 1) +  (strlen(art->description) + 1) + 41; // Delimiters + key
 
   payload->data = malloc(total_size);
   payload->size = total_size;
 
-  snprintf(payload->data, total_size, "<>NAME:%s<>AUTHOR:%s<>DESCRIPTION:%s<>\n", art->name, art->author, art->description);
+  snprintf(payload->data, total_size, "<>NAME:%s<>AUTHOR:%s<>DATE:%s<>DESCRIPTION:%s<>\n", art->name, art->author, art->date, art->description);
 
   destroy_art_work(art);
   return payload;
