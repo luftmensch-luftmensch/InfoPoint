@@ -196,19 +196,19 @@
 
   \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
     typedef enum request_t {
-      LOGIN,
-      REGISTRATION,
-      RETRIEVE
+      char* request_type;	        // Type of the request: One of LOGIN, REGISTRATION, RETRIEVE, DELETE
+      char* token;		        // Token of the caller
+      char* credential_username;	// Username of the caller
+      char* credential_password;	// Password of the caller
     } request_t;
 
     typedef struct payload_t {
-      request_t request;
       void* data;
       size_t size;
     } payload_t;
   \end{lstlisting}
 
-  Per una semplice manipolazione del dato viene offerta la funzione \qfunction{parse\_data} che effettua il parsing in base a 2 delimitatori.
+  Per una semplice manipolazione del dato viene offerta la funzione \qfunction{parse\_data} che effettua il parsing in base a 2 delimitatori (personalizzabili) e una funzione wrapper \qfunction{destroy\_request} per l'eliminazione delle risorse di una richiesta appena soddisfatta.
 
   \begin{center} \hi{Database Handler} \end{center}
 
@@ -234,16 +234,37 @@
       } settings;
 
     } db_handler;
-
   \end{lstlisting}
+
+  A supporto di questa struttura sono presenti 2 strutture che rappresentano le collezioni utilizzate dal server \footnotemark \footnotetext{Per entrambe sono presenti funzioni per l'inizializzaione e eliminazione delle risorse da queste utilizzate} :
+
+  \begin{lstlisting}[language={[POSIX]C}, style=wnumbers]
+    typedef struct art_work {
+      char* name;
+      char* author;
+      char* date;
+      char* description;
+    } art_work;
+
+    typedef struct user {
+      char* id;
+      char* name;
+      char* password;
+      char* level;
+    } user;
+  \end{lstlisting}
+
+
   Seguendo le \textbf{good pratices} per la programmazione di una corretta API vengono esposte una serie di metodi che vengono di seguito descritte:
 
   \begin{itemize}
     \item \qfunction{init\_handler} $\rightarrow$ Ha il compito di inizializzare delle risorse dell'handler ad esso associato;
     \item \qfunction{destroy\_handler} $\rightarrow$ Ha il compito di liberare le risorse dell'handler ad esso associato;
+    \item \qfunction{populate\_collection} $\rightarrow$ Ha il compito di popolare la collezione delle opere con i dati prestabili;
     \item \qfunction{retrieve\_art\_works} $\rightarrow$ Ha il compito di recuperare dal database associato tutte le informazioni presenti relative alle opere (artworks);
     \item \qfunction{is\_present} $\rightarrow$ Ha il compito di controllare se il documento specificato sia presente o meno nella collezione specificata;
     \item \qfunction{insert\_single} $\rightarrow$ Ha il compito di inserire il documento specificato nella collezione specificata controllando lo stato dell'operazione;
+    \item \qfunction{delete\_single} $\rightarrow$ Speculare ad \qfunction{insert\_single} ha il compito di eliminare il documento specificato nella collezione specificata controllando lo stato dell'operazione;
     \item \qfunction{parse\_bson\_as\_artwork} $\rightarrow$ Ha il compito di convertire il documento \hi{bson\_t} (binary json format) $\Longleftrightarrow$ ad \hi{artwork} wrappata nella struttura \hi{payload\_t}
     \item \qfunction{parse\_bson\_as\_user} $\rightarrow$ Ha il compito di convertire il documento \hi{bson\_t} (binary json format) $\Longleftrightarrow$ ad \hi{user} wrappata nella struttura \hi{payload\_t}
     \item \qfunction{test\_connection} $\rightarrow$ Ha il compito di testare se la connessione al database definito sia valida o meno.
@@ -263,6 +284,8 @@
 
     bool active;		// Control switch for the worker threads
     bool on_shutdown;		// Control switch for the worker threads in order to signal shutdown
+    db_handler* handler;   // Database communication handler
+
   } thread_pool;
   \end{lstlisting}
   Analogamente alle altre strutture anche per la Thread Pool vengono offerti dei metodi di supporto:
@@ -271,6 +294,8 @@
     \item \qfunction{init\_thread\_pool} $\rightarrow$ Ha il compito di inizializzare delle risorse della thread pool ad esso associato;
     \item \qfunction{destroy\_thread\_pool} $\rightarrow$ Ha il compito di liberare le risorse della thread pool ad esso associato;
     \item \qfunction{submit\_task} $\rightarrow$ Ha il compito di aggiungere alla coda di lavori della thread pool un nuovo task da eseguire;
+    \item \qfunction{execute\_task} $\rightarrow$ È la funzione eseguita da tutti i threads spawnati dalla Thread Pool;
+    \item \qfunction{handle\_request} $\rightarrow$ Ha il compito di gestire le richieste ricevute dai vari client \footnotemark \footnotetext{Validazione dei dati inviati, contatto con il database in esecuzione, $\dots$ } ;
   \end{itemize}
 
   \begin{center} \hi{Message} \end{center}
@@ -284,7 +309,6 @@
     ssize_t socket;
     struct sockaddr_in transport;
     size_t conn_count;
-    db_handler* handler;
     thread_pool* pool;
   } server;
   \end{lstlisting}

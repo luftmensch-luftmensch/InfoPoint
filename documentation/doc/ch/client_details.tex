@@ -37,6 +37,7 @@
           [{\folder[customPurple4]{error}}]
           [{\folder[customPurple4]{network}}]
           [{\folder[customPurple4]{prefs}}]
+          [{\folder[customPurple4]{validator}}]
         ]
         [{\folder[customOrange4]{model}}
           [{\folder[customPurple4]{prop}}]
@@ -73,6 +74,7 @@
     \item \hi{error} \rightarrow Offre supporto alla gestione degli errori che possono avvenire durante l'esecuzione dell'applicazione (Mette a disposizione una api per la gestione dello stack trace);
     \item \hi{network} (networking) \rightarrow Offre supporto alle operazioni che richiedono l'utilizzo della rete
     \item \hi{prefs} (preferences) \rightarrow Offre il supporto alle shared preferences in maniera semplice e sicura
+    \item \hi{validator} \rightarrow Offre il supporto alla validazione di Username e Password inserite dall'utente
     \end{itemize}
 
     \vspace{1cm}
@@ -184,9 +186,9 @@
     Vengono utilizzati come contenitori di conversione dei dati passati tra client e server. Sono così strutturati:
     
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=24, lastline=68]{../../client/app/src/main/java/com/infopoint/model/User.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=26, lastline=68]{../../client/app/src/main/java/com/infopoint/model/User.java}
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=26, lastline=46]{../../client/app/src/main/java/com/infopoint/model/ArtWork.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=26, lastline=50]{../../client/app/src/main/java/com/infopoint/model/ArtWork.java}
 
 
     \begin{center} \hi{Properties} \end{center}
@@ -201,6 +203,36 @@
 
     Di seguito riportiamo la loro struttura:
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=36, lastline=58]{../../client/app/src/main/java/com/infopoint/model/properties/ArtworkUtil.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=42, lastline=78]{../../client/app/src/main/java/com/infopoint/model/properties/ArtworkUtil.java}
 
     \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=24]{../../client/app/src/main/java/com/infopoint/model/properties/UserType.java}
+
+    \begin{center} \hi{Ui} \end{center}
+    Come qualsiasi applicazione che si rispetti, si è voluto porre un focus importante sulla produzione di una interfaccia semplice e intuitiva.
+
+    A questo si aggiunge una serie di funzioni di supporto per:
+    \begin{itemize}
+      \item Autenticazione;
+      \item Recupero delle informazioni e loro manipolazione;
+      \item Operazioni di supporto all'utente.
+      \item Controllo dell'accesso alla rete (fondamentale per il corretto funzionamento);
+    \end{itemize}
+
+    Di queste operazioni riportiamo alcuni estratti che ritieniamo fondamentali:
+
+    \begin{center} \hi{Controllo della presenza della rete} \end{center}
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=49, lastline=55]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
+
+    \begin{center} \hi{Recupero delle informazioni} \end{center}
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=58, lastline=116]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
+
+    \begin{center} \hi{Operazioni per l'utente \footnotemark \footnotetext{Ovvero registrazione, accesso ed eliminazione dell'account}} \end{center}
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=118, lastline=186]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
+
+    Vista la natura di queste richieste, tutte le operazioni vengono eseguite da un thread \footnotemark \footnotetext{Cerchiamo di evitare a tutti i costi di effettuari operazioni bloccanti, rendendo in questo modo l'applicazione irresponsive per tutta la durata della comunicazione}. Di seguito riportiamo un esempio concreto del loro utilizzo:
+
+
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=106, lastline=130]{../../client/app/src/main/java/com/infopoint/ui/activity/authentication/login/LoginActivity.java}

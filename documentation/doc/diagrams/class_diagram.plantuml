@@ -27,15 +27,20 @@ frame core {
       + {field} SERVER_ADDR: String
       + {field} SERVER_PORT: int
       + {field} SERVER_TIMEOUT: int
-      + {field} BLOCK_DELIMITER:  String
-      + {field} SINGLE_DELIMITER: String
-      + {field} PASSWORD_LENGTH: int
-      + {field} IS_LOGGED: String
-      + {field} INTRO_VIEWED: String
+      + {field} OUTER_DELIMITER:  String
+      + {field} INNER_DELIMITER: String
+      + {field} FIRST_RUN: String
       + {field} ARTWORKS_RETRIEVED: String
       + {field} ARTWORKS_LIST: String
+      + {field} ARTWORK_ITEM_NAME: String
+      + {field} ARTWORK_ITEM_AUTHOR: String
+      + {field} ARTWORK_ITEM_DATE: String
+      + {field} ARTWORK_ITEM_DESCRIPTION: String
       + {field} USERNAME: String
       + {field} PASSWORD: String
+      + {field} TOKEN: String
+      + {field} PROFILE_PIC: String
+      + {field} LEVEL: String
     }
 
     class GlideConfiguration extends AppGlideModule {
@@ -55,8 +60,8 @@ frame core {
     class NetworkManager {
       - {field} _TAG: String
       + {method} checkConnection(Context context): Boolean
-      + {method} retrieveArtwork(): ArrayList<ArtWork>
-      + {method} authenticate(String username, String password): Boolean
+      + {method} retrieveArtwork(String u, String p, String t): ArrayList<ArtWork>
+      + {method} user_operation(String r, String u, String p, String t, Context ctx): Boolean
     }
   }
 
@@ -81,7 +86,7 @@ frame core {
 
   frame validator {
     class Validator {
-      + validate(String s): Boolean
+      + {method} validate(String s): Boolean
     }
   }
 
@@ -104,24 +109,25 @@ skinparam defaultTextAlignment center
 frame model {
   '' top to bottom direction
   class ArtWork {
-	name: String
-	author: String
-	description: String
-	+ ArtWork(String name, String author, String description): ArtWork
+	- {field} name: String
+	- {field} author: String
+	- {field} description: String
+	- {field} dateOfProduction: String
+	+ {method} ArtWork(String n, String a, String d, Strind dc): ArtWork
   }
 
   class User {
-	id: String
-	name: String
-	password: String
-	type: UserType
-	+ User(String name, String password): User
+	- {field} id: String
+	- {field} name: String
+	- {field} password: String
+	- {field} type: UserType
+	+ {method} User(String name, String password): User
   }
 
   frame properties {
 	   class ArtworkUtil {
-		  + loadOrRetrieveArtWorks(Context context): void
-		  + saveArtworks(Context context, List<ArtWork> artworks): void
+		  + {method} retrieveArtWorks(Context ctx): void
+		  + {method} saveArtworks(Context ctx, List<ArtWork> l): void
 
 	   }
 
@@ -142,69 +148,70 @@ skinparam defaultTextAlignment center
 frame ui {
   frame activity {
 	   class MainActivity extends AppCompatActivity {
-		  _TAG: String
-		  navController: NavController
-		  options: NavOptions
-		  bar: ChipNavigationBar
-		  - setUI(): void
-		  + onCreate(Bundle bundle): void
-		  + onBackPressed(): void
-		  + onResume(): void
+		  - {field} _TAG: String
+		  - {field} navController: NavController
+		  - {field} options: NavOptions
+		  - {field} bar: ChipNavigationBar
+		  + {method} onCreate(Bundle bundle): void
+		  - {method} setUI(): void
+		  + {method} onBackPressed(): void
+		  + {method} onResume(): void
 	   }
 
 	   frame authentication {
 		   frame login {
 		       class LoginActivity extends AppCompatActivity {
-			      _TAG: String
-			      usernameEditText: EditText
-			      passwordEditText: EditText
-			      loginStatus: Boolean
-
-			      - setUI(): void
-			      - handleLogin(String u, String p): void
-			      + onCreate(Bundle bundle): void
-			      + onResume(): void
+			      - {field} _TAG: String
+			      - {field} _REQUEST_TYPE: String
+			      - {field} usernameTextInputLayout: TextInputLayout
+			      - {field} passwordTextInputLayout: TextInputLayout
+			      - {field} tokenTextInputLayout: TextInputLayout
+			      - {method} setUI(): void
+			      - {method} handleLogin(String u, String p, String t): void
+			      + {method} onCreate(Bundle bundle): void
+			      + {method} onResume(): void
 		       }
 		   }
 
 		   frame registration {
 		       class RegistrationActivity extends AppCompatActivity {
-			      _TAG: String
-			      usernameEditText: EditText
-			      passwordEditText: EditText
-			      confirmPasswordEditText: EditText
+			      - {field} _TAG: String
+			      - {field} _REQUEST_TYPE: String
+			      - {field} usernameTextInputLayout: TextInputLayout
+			      - {field} passwordTextInputLayout: TextInputLayout
+			      - {field} confirmPasswordTextInputLayout: TextInputLayout
 
-			      - setUI(): void
-			      - handleRegistration(String u, String p, String cp): void
-			      + onCreate(Bundle b): void
-			      + onBackPressed(): void
+			      - {method} setUI(): void
+			      - {method} handleRegistration(String u, String p, String cp): void
+			      + {method} onCreate(Bundle b): void
+			      + {method} onBackPressed(): void
+			      + {method} onResume(): void
 		       }
 		   }
 	   }
 
 	   frame intro {
 		   class SlideItem {
-			  title: String
-			  image: int
+			  - {field} title: String
+			  - {field} image: int
 
-			  + SlideItem(String t, int i): SlideItem
-			  + getTitle(): String
-			  + getImage(): int
-
+			  + {method} SlideItem(String t, int i): SlideItem
+			  + {method} getTitle(): String
+			  + {method} getImage(): int
 		   }
 
 		   class IntroActivity extends AppCompatActivity {
-			  - _TAG: String
-			  - pager: ViewPager
-			  - nextButton: Button
-			  - gettingStartedButton: Button
-			  - skipButton: Button
-			  - currPos: int
-			  - items: List<SlideItem>
+			  - {field} _TAG: String
+			  - {field} pager: ViewPager
+			  - {field} nextButton: Button
+			  - {field} gettingStartedButton: Button
+			  - {field} skipButton: Button
+			  - {field} currPos: int
+			  - {field} items: List<SlideItem>
 
-			  - setUI(): void
-			  - loadLastScreen(): void
-			  + onCreate(Bundle b): void
+			  + {method} onCreate(Bundle b): void
+			  - {method} setUI(): void
+			  - {method} loadLastScreen(): void
 		   }
 	   }
 
@@ -217,57 +224,97 @@ frame ui {
 
   frame adapters {
 	   class IntroAdapter extends PagerAdapter {
-		  context: Context
-		  items: List<SlideItem>
-		  + IntroAdapter(Context ctx, List<SlideItem> slides): IntroAdapter
-		  + instantiateItem(ViewGroup c, int p): Object
-		  + getCount(): int
-		  + isViewFromObject(View v, Object o): boolean
-		  + destroyItem(ViewGroup c, int pos, Object o): void
+		  - {field} context: Context
+		  - {field} items: List<SlideItem>
+		  + {method} IntroAdapter(Context ctx, List<SlideItem> s): IntroAdapter
+		  + {method} instantiateItem(ViewGroup c, int p): Object
+		  + {method} getCount(): int
+		  + {method} isViewFromObject(View v, Object o): boolean
+		  + {method} destroyItem(ViewGroup c, int pos, Object o): void
 	   }
 
-	   class ArtWorkAdapter extends PagerAdapter {
-		  - context: Context
-		  + ArtWorkAdapter(Context ctx): ArtWorkAdapter
-		  + instantiateItem(ViewGroup c, int p): Object
-		  + getCount(): int
-		  + isViewFromObject(View v, Object o): boolean
-		  + destroyItem(ViewGroup c, int p, Object o): void
+	   class ArtWorkAdapter {
+		  - {field} items: List<ArtWork>
+		  + {method} ArtWorkAdapter(List<ArtWork> l): ArtWorkAdapter
+		  + {method} useFilter(List<ArtWork> l): void
+		  + {method} onCreateViewHolder(ViewGroup v, int t): RecyclerView.ViewHolder
+		  + {method} onBindViewHolder(ViewHolder v, int t): void
+		  + {method} destroyItem(ViewGroup c, int p, Object o): void
+		  + {method} getItemCount(): int
+	   }
+
+	   class ItemSelector {
+		  - {field} clickListener: OnItemClickListener
+		  - {field} detector: GestureDetector
+		  + {method} ItemSelector(Context c, RecyclerView r, OnItemClickListener l): ItemSelector
+		  + {method} onInterceptTouchEvent(RecyclerView r, MotionEvent e): boolean
+		  + {method} onTouchEvent(RecyclerView r, MotionEvent e): boolean
+		  + {method} onRequestDisallowInterceptTouchEvent(boolean dIntercept): void
 	   }
 
 	   ArtWorkAdapter -d[hidden]-> IntroAdapter
 	   IntroAdapter -u[hidden]-> ArtWorkAdapter
+	   ItemSelector -u[hidden]-> IntroAdapter
+	   IntroAdapter -d[hidden]-> ItemSelector
+
   }
 
   frame fragment {
+
+	   class ArtWorkFragment extends Fragment {
+		  - {field} _TAG: String
+		  - {field} item: ArtWork
+		  + {field} onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + {field} onViewCreated(View v, Bundle b): void
+	   }
+
 	   class HomeFragment extends Fragment {
-		  - _TAG: String
-		  + onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
-		  + onViewCreated(View v, Bundle b): void
-		  - retrieveArtWorks(): void
+		  - {field} _TAG: String
+		  - {field} artWorks: List<ArtWork>
+		  - {field} shimmer: ShimmerFrameLayout
+		  - {field} rv: RecyclerView
+		  + {field} onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + {field} onViewCreated(View v, Bundle b): void
+		  - {field} retrieveArtWorks(String u, String p, String t): void
+		  - {field} loadView(List<ArtWork> l): void
+		  - {field} moveToSingleItemView(ArtWork a): void
 	   }
 
 	   class ProfileFragment extends Fragment {
-		  - _TAG: String
-		  - chip: Chip;
-		  - toolbar: MaterialToolbar
-
-		  + onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
-		  + onViewCreated(View v, Bundle b): void
-		  - showDialog(): void
+		  - {field} _TAG: String
+		  - {field} _REQUEST_TYPE: String
+		  - {field} selectImageLauncher: ActivityResultLauncher<Intent>
+		  - {field} profilePic: ShapeableImageView
+		  - {field} userLevel: Chip;
+		  + {field} onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + {field} onViewCreated(View v, Bundle b): void
+		  - {field} loadImageFromURI(Uri u): void
+		  - {field} bitmapToString(Bitmap b): String
+		  - {field} showAboutUsDialog(): void
+		  - {field} showUserLevelDialog(): void
+		  - {field} showTokenDialog(String t): void
+		  - {field} deleteAccountDialog(String u, String p, String t, Context ctx): void
 	   }
 
 	   class SearchFragment extends Fragment {
-		  - _TAG: String
-		  + onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
-		  + onViewCreated(View v, Bundle b): void
-		  + onPause(): void
-		  + onResume(): void
-		  + setupMenu(): void
+		  - {field} _TAG: String
+		  - {field} adapter: ArtWorkAdapter
+		  - {field} seachView: SearchView
+		  - {field} items: List<ArtWork>
+		  + {method} onCreate(Bundle b): void
+		  + {method} onCreateView(LayoutInflater i, ViewGroup vg, Bundle b): View
+		  + {method} onViewCreated(View v, Bundle b): void
+		  + {method} onPause(): void
+		  + {method} onResume(): void
+		  - {method} filter(String s): void
+		  - {field} moveToSingleItemView(ArtWork a): void
 	   }
 
 	   HomeFragment -d[hidden]-> ProfileFragment
 	   ProfileFragment -u[hidden]-> HomeFragment
+
+	   SearchFragment -d[hidden]-> ArtWorkFragment
+	   ArtWorkFragment -u[hidden]-> SearchFragment
   }
 }
 
