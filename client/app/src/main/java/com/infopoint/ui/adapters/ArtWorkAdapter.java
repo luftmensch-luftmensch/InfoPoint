@@ -21,16 +21,16 @@
 package com.infopoint.ui.adapters;
 
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.infopoint.R;
 import com.infopoint.model.ArtWork;
@@ -39,22 +39,29 @@ import java.util.List;
 
 /** Helper Adapter Class used for the {@link com.infopoint.ui.fragment.HomeFragment HomeFragment} */
 public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final List<ArtWork> items;
+    private List<ArtWork> items;
 
-    public ArtWorkAdapter(List<ArtWork> items) {
-        this.items = items;
+    public ArtWorkAdapter(List<ArtWork> items) { this.items = items; }
+
+    public void useFilter(List<ArtWork> filtered) {
+        this.items = filtered;
+        notifyDataSetChanged();
     }
 
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView image;
-        private TextView name, author, date;
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView image;
+        private final TextView name, author, date;
+
+        private final CardView card;
+
         public ViewHolder(@NonNull View v) {
             super(v);
             image = v.findViewById(R.id.art_work_card_image);
             name = v.findViewById(R.id.art_work_card_name);
             author = v.findViewById(R.id.art_work_card_author);
             date = v.findViewById(R.id.art_work_card_date);
+            card = v.findViewById(R.id.art_work_card);
         }
         void bind(ArtWork art) {
             int imageId = switch (art.getName()) {
@@ -68,6 +75,7 @@ public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 case "La Nascita di Venere" -> R.drawable.nascita_di_venere;
                 case "La Notte Stellata" -> R.drawable.notte_stellata;
                 case "La persistenza della memoria" -> R.drawable.persistenza_della_memoria;
+                case "Apollo e Dafne" -> R.drawable.apollo_e_dafne;
                 default -> R.drawable.logo_no_background;
             };
 
@@ -75,6 +83,7 @@ public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             name.setText(art.getName());
             author.setText(art.getAuthor());
             date.setText((art.getDateOfProduction().length() > 4 ? "Data di produzione: " : "Periodo di produzione: ") + art.getDateOfProduction());
+            card.startAnimation(AnimationUtils.loadAnimation(card.getContext(), R.anim.scrolling_animation));
         }
     }
 

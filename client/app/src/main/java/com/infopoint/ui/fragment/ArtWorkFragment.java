@@ -29,26 +29,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.infopoint.R;
+import com.infopoint.core.config.Constants;
 import com.infopoint.model.ArtWork;
 
 public class ArtWorkFragment extends Fragment {
     private final static String _TAG = "[ArtWorkFragment] ";
 
     private ArtWork item;
-
-
-    public ArtWorkFragment(ArtWork art) {
-        this.item = art;
-    }
 
     @Nullable
     @Override
@@ -61,12 +59,35 @@ public class ArtWorkFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
 
+        item = new ArtWork(
+                getArguments().getString(Constants.ARTWORK_ITEM_NAME),
+                getArguments().getString(Constants.ARTWORK_ITEM_AUTHOR),
+                getArguments().getString(Constants.ARTWORK_ITEM_DATE),
+                getArguments().getString(Constants.ARTWORK_ITEM_DESCRIPTION)
+        );
+
         MaterialToolbar toolbar = view.findViewById(R.id.top_app_bar_art_work_item);
-        toolbar.setNavigationOnClickListener(click -> Log.d(_TAG, "Navigation Icon clicked"));
-
         toolbar.setTitle(item.getName());
+        toolbar.setOnClickListener(click -> Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_home, null, null));
 
-        ShapeableImageView image = view.findViewById(R.id.art_work_item_image_view);
+        int imageId = switch (item.getName()) {
+            case "Amore e Psiche" -> R.drawable.amore_e_psiche;
+            case "Cristo Velato" -> R.drawable.cristo_velato;
+            case "Il David" -> R.drawable.david;
+            case "Gli Amanti" -> R.drawable.gli_amanti;
+            case "Il Bacio" -> R.drawable.il_bacio;
+            case "La Danza" -> R.drawable.la_danza;
+            case "La Giuditta" -> R.drawable.la_giuditta;
+            case "La Nascita di Venere" -> R.drawable.nascita_di_venere;
+            case "La Notte Stellata" -> R.drawable.notte_stellata;
+            case "La persistenza della memoria" -> R.drawable.persistenza_della_memoria;
+            case "Apollo e Dafne" -> R.drawable.apollo_e_dafne;
+            default -> R.drawable.logo_no_background;
+        };
+
+        ImageView image = view.findViewById(R.id.art_work_item_image_view);
+
+        Glide.with(image.getContext()).load(imageId).centerCrop().into(image);
 
         TextView author = view.findViewById(R.id.art_work_item_author_text_view);
         TextView description = view.findViewById(R.id.art_work_item_description_text_view);

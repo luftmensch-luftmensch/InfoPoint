@@ -28,17 +28,41 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.infopoint.R;
+import com.infopoint.core.config.Constants;
+import com.infopoint.model.ArtWork;
+import com.infopoint.model.properties.ArtworkUtil;
+import com.infopoint.ui.adapters.ArtWorkAdapter;
+import com.infopoint.ui.adapters.ItemSelector;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 /** Fragment used to perform search operation about a specific {@link com.infopoint.model.ArtWork ArtWork} */
 public class SearchFragment extends Fragment {
     private final static String _TAG = "[SearchFragment] ";
+
+    private ArtWorkAdapter adapter;
+
+    private SearchView searchView;
+    private List<ArtWork> itemsRetrieved;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -54,7 +78,82 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
-        setupMenu();
+
+        itemsRetrieved = ArtworkUtil.retrieveArtWorks(requireContext());
+
+        MaterialToolbar toolbar = view.findViewById(R.id.top_app_bar_search);
+        toolbar.setOnMenuItemClickListener(item -> {
+            Log.d(_TAG, "Item: " + item);
+            return false;
+        });
+
+
+        searchView = view.findViewById(R.id.search_fragment_search_view);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) { return false; }
+            @Override
+            public boolean onQueryTextChange(String text) {
+                filter(text);
+                return false;
+            }
+        });
+
+        RecyclerView rv = view.findViewById(R.id.recycler_view_search);
+        adapter = new ArtWorkAdapter(itemsRetrieved);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv.setAdapter(adapter);
+
+        // Add a way to show the single item
+        rv.addOnItemTouchListener(
+                new ItemSelector(requireContext(), rv, new ItemSelector.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Log.d(_TAG, "Artwork selected: " + itemsRetrieved.get(position).getName());
+                        moveToSingleItemView(itemsRetrieved.get(position));
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        Toasty.info(requireContext(), "Per visualizzare le informazioni sull'opera " +
+                                        itemsRetrieved.get(position).getName() +
+                                        " clicca senza tenere premuto",
+                                Toast.LENGTH_SHORT, true).show();
+
+                    }
+                })
+        );
+
+    }
+
+
+    private void filter(String s) {
+        List<ArtWork> filtered = new ArrayList<>();
+        for (ArtWork a : itemsRetrieved) {
+            if (a.getName().toLowerCase().contains(s.toLowerCase()))
+                filtered.add(a);
+            Log.d(_TAG, "NAME: " + a.getName());
+        }
+
+        if (filtered.isEmpty()) {
+            Toasty.info(requireContext(), "La tua ricerca non ha prodotto risultati!\nProva con altre parole chiave",
+                    Toast.LENGTH_SHORT, true).show();
+        } else {
+            adapter.useFilter(filtered);
+        }
+    }
+
+    private void moveToSingleItemView(ArtWork artWork) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ARTWORK_ITEM_NAME, artWork.getName());
+        bundle.putString(Constants.ARTWORK_ITEM_AUTHOR, artWork.getAuthor());
+        bundle.putString(Constants.ARTWORK_ITEM_DATE, artWork.getDateOfProduction());
+        bundle.putString(Constants.ARTWORK_ITEM_DESCRIPTION, artWork.getDescription());
+
+        NavController navigator = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navigator.navigate(R.id.nav_art_work_item, bundle, null);
     }
 
     @Override
@@ -63,19 +162,4 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() { super.onResume(); }
 
-    private void setupMenu() {
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-                inflater.inflate(R.menu.search_menu, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem item) {
-                Log.d(_TAG, "Item: " + item);
-                return true;
-            }
-        });
-
-    }
 }

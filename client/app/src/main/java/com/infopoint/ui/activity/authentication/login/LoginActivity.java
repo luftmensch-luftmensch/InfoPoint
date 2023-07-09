@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private final static String _TAG = "[LoginActivity] ";
     private final static String _REQUEST_TYPE = "LOGIN";
 
-    private TextInputLayout usernameTextInputLayout, passwordTextInputLayout;
+    private TextInputLayout usernameTextInputLayout, passwordTextInputLayout, tokenTextInputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     private void setUI() {
         usernameTextInputLayout = findViewById(R.id.login_username_text_input_layout);
         passwordTextInputLayout = findViewById(R.id.login_password_text_input_layout);
+        tokenTextInputLayout = findViewById(R.id.login_token_text_input_layout);
 
         Button loginButton = findViewById(R.id.login_button);
         Button forgotPassword = findViewById(R.id.login_forgot_password_button);
@@ -77,7 +78,14 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
-        loginButton.setOnClickListener(view -> handleLogin(usernameTextInputLayout.getEditText().getText().toString(), passwordTextInputLayout.getEditText().getText().toString()));
+        loginButton.setOnClickListener(view -> {
+            Log.d(_TAG, "Starting login request");
+            handleLogin(
+                    usernameTextInputLayout.getEditText().getText().toString(),
+                    passwordTextInputLayout.getEditText().getText().toString(),
+                    tokenTextInputLayout.getEditText().getText().toString()
+            );
+        });
 
         forgotPassword.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -95,14 +103,19 @@ public class LoginActivity extends AppCompatActivity {
         NetworkManager.checkConnection(this);
     }
 
-    private void handleLogin(String username, String password) {
+    private void handleLogin(String username, String password, String token) {
         if (!Validator.validate(username) || !Validator.validate(password)) {
             Toasty.error(this, "Attenzione!\nI campi inseriti non rispettano i requisiti richiesti!", Toasty.LENGTH_LONG).show();
             return;
         }
 
+        if (token == null || token.isEmpty()) {
+            Toasty.error(this, "Attenzione!\nIl token di autenticazione non può essere nullo!", Toasty.LENGTH_LONG).show();
+            return;
+        }
+
         Thread task = new Thread(() -> {
-            if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, "", this)) {
+            if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, token, this)) {
                 Log.d(_TAG, "Successfull registration! Moving to HomePage...");
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finishAffinity();

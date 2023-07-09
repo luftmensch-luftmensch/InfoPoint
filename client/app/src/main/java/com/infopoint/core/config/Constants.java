@@ -46,6 +46,11 @@ public class Constants {
     /** Access key for the artworks on the devices */
     public static String ARTWORKS_LIST = "ARTWORKS_LIST";
 
+    public static String ARTWORK_ITEM_NAME = "ARTWORK_ITEM_NAME";
+    public static String ARTWORK_ITEM_AUTHOR = "ARTWORK_ITEM_AUTHOR";
+    public static String ARTWORK_ITEM_DATE = "ARTWORK_ITEM_DATE";
+    public static String ARTWORK_ITEM_DESCRIPTION = "ARTWORK_ITEM_DESCRIPTION";
+
     /** Access key for the user username */
     public static String USERNAME = "USERNAME";
 
@@ -55,5 +60,9 @@ public class Constants {
     /** Access key for the user token */
     public static String TOKEN = "TOKEN";
 
+    /** Access key for the user profile pic */
     public static String PROFILE_PIC = "PROFILE_PIC";
+
+    /** Access key for the user level */
+    public static String LEVEL = "LEVEL";
 }

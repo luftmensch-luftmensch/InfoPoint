@@ -31,6 +31,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -118,6 +120,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Log.d(_TAG, "Artwork selected: " + list.get(position).getName());
+                        moveToSingleItemView(list.get(position));
                     }
 
                     @Override
@@ -130,5 +133,16 @@ public class HomeFragment extends Fragment {
                     }
                 })
         );
+    }
+
+    private void moveToSingleItemView(ArtWork artWork) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ARTWORK_ITEM_NAME, artWork.getName());
+        bundle.putString(Constants.ARTWORK_ITEM_AUTHOR, artWork.getAuthor());
+        bundle.putString(Constants.ARTWORK_ITEM_DATE, artWork.getDateOfProduction());
+        bundle.putString(Constants.ARTWORK_ITEM_DESCRIPTION, artWork.getDescription());
+
+        NavController navigator = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navigator.navigate(R.id.nav_art_work_item, bundle, null);
     }
 }

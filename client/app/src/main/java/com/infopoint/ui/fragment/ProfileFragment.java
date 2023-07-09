@@ -20,7 +20,7 @@
 
 package com.infopoint.ui.fragment;
 
-import android.accessibilityservice.GestureDescription;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +31,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -45,20 +47,24 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.infopoint.R;
 import com.infopoint.core.config.Constants;
+import com.infopoint.core.networking.NetworkManager;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.ui.activity.MainActivity;
+import com.infopoint.ui.activity.authentication.login.LoginActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import es.dmoral.toasty.Toasty;
+
 /** Fragment used to show info about the current user logged */
 public class ProfileFragment extends Fragment {
     private final static String _TAG = "[ProfileFragment] ";
-    private Chip chip;
-    private MaterialToolbar toolbar;
+    private final String _REQUEST_TYPE = "DELETE";
 
     private ActivityResultLauncher<Intent> selectImageLauncher;
-    private ShapeableImageView selectImage, profilePic;
+    private ShapeableImageView profilePic;
+    private Chip userLevel;
 
     @Nullable
     @Override
@@ -70,31 +76,57 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
-        chip = view.findViewById(R.id.about_us_chip);
-        chip.setOnClickListener(click -> showDialog());
 
-        toolbar = view.findViewById(R.id.top_app_bar_profile);
+        userLevel = view.findViewById(R.id.profile_fragment_user_level);
+
+        Chip retrieveToken = view.findViewById(R.id.profile_fragment_retrieve_token);
+        retrieveToken.setOnClickListener(click -> showTokenDialog(StorageManager.with(requireContext()).read(Constants.TOKEN, "")));
+
+        Chip deleteUser = view.findViewById(R.id.profile_fragment_delete_user);
+        deleteUser.setOnClickListener(click -> deleteAccountDialog(
+                StorageManager.with(requireContext()).read(Constants.USERNAME, ""),
+                StorageManager.with(requireContext()).read(Constants.PASSWORD, ""),
+                StorageManager.with(requireContext()).read(Constants.USERNAME, ""),
+                requireContext()
+        ));
+
+
+        if (StorageManager.with(requireContext()).read(Constants.LEVEL, "").equals("")) {
+            userLevel.setText(R.string.edit_user_level);
+        } else {
+            userLevel.setText(StorageManager.with(requireContext()).read(Constants.LEVEL, ""));
+        }
+        userLevel.setOnClickListener(click -> showUserLevelDialog());
+
+        MaterialToolbar toolbar = view.findViewById(R.id.top_app_bar_profile);
 
         toolbar.setOnMenuItemClickListener(item -> {
-            new MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.confirm_logout)
-                    .setMessage(R.string.confirm_logout_body)
-                    .setPositiveButton(R.string.confirm_request, (dialogInterface, i) -> {
-                        Log.d(_TAG, "Logout request confirmed");
-                        StorageManager.with(requireContext()).clear();
-                        // TODO: Handle backstack clear
-                        MainActivity main = (MainActivity) requireActivity();
-                        main.navController.navigate(R.id.nav_logout);
+            if (item.getItemId() == R.id.menu_item_info) {
+                showAboutUsDialog();
+            } else if (item.getItemId() == R.id.menu_item_exit) {
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.confirm_logout)
+                        .setMessage(R.string.confirm_logout_body)
+                        .setPositiveButton(R.string.confirm_request, (dialogInterface, i) -> {
+                            Log.d(_TAG, "Logout request confirmed");
+                            StorageManager.with(requireContext()).clear();
+                            MainActivity main = (MainActivity) requireActivity();
+                            main.navController.navigate(R.id.nav_logout);
+                        })
+                        .setNegativeButton(R.string.cancel_request, (dialogInterface, i) -> Log.d(_TAG, "Logout request cancelled"))
+                        .show();
+            } else {
+                Log.d(_TAG, "Unknown item clicked");
+            }
 
-                    })
-                    .setNegativeButton(R.string.cancel_request, (dialogInterface, i) -> Log.d(_TAG, "Logout request cancelled"))
-                    .show();
             return false;
         });
 
         profilePic = view.findViewById(R.id.profile_fragment_profile_photo);
+        TextView username = view.findViewById(R.id.profile_fragment_username_text_view);
+        username.setText(StorageManager.with(requireContext()).read(Constants.USERNAME, ""));
 
-        selectImage = view.findViewById(R.id.profile_fragment_change_photo);
+        ShapeableImageView selectImage = view.findViewById(R.id.profile_fragment_change_photo);
 
         if (StorageManager.with(requireContext()).contains(Constants.PROFILE_PIC))
             profilePic.setImageBitmap(stringToBitmap(StorageManager.with(requireContext()).read(Constants.PROFILE_PIC, Constants.PROFILE_PIC)));
@@ -139,7 +171,7 @@ public class ProfileFragment extends Fragment {
     }
 
     // Custom dialog used to show Authors info & Github links
-    private void showDialog() {
+    private void showAboutUsDialog() {
         Log.d(_TAG, "Calling About Us dialog");
         final BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         dialog.setContentView(R.layout.about_us_modal);
@@ -154,5 +186,61 @@ public class ProfileFragment extends Fragment {
             requireActivity().startActivity(Intent.createChooser(intent, "Seleziona client di posta elettronica"));
         });
         dialog.show();
+    }
+
+    private void showUserLevelDialog() {
+        Log.d(_TAG, "Calling User Level dialog");
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder
+                .setTitle(R.string.edit_user_level)
+                .setItems(R.array.user_level_options, (dialog, which) -> {
+                    String[] value = this.getResources().getStringArray(R.array.user_level_options);
+                    StorageManager.with(requireContext()).write(Constants.LEVEL, value[which]);
+                    userLevel.setText(value[which]);
+                })
+                .setNegativeButton(R.string.cancel_request, (dialogInterface, i) -> Log.d(_TAG, "Logout request cancelled"))
+                .create();
+        builder.show();
+    }
+
+    private void showTokenDialog(String token) {
+        Log.d(_TAG, "Calling Token dialog");
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog__Center);
+        builder
+                .setTitle(R.string.token_showed)
+                .setMessage(getString(R.string.show_token, token))
+                .setPositiveButton(R.string.confirm_request, (dialogInterface, i) -> Log.d(_TAG, "Hide token showed"))
+                .create();
+        builder.show();
+
+    }
+
+    private void deleteAccountDialog(String username, String password, String token, Context ctx) {
+        Log.d(_TAG, "Calling Delete Account dialog");
+
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog__Center);
+        builder
+                .setTitle(R.string.confirm_delete_account)
+                .setMessage(R.string.confirm_delete_account_body)
+                .setPositiveButton(R.string.confirm_request, (dialogInterface, i) -> {
+                    Log.d(_TAG, "Logout request confirmed");
+
+                    Thread task = new Thread(() -> {
+                        if (NetworkManager.user_operation(_REQUEST_TYPE, username, password, token, ctx)) {
+                            Log.d(_TAG, "Successfull delete! Moving to Login...");
+                            StorageManager.with(requireContext()).clear();
+                            startActivity(new Intent(requireActivity(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        } else {
+                            requireActivity().runOnUiThread(() ->
+                                    Toasty.info(requireContext(), "Attenzione! Non siamo riusciti a soddisfare la richiesta\nRiprova più tardi",
+                                            Toast.LENGTH_LONG, true).show());
+                        }
+                    });
+                    task.setPriority(10);
+                    task.start();
+                })
+                .setNegativeButton(R.string.cancel_request, (dialogInterface, i) -> Toasty.info(requireContext(), "Siamo contenti che ci hai ripensato!", Toast.LENGTH_SHORT, true).show())
+                .create();
+        builder.show();
     }
 }

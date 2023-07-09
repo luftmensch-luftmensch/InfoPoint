@@ -25,7 +25,7 @@
     <!-- Bottom Bar -->
     <string name="home">Home</string>
     <string name="profile">Profilo</string>
-    <string name="search">Ricerca</string>
+    <string name="search">Effettua una ricerca</string>
     <string name="starred">Preferiti</string>
 
     <!-- AUTHENTICATION -->
@@ -191,6 +191,9 @@
     <string name="confirm_logout">Sei sicuro di voler uscire?</string>
     <string name="confirm_logout_body">In caso di conferma dovrai effettuare nuovamente l\'accesso per poter utilizzare l\'app!</string>
 
+    <string name="confirm_delete_account">Sei sicuro di voler cancellare l\' account?</string>
+    <string name="confirm_delete_account_body">In caso di conferma dovrai creare un nuovo account per effettuare l\'accesso ed utilizzare l\'app!</string>
+
     <string name="confirm_request">CONFERMA</string>
     <string name="cancel_request">ANNULLA</string>
     <string name="find_by_author">Autori</string>
@@ -206,4 +209,14 @@
     <string name="art_work_title">Titolo Opera</string>
     <string name="more_action">Scopri</string>
     <string name="art_work_date">Data Creazione</string>
+    <string name="hint_token">Token</string>
+
+    <string name="search_by_name">Ricerca per Nome</string>
+    <string name="search_by_author">Ricerca per Autore</string>
+    <string name="search_by_date">Ricerca per Data</string>
+    <string name="placeholder_retrieve_token">Recupera Token</string>
+    <string name="placeholder_delete_user">Elimina Account</string>
+    <string name="edit_user_level">Modifica il tuo livello</string>
+    <string name="token_showed">Token di Autenticazione</string>
+    <string name="show_token">Il tuo token è <i>%1$s!</i> Non mostrarlo a nessuno!</string>
 </resources>

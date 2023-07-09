@@ -33,7 +33,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_profile"
             app:title="@string/profile"
-            app:menu="@menu/menu_exit"
+            app:menu="@menu/exit_menu"
             style="@style/InfoPointMaterialToolBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -48,15 +48,15 @@
         <!-- Profile pic -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_fragment_profile_photo"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:layout_marginTop="14dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="20dp"
             android:scaleType="centerCrop"
             android:src="@drawable/avatar_icon"
-            app:layout_constraintBottom_toTopOf="@+id/textview_username"
+            app:layout_constraintBottom_toTopOf="@+id/profile_fragment_username_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/top_guideline"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
@@ -78,7 +78,7 @@
 
         <!-- Username -->
         <TextView
-            android:id="@+id/textview_username"
+            android:id="@+id/profile_fragment_username_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -86,50 +86,81 @@
             android:maxLines="1"
             android:text="@string/placeholder_username"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintBottom_toTopOf="@id/about_us_chip"
             app:layout_constraintEnd_toEndOf="@id/profile_fragment_profile_photo"
             app:layout_constraintStart_toStartOf="@id/profile_fragment_profile_photo"
             app:layout_constraintTop_toBottomOf="@id/profile_fragment_profile_photo" />
 
         <!-- User level -->
-        <TextView
-            android:id="@+id/textview_user_level"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/profile_fragment_user_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/placeholder_user_level"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintBottom_toTopOf="@id/about_us_chip"
-            app:layout_constraintEnd_toEndOf="@id/textview_username"
-            app:layout_constraintStart_toStartOf="@id/textview_username"
-            app:layout_constraintTop_toBottomOf="@id/textview_username" />
+            android:text="@string/placeholder_user_level"
+            app:layout_constraintEnd_toEndOf="@id/profile_fragment_username_text_view"
+            app:layout_constraintStart_toStartOf="@id/profile_fragment_username_text_view"
+            app:layout_constraintTop_toBottomOf="@id/profile_fragment_username_text_view" />
 
-        <!-- About us -->
+        <!-- Retrieve Token -->
         <com.google.android.material.chip.Chip
-            android:id="@+id/about_us_chip"
+            android:id="@+id/profile_fragment_retrieve_token"
             style="@style/Widget.Material3.Chip.Assist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@string/chip_text_about"
+            android:text="@string/placeholder_retrieve_token"
             app:chipIcon="@drawable/about_us_icon"
             app:ensureMinTouchTargetSize="true"
-            app:layout_constraintBottom_toTopOf="@+id/profile_fragment_view_pager_starred"
-            app:layout_constraintEnd_toEndOf="@id/textview_user_level"
-            app:layout_constraintStart_toStartOf="@id/textview_user_level"
-            app:layout_constraintTop_toBottomOf="@id/textview_user_level" />
+            app:layout_constraintStart_toStartOf="@id/left_vertical_guideline"
+            app:layout_constraintTop_toBottomOf="@id/profile_fragment_user_level" />
 
-        <!-- View pager for the art work starred by the user -->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/profile_fragment_view_pager_starred"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/about_us_chip" />
+        <!-- Customize Level -->
+
+        <!-- Delete User -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/profile_fragment_delete_user"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/md_theme_dark_error"
+            android:textColor="@color/md_theme_dark_error"
+            android:text="@string/placeholder_delete_user"
+            app:chipIcon="@drawable/delete_user_icon"
+            app:ensureMinTouchTargetSize="true"
+            app:layout_constraintEnd_toStartOf="@id/right_vertical_guideline"
+            app:layout_constraintTop_toBottomOf="@id/profile_fragment_user_level" />
+
+        <!-- GUIDELINES AND BARRIERS -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_vertical_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_vertical_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

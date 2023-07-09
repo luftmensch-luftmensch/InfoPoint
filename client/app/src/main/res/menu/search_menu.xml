@@ -18,12 +18,29 @@
   ~   First written in 19/6/2023 at 15:21
   ~
   -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
-    <item
-        android:id="@+id/menu_item_search"
-        android:icon="@drawable/search_icon"
-        android:title="@string/search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView" />
+        <group>
+                <item
+                    android:id="@+id/search_menu_find_by_name"
+                    android:icon="@drawable/search_icon"
+                    android:title="@string/search_by_name"
+                    android:checkable="true"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_menu_find_by_author"
+                    android:icon="@drawable/search_icon"
+                    android:title="@string/search_by_author"
+                    android:checkable="true"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_menu_find_by_date"
+                    android:icon="@drawable/search_icon"
+                    android:title="@string/search_by_date"
+                    android:checkable="true"
+                    app:showAsAction="never" />
+        </group>
 </menu>

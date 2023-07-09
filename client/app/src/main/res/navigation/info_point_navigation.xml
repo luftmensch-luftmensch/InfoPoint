@@ -29,7 +29,28 @@
         android:name="com.infopoint.ui.fragment.HomeFragment"
         android:label="@string/navigation_menu_home"
         tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_nav_home_to_art_work_item"
+            app:destination="@id/nav_art_work_item"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_art_work_item"
+            app:popUpToInclusive="true" />
 
+    </fragment>
+
+    <!-- ArtWork Item -->
+    <fragment android:id="@+id/nav_art_work_item"
+        android:name="com.infopoint.ui.fragment.ArtWorkFragment"
+        android:label="@string/navigation_menu_home"
+        tools:layout="@layout/art_work_details">
+        <action
+            android:id="@+id/action_art_work_item_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <!-- Search for a specific artwork -->
@@ -44,7 +65,13 @@
             app:exitAnim="@anim/slide_out_right"
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true" />
-
+        <action
+            android:id="@+id/action_nav_search_to_art_work_item"
+            app:destination="@id/nav_art_work_item"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_art_work_item"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <!-- User profile -->
