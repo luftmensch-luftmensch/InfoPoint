@@ -111,7 +111,6 @@
 
 
 % Define icons
-% TODO: Add icons
 \makeatletter
 	\newfontfamily\IcoMoon{IcoMoon}[
 		Path = content/fonts/,
@@ -501,8 +500,6 @@
 
 			% \node at ([yshift=-0.31cm, xshift=-0.170cm]0.77, 0.40) [align=center, anchor=north east, inner sep=0pt, outer sep=0pt]
 			% 	{\color{primary!10!black}\itshape\fontsize{18}{12}\selectfont\Gobold ID Gruppo: <TODO>};
-			% \node at ([yshift=-0.25cm, xshift=-0.125cm]0.77, 0.40) [align=center, anchor=north east, inner sep=0pt, outer sep=0pt]
-			% 	{\color{primary!85!white}\itshape\fontsize{18}{12}\selectfont\Gobold ID Gruppo: <TODO>};
 
 			%% Authors
 			% Author 1

@@ -81,9 +81,13 @@ La piattaforma mette a disposizione per gli utenti la possibilità di registrars
 #+ATTR_REVEAL: :frag (appear)
 Una volta registrati gli utenti avranno la possibilità di:
 #+ATTR_REVEAL: :frag (appear)
-+ Visualizzare le informazioni di una particolare installazione potendo scegliere il livello di dettaglio (accedendo a una descrizione dell'opera più o meno complessa);
++ Visualizzare le informazioni di una particolare installazione avendo modo di poterne conoscere segreti e informazioni;
 + Visualizzare tutte le installazioni presenti sulla piattaforma sulla HomePage;
-+ Possibilità di aggiungere ai preferiti le installazioni piaciute;
++ Possibilità di ricercare un'opera;
++ Accedere al proprio profilo, potendo accedere alle seguenti funzionalità
+  + Recupero del token di autenticazione necessario all'utilizzo della piattaforma;
+  + Personalizzazione del proprio livello;
+  + Gestione dell'account (Logout ed Eliminazione dell'account);
 ** Tecnologie utilizzate
 :PROPERTIES:
 :CUSTOM_ID: Tecnologie utilizzate
@@ -169,6 +173,29 @@ services:
      retries: 5
 </code></pre>
 #+end_export
+** Strumenti e librerie utilizzate
+:PROPERTIES:
+:CUSTOM_ID: Strumenti e librerie utilizzate
+:END:
+#+ATTR_REVEAL: :frag (appear)
+*** Server
+:PROPERTIES:
+:CUSTOM_ID: Server
+:END:
+#+ATTR_REVEAL: :frag (appear)
+Per la strutturazione del server si è scelto di fare largo uso di
+
+
+#+ATTR_REVEAL: :frag (appear)
+System-call *C-POSIX* in modo da gestire un *control-flow* in maniera efficiente e sicura, evitando spiacevoli side-effect e rispettando le *Good pratices della programmazione* in questo linguaggio
+
+#+ATTR_REVEAL: :frag (appear)
+A questo si aggiunge l'utilizzo per la memorizzazione dei dati si è scelto di fare un approccio di tipo *NO-SQL*, più elastico e scalabile rispetto ad una soluzione di tipo relazionale.
+
+#+ATTR_REVEAL: :frag (appear)
+Si è inoltre scelto di non fare uso di librerie esterne, che altro non sono che *syntactic sugar*. In questo modo si ha una maggiore gestione del flusso di controllo durante l'esecuzione del server.
+*** Client
+Analogamente alle scelte effettuate per il server anche per il client si è fatto largo uso di funzioni personali che, come ci si aspettava, hanno reso di più semplice gestione il control-flow dell'applicazione
 ** Demo
 :PROPERTIES:
 :CUSTOM_ID: Demo

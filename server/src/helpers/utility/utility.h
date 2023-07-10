@@ -24,10 +24,6 @@
     size_t count_occurence(const char*, const char*);
     // int count_occurence(const char*, const char*, bool);
 
-    /* Strip a given delimeter from a given buffer */
-    /* TODO: Change return type */
-    void strip_data(char*, const char*);
-
     /* Return the current timestamp in milliseconds */
     long long current_timestamp();
 
@@ -55,5 +51,4 @@
       ```
     */
     char* concatenate(int, ...);
-
 #endif

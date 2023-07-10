@@ -321,7 +321,7 @@ payload_t* parse_bson_as_artwork(const bson_t* document) {
   if (bson_iter_init(&iter, document)) {
     while(bson_iter_next(&iter)) {
       const bson_value_t* value = bson_iter_value(&iter);
-      if (strcmp(bson_iter_key(&iter), "_id") == 0) { /* TODO: Use this? */
+      if (strcmp(bson_iter_key(&iter), "_id") == 0) { /* No useful usage atm. Leaving for possible future updates */
 
       } else if (strcmp(bson_iter_key(&iter), "name") == 0) {
 	art->name = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));
@@ -364,7 +364,7 @@ payload_t* parse_bson_as_user(const bson_t* document) {
   if (bson_iter_init(&iter, document)) {
     while(bson_iter_next(&iter)) {
       const bson_value_t* value = bson_iter_value(&iter);
-      if (strcmp(bson_iter_key(&iter), "_id") == 0) { /* TODO: Use this? */
+      if (strcmp(bson_iter_key(&iter), "_id") == 0) { /* No useful usage atm. Leaving for possible future updates */
 
       } else if (strcmp(bson_iter_key(&iter), "name") == 0) {
 	u->name = malloc(sizeof(char) * (strlen(value->value.v_utf8.str) + 1));

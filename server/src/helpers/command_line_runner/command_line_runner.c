@@ -19,7 +19,7 @@
 const char *argp_program_version = "InfoPoint 1.0.0";
 
 // Argp need to find a email address string to customize its content
-const char *argp_program_bug_address = {"<" ANSI_COLOR_BRED "https://github.com/luftmensch-luftmensch/InfoPoint" ANSI_COLOR_RESET ">"};
+const char *argp_program_bug_address = {ANSI_COLOR_BRED "https://github.com/luftmensch-luftmensch/InfoPoint" ANSI_COLOR_RESET};
 
 // Argp documentation string that will be displayed in the help section.
 static char info_point_doc[] = { 
@@ -27,8 +27,8 @@ static char info_point_doc[] = {
 
   "\v" ANSI_COLOR_BGREEN "AUTHORS:\n" ANSI_COLOR_RESET
   "\tWritten by Valentino Bocchetti, Dario Morace and Lucia Brando\n"
-  "\vFor additional documentation please refers to " 
-  "<" ANSI_COLOR_BBLUE "https://TODO.com" ANSI_COLOR_RESET ">"
+  "\vFor additional documentation please refers to\n"
+  ANSI_COLOR_BLUE "\thttps://github.com/luftmensch-luftmensch/InfoPoint" ANSI_COLOR_RESET "\n"
 };
 
 /* The options we understand. */

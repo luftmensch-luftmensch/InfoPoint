@@ -88,9 +88,16 @@ La piattaforma mette a disposizione per gli utenti la possibilità di registrars
 Una volta registrati gli utenti avranno la possibilità di:
 </p>
 <ul>
-<li class="fragment appear">Visualizzare le informazioni di una particolare installazione potendo scegliere il livello di dettaglio (accedendo a una descrizione dell'opera più o meno complessa);</li>
+<li class="fragment appear">Visualizzare le informazioni di una particolare installazione avendo modo di poterne conoscere segreti e informazioni;</li>
 <li class="fragment appear">Visualizzare tutte le installazioni presenti sulla piattaforma sulla HomePage;</li>
-<li class="fragment appear">Possibilità di aggiungere ai preferiti le installazioni piaciute;</li>
+<li class="fragment appear">Possibilità di ricercare un'opera;</li>
+<li class="fragment appear">Accedere al proprio profilo, potendo accedere alle seguenti funzionalità
+<ul>
+<li>Recupero del token di autenticazione necessario all'utilizzo della piattaforma;</li>
+<li>Personalizzazione del proprio livello;</li>
+<li>Gestione dell'account (Logout ed Eliminazione dell'account);</li>
+
+</ul></li>
 
 </ul>
 </section>
@@ -210,6 +217,31 @@ services:
      timeout: 10s
      retries: 5
 </code></pre>
+</section>
+<section id="slide-Strumenti e librerie utilizzate">
+<h3 id="Strumenti e librerie utilizzate">Strumenti e librerie utilizzate</h3>
+</section>
+<section id="slide-Server">
+<h4 id="Server">Server</h4>
+<p class="fragment (appear)">
+Per la strutturazione del server si è scelto di fare largo uso di:
+</p>
+
+</section>
+<section id="slide-Server-split">
+<ul>
+<li>Good pratices nella programmazione facendo utilizzo delle system-call <b>C-POSIX</b> in modo da gestire un <b>control-flow</b> in maniera efficiente e sicura, evitando spiacevoli side-effect</li>
+
+</ul>
+</section>
+<section id="slide-Server-split">
+<ul>
+<li>Good pratices nella programmazione facendo utilizzo delle system-call <b>C-POSIX</b> in modo da gestire un <b>control-flow</b> in maniera efficiente e sicura, evitando spiacevoli side-effect</li>
+
+</ul>
+</section>
+<section id="slide-org35f1b44">
+<h4 id="org35f1b44">Client</h4>
 </section>
 <section id="slide-Demo">
 <h3 id="Demo">Demo</h3>
