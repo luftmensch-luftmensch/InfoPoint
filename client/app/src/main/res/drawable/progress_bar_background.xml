@@ -21,6 +21,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:radius="100dp" />
 
-    <!-- TODO: Update colors -->
     <solid android:color="@color/cardview_light_background" />
 </shape>

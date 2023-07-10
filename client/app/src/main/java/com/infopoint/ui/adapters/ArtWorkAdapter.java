@@ -21,6 +21,7 @@
 package com.infopoint.ui.adapters;
 
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             date = v.findViewById(R.id.art_work_card_date);
             card = v.findViewById(R.id.art_work_card);
         }
+        @SuppressLint("SetTextI18n")
         void bind(ArtWork art) {
             int imageId = switch (art.getName()) {
                 case "Amore e Psiche" -> R.drawable.amore_e_psiche;

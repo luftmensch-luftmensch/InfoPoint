@@ -35,8 +35,8 @@
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_info_point_logo"
-        android:roundIcon="@mipmap/ic_info_point_logo"
+        android:icon="@mipmap/info_point_ic_launcher"
+        android:roundIcon="@mipmap/info_point_ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.InfoPoint"
@@ -56,13 +56,10 @@
         <!-- Authentication -->
         <activity
             android:name=".ui.activity.authentication.login.LoginActivity"
-            android:screenOrientation="fullSensor"
-            />
-        <!-- sensorPortrait -->
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".ui.activity.authentication.registration.RegistrationActivity"
-            android:screenOrientation="fullSensor"
-            />
+            android:screenOrientation="fullSensor" />
 
         <!-- Intro -->
         <activity android:name=".ui.activity.intro.IntroActivity"

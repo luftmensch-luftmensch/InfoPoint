@@ -36,7 +36,7 @@
     <style name="InfoPointLogo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:src">@mipmap/ic_info_point_logo</item>
+        <item name="android:src">@mipmap/info_point_ic_launcher</item>
     </style>
 
     <style name="InfoPointMaterialToolBar">

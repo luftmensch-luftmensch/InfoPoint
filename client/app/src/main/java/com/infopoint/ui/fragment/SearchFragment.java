@@ -23,9 +23,6 @@ package com.infopoint.ui.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -33,8 +30,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -60,7 +55,6 @@ public class SearchFragment extends Fragment {
 
     private ArtWorkAdapter adapter;
 
-    private SearchView searchView;
     private List<ArtWork> itemsRetrieved;
 
     @Override
@@ -88,7 +82,7 @@ public class SearchFragment extends Fragment {
         });
 
 
-        searchView = view.findViewById(R.id.search_fragment_search_view);
+        SearchView searchView = view.findViewById(R.id.search_fragment_search_view);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

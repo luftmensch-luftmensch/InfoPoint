@@ -42,10 +42,10 @@ public class ItemSelector implements RecyclerView.OnItemTouchListener {
         clickListener = listener;
         detector = new GestureDetector(ctx, new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onSingleTapUp(MotionEvent e) { return true; }
+            public boolean onSingleTapUp(@NonNull MotionEvent e) { return true; }
 
             @Override
-            public void onLongPress(MotionEvent e) {
+            public void onLongPress(@NonNull MotionEvent e) {
                 View child = rv.findChildViewUnder(e.getX(), e.getY());
                 if (child != null && clickListener != null) {
                     clickListener.onLongItemClick(child, rv.getChildAdapterPosition(child));

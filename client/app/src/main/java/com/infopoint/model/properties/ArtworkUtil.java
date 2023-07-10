@@ -20,8 +20,6 @@
 
 package com.infopoint.model.properties;
 
-import static com.infopoint.core.networking.NetworkManager.retrieveArtwork;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -32,10 +30,7 @@ import com.infopoint.core.config.Constants;
 import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.model.ArtWork;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /** Utility class used to perform operation on artwork (retrieve, load, ...) */

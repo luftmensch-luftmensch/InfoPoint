@@ -39,7 +39,6 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /** Utility class used to perform Network operations */
 public class NetworkManager {

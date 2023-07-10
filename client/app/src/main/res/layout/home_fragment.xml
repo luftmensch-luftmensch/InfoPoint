@@ -32,7 +32,6 @@
         app:liftOnScroll="true"
         app:liftOnScrollTargetViewId="@id/recycler_view_home">
 
-        <!-- TODO: Check for usage of menu -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_home"
             app:title="@string/home"

@@ -38,31 +38,31 @@ public class Constants {
     /** Delimiter used to distinguish items iside a block */
     public static final String INNER_DELIMITER = ":";
 
-    public static String FIRST_RUN = "FIRST_RUN";
+    public static final String FIRST_RUN = "FIRST_RUN";
 
     /** Key to inform that artworks are loaded into the devices */
-    public static String ARTWORKS_RETRIEVED = "ARTWORKS_RETRIEVED";
+    public static final String ARTWORKS_RETRIEVED = "ARTWORKS_RETRIEVED";
 
     /** Access key for the artworks on the devices */
-    public static String ARTWORKS_LIST = "ARTWORKS_LIST";
+    public static final String ARTWORKS_LIST = "ARTWORKS_LIST";
 
-    public static String ARTWORK_ITEM_NAME = "ARTWORK_ITEM_NAME";
-    public static String ARTWORK_ITEM_AUTHOR = "ARTWORK_ITEM_AUTHOR";
-    public static String ARTWORK_ITEM_DATE = "ARTWORK_ITEM_DATE";
-    public static String ARTWORK_ITEM_DESCRIPTION = "ARTWORK_ITEM_DESCRIPTION";
+    public static final String ARTWORK_ITEM_NAME = "ARTWORK_ITEM_NAME";
+    public static final String ARTWORK_ITEM_AUTHOR = "ARTWORK_ITEM_AUTHOR";
+    public static final String ARTWORK_ITEM_DATE = "ARTWORK_ITEM_DATE";
+    public static final String ARTWORK_ITEM_DESCRIPTION = "ARTWORK_ITEM_DESCRIPTION";
 
     /** Access key for the user username */
-    public static String USERNAME = "USERNAME";
+    public static final String USERNAME = "USERNAME";
 
     /** Access key for the user password */
-    public static String PASSWORD = "PASSWORD";
+    public static final String PASSWORD = "PASSWORD";
 
     /** Access key for the user token */
-    public static String TOKEN = "TOKEN";
+    public static final String TOKEN = "TOKEN";
 
     /** Access key for the user profile pic */
-    public static String PROFILE_PIC = "PROFILE_PIC";
+    public static final String PROFILE_PIC = "PROFILE_PIC";
 
     /** Access key for the user level */
-    public static String LEVEL = "LEVEL";
+    public static final String LEVEL = "LEVEL";
 }
