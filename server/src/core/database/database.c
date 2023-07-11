@@ -183,12 +183,11 @@ bool populate_collection(mongoc_client_t* client, char* database_name, char* col
   }
 
   // Only for debug purpose (Decomment to show the structure of the artwork documents)
-  for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
-    char* str;
-    str = bson_as_canonical_extended_json (documents[i], NULL);
-    printf("Item n° %zu: %s\n", i, str);
-    bson_free(str);
-  }
+  // for (size_t i = 0; i < ARRAY_SIZE(artworks); i++) {
+  //   char* str = bson_as_canonical_extended_json (documents[i], NULL);
+  //   printf("Item n° %zu: %s\n", i, str);
+  //   bson_free(str);
+  // }
 
   /* Document cleanup */
   for (size_t i = 0; i < ARRAY_SIZE(artworks); i++)

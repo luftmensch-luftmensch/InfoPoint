@@ -56,8 +56,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(_TAG, "Checking internet connection...");
         if (!NetworkManager.checkConnection(this))
             Toasty.error(this, "Nessun connessione ad internet!\nRiprova più tardi", Toasty.LENGTH_LONG).show();
-
-        StorageManager.with(this).write(Constants.FIRST_RUN, true);
         setUI();
     }
 

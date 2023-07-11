@@ -37,7 +37,7 @@
 <!-- Aggiungiamo uno stile per settare il testo scritto justified -->
 <style type="text/css">
     .underline { text-decoration: underline; }
-    p { text-align: left; }
+    p { text-align: left; color: white; }
 </style>
 #+end_export
 # -*- (require 'ox-reveal) -*-

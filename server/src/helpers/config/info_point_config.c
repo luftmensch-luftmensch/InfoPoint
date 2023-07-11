@@ -79,8 +79,11 @@ info_point_config* provide_default_config() {
 }
 
 void cfg_pretty_print(const info_point_config* cfg, FILE* file) {
-  fprintf(file, "### Networking\n\tHost -> %s, Port -> %d, Timeout -> %d\n\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
-  fprintf(file, "### Connections\n\tMax Clients -> %d, Max Threads ->  %d\n\n", cfg->cs.max_clients, cfg->cs.max_workers);
-  fprintf(file, "### Database\n\tType -> %s, Host -> %s, Username -> %s, Password -> %s, Database Name -> %s, Port -> %d\n\n", cfg->ds.type, cfg->ds.host, cfg->ds.username, cfg->ds.password, cfg->ds.database_name, cfg->ds.port);
-  fprintf(file, "### Logging\n\tLog Level - %s, Log File - %s\n\n", cfg->ls.log_level, cfg->ls.log_file);
+  if (strcmp(cfg->ls.log_level, "debug") == 0) {
+    fprintf(file, "Retrieved the following configuration:\n");
+    fprintf(file, "### Networking\n\tHost -> %s, Port -> %d, Timeout -> %d\n\n", cfg->ns.host, cfg->ns.port, cfg->ns.timeout);
+    fprintf(file, "### Connections\n\tMax Clients -> %d, Max Threads ->  %d\n\n", cfg->cs.max_clients, cfg->cs.max_workers);
+    fprintf(file, "### Database\n\tType -> %s, Host -> %s, Username -> %s, Password -> %s, Database Name -> %s, Port -> %d\n\n", cfg->ds.type, cfg->ds.host, cfg->ds.username, cfg->ds.password, cfg->ds.database_name, cfg->ds.port);
+    fprintf(file, "### Logging\n\tLog Level - %s, Log File - %s\n\n", cfg->ls.log_level, cfg->ls.log_file);
+  }
 }

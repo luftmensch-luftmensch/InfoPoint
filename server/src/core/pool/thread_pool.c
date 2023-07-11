@@ -239,7 +239,7 @@ static void handle_request(request* r, mongoc_client_t* client, char* db_name, c
     return;
   }
 
-  printf("Request: %s\n", r->request_type);
+  // printf("Request: %s\n", r->request_type);
 
   /* Parse the token received in order to remove any new line \n */
   r->token[strcspn(r->token, "\n")] = '\0';

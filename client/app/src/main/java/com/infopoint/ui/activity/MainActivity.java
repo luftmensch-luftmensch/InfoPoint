@@ -27,6 +27,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+
+import com.infopoint.core.config.Constants;
+import com.infopoint.core.preferences.StorageManager;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import com.infopoint.R;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(bundle);
         Log.d(_TAG, "onCreate: Starting...");
         setContentView(R.layout.main_activity);
+
+        StorageManager.with(this).write(Constants.FIRST_RUN, true);
         setUI();
     }
 
