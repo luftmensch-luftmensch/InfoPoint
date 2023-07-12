@@ -20,7 +20,8 @@
 
 package com.infopoint.ui.activity.intro;
 
-/** Utility class representing the data of a single page inside the {@link IntroActivity} */
+/** Utility class representing the data of a single page inside the {@link IntroActivity}
+ * @noinspection ClassCanBeRecord */
 public class SlideItem {
     private final String title;
     private final int image;

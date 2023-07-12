@@ -149,11 +149,4 @@ public class SearchFragment extends Fragment {
         NavController navigator = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navigator.navigate(R.id.nav_art_work_item, bundle, null);
     }
-
-    @Override
-    public void onPause() { super.onPause(); }
-
-    @Override
-    public void onResume() { super.onResume(); }
-
 }

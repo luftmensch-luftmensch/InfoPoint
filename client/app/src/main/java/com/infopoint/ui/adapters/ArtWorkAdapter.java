@@ -44,6 +44,7 @@ public class ArtWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public ArtWorkAdapter(List<ArtWork> items) { this.items = items; }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void useFilter(List<ArtWork> filtered) {
         this.items = filtered;
         notifyDataSetChanged();

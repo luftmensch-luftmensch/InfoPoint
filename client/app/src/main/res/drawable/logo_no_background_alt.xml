@@ -18,10 +18,12 @@
   ~
   -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:viewportWidth="1000"
     android:viewportHeight="611"
     android:width="1000dp"
-    android:height="611dp">
+    android:height="611dp"
+    tools:ignore="VectorRaster,VectorPath">
     <group
         android:translateX="-0.605361"
         android:translateY="-0.3969824">

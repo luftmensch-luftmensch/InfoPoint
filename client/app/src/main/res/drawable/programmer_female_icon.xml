@@ -19,10 +19,12 @@
   ~
   -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:viewportWidth="367.21"
     android:viewportHeight="367.21"
     android:width="200dp"
-    android:height="200dp">
+    android:height="200dp"
+    tools:ignore="VectorPath">
     <group
         android:translateX="38.75"
         android:translateY="-0">

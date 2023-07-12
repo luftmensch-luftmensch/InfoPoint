@@ -23,6 +23,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <!-- Light variant -->
     <color name="seed">#78909C</color>
     <color name="md_theme_light_primary">#006783</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
@@ -55,6 +56,7 @@
     <color name="md_theme_light_outlineVariant">#C0C8CD</color>
     <color name="md_theme_light_scrim">#000000</color>
 
+    <!-- Dark variant -->
     <color name="md_theme_dark_primary">#64D3FF</color>
     <color name="md_theme_dark_onPrimary">#003545</color>
     <color name="md_theme_dark_primaryContainer">#004D63</color>

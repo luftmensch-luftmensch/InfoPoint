@@ -24,11 +24,11 @@
         android:id="@+id/menu_item_info"
         android:icon="@drawable/ic_info_outline_white_24dp"
         android:title="@string/logout"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_item_exit"
         android:icon="@drawable/exit_icon"
         android:title="@string/logout"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

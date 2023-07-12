@@ -27,9 +27,7 @@ public class Validator {
             return false;
         } else if (!s.trim().matches("^[a-zA-Z0-9]+[_@#]?[a-zA-Z0-9]+$")) {
             return false;
-        } else if ((s.trim().length() < 8) || (s.trim().length() > 15)) {
-            return false;
-        } else if (s.trim().contains(" ")) {
+        } else if ((s.trim().length() < 8) || (s.trim().length() > 15) || s.trim().contains(" ")) {
             return false;
         }
 

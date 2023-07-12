@@ -32,9 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.infopoint.R;
-import com.infopoint.core.config.Constants;
 import com.infopoint.core.networking.NetworkManager;
-import com.infopoint.core.preferences.StorageManager;
 import com.infopoint.core.validator.Validator;
 import com.infopoint.ui.activity.MainActivity;
 import com.infopoint.ui.activity.authentication.registration.RegistrationActivity;

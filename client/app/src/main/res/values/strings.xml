@@ -17,174 +17,62 @@
   ~   First written in 13/6/2023 at 23:48
   ~
   -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">InfoPoint</string>
-
-    <string name="title_activity_main">InfoPoint</string>
 
     <!-- Bottom Bar -->
     <string name="home">Home</string>
     <string name="profile">Profilo</string>
     <string name="search">Effettua una ricerca</string>
-    <string name="starred">Preferiti</string>
 
-    <!-- AUTHENTICATION -->
     <!-- Hints -->
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Conferma password</string>
-
-    <!-- Actions -->
-    <string name="button_signup_text">Registrati</string>
-    <string name="button_login_text">Accedi</string>
-    <string name="text_social_login">Oppure</string>
-    <string name="button_signup">Registrati</string>
     <string name="forgot_password"><u>Password dimenticata?</u></string>
 
     <!-- Form validation -->
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >8 characters</string>
     <string name="cover_authentication">Cover login</string>
 
-    <!-- Errors -->
-    <string name="auth_failed_generic">Errore sconosciuto, riprova più tardi.</string>
-    <string name="auth_failed_exception">Errore sconosciuto, contatta l\'assistenza.</string>
-    <string name="user_not_found">Utente non trovato.</string>
-    <string name="username_exists">Username già esistente.</string>
-    <string name="password_not_valid_for_user">Password non valida, riprova.</string>
-    <string name="credentials_already_taken">Esiste già un utente con queste credenziali, riprova.</string>
-    <string name="incorrect_parameters">Uno o più campi non sono corretti, riprova.</string>
-
-    <string name="unknown_error">Errore sconosciuto, contatta un amministratore</string>
 
     <!-- Logo -->
     <string name="logo_app">Logo App</string>
 
-    <!-- ERRORS RELATED TO NETWORK OR STORAGE -->
-    <string name="data_corrupted">Prova a reinstallare l\'app, i dati potrebbero essersi corrotti!</string>
-    <string name="unexpected_error">Errore inaspettato, riprova</string>
-    <string name="internet_error">Controlla la tua connessione ad internet</string>
-
-    <string name="bad_request">Operazione effettuata non valida, controlla le informazioni inserite</string>
-    <string name="forbidden">Non hai i permessi necessari per effettuare l\'operazione</string>
-    <string name="internal_error" tools:ignore="Typos">Il Server non può elaborare la richiesta al momento, riprova più tardi</string>
-    <string name="not_acceptable">Richiesta non valida, aggiorna l\'app</string>
-    <string name="not_found">Nessun risultato trovato</string>
-    <string name="service_unavailable">Servizio non disponibile, riprova più tardi</string>
-    <string name="timeout">Timeout della richiesta, riprova</string>
-    <string name="unauthorized">Non sei autenticato correttamente per l\'utilizzo dei servizi</string>
-
     <string name="login_text"> <u>Accedi</u></string>
     <string name="sign_up_text"> <u>Registrati</u></string>
     <string name="no_account_question">Non hai un account?</string>
-    <string name="button_confirm_reset_text">Conferma</string>
-    <string name="chip_save_text">Salva</string>
 
     <string name="placeholder_username">\@username</string>
-    <string name="chip_text_about">Su InfoPoint</string>
     <string name="description_placeholder">Descrizione</string>
-    <string name="wrong_credentials">Username o password non corretti, riprova.</string>
-    <string name="password_length">La password deve contenere almeno 8 caratteri.</string>
-    <string name="username_check">L\'username non può contenere spazi.</string>
-    <string name="passwords_matching">La password non corrisponde.</string>
-    <string name="next_fab">Avanti</string>
-    <string name="description_hint">Descrizione (opzionale)</string>
 
-    <string name="password_reset_success">La password è stata aggiornata con successo! Effettua l\'accesso.</string>
+    <!-- Artworkl details -->
+    <string name="placeholder_title">Titolo Opera</string>
+    <string name="placeholder_author">Autore</string>
 
-
-    <string name="warning_not_updated_or_incorrect">Informazioni inesatte o non aggiornate</string>
-
-
-    <string name="cancel_insertion">Annulla inserimento</string>
-    <string name="cancel_insertion_message">Vuoi davvero uscire? Tutte le informazioni inserite saranno perse.</string>
-    <string name="yes_action_dialog">Sì</string>
-    <string name="no_action_dialog">No</string>
-
-    <string name="report_action_dialog">Segnala</string>
-    <string name="cancel_dialog">Annulla</string>
-    <string name="post_reported_success">Grazie per la tua segnalazione, analizzeremo il post al più presto</string>
-    <string name="cancel_report_dialog">Annulla segnalazione</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-
-    <string name="action_settings">Impostazioni</string>
-
-    <string name="title_placeholder_text">Titolo Opera</string>
-    <string name="cover_password">Cover password dimenticata</string>
-    <string name="button_forgot_password_text">Invia codice</string>
-    <string name="rateArtWork">Valuta Opera</string>
-    <string name="title_info">Nome opera</string>
-    <string name="tagArtWork1">TODO-TAG</string>
-    <string name="tagArtWork2">TODO-TAG 2</string>
-    <string name="tagArtWork3">TODO-TAG 3</string>
-    <string name="edit_profile_pic">Modifica foto profilo</string>
-    <string name="remove_art_work">Rimuovi opera</string>
-    <string name="resend_confirmation_code">Inviami di nuovo il codice di conferma</string>
-    <string name="hint_confirmation_code">Inserisci il codice di conferma</string>
-    <string name="comment_placeholder">Commento</string>
-    <string name="placeholder_artist">Artista</string>
-    <string name="button_confirm_text">Conferma</string>
-
-    <!-- INTRO -->
-    <string name="titleSlide1">Benvenuto su InfoPoint!</string>
-    <string name="descriptionSlide1">Il supporto di cui avevi bisogno</string>
-    <string name="artwork_details">Dettaglio Opera</string>
-    <string name="switch_to_login_page">Già registrato? Accedi!</string>
-    <string name="welcome">Benvenuto!</string>
-    <string name="create_account">Crea Account</string>
-    <string name="terms_and_conditions"><![CDATA[![CDATA[Terms & Conditions]]]]></string>
-    <string name="rectangle_with_borders" />
-    <string name="remember_me">Ricordami</string>
-    <string name="info_point_motto">Educate yourself!</string>
-    <string name="welcome_back">Bentornato!</string>
-
+    <!-- Navigation -->
     <string name="navigation_menu_logout">Logout</string>
-    <string name="navigation_menu_about_us">Su di noi</string>
-    <string name="navigation_menu_report_bug">Segnala un problema</string>
-    <string name="navigation_menu_feedback">Feedback</string>
-    <string name="navigation_menu_settings">Impostazioni</string>
     <string name="navigation_menu_home">Home</string>
     <string name="navigation_menu_search">Ricerca</string>
     <string name="navigation_menu_profile">Profilo</string>
-    <string name="navigation_menu_starred">Preferiti</string>
-    <string name="update_profile">Aggiorna profilo</string>
-    <string name="contact_us">Contattaci</string>
-    <string name="github_icon">Github</string>
 
-    <string name="about_us_title">Un nuovo modo di vivere i musei</string>
+    <!-- About us -->
     <string name="about_us_team"><u>Il nostro TEAM</u></string>
-    <string name="linkedin_icon">Linkedin</string>
-
     <string name="author_1">Valentino Bocchetti</string>
     <string name="author_1_description">Lead Developer</string>
-
     <string name="author_2">Dario Morace</string>
     <string name="author_2_description">Developer</string>
-
     <string name="author_3">Lucia Brando</string>
-    <string name="author_3_description">Designer &amp; Developer</string>
-    <string name="about_us">Su di noi</string>
-    <string name="artwork_name">Nome opera</string>
-    <string name="placeholder_author">Autore</string>
-    <string name="sort_button">Ordina</string>
-    <string name="sort_order">Modalità di ordinamento</string>
+    <string name="author_3_description">Developer</string>
+    <string name="github_icon">Github</string>
 
-    <string name="starred_empty" tools:ignore="Typos">Salva le opere che più ti interessano per vederle in un secondo momento</string>
-    <string name="starred_empty_sub">Per salvare un opera clicca sul suo menu relativo</string>
-    <string name="starred_empty_icon">Rimuovi da preferiti</string>
+    <string name="artwork_name">Nome opera</string>
+
+    <!-- Intro -->
     <string name="intro_skip">Salta</string>
-    <string name="intro_back">Indietro</string>
     <string name="intro_next">Avanti</string>
     <string name="intro_getting_started">Inizia!</string>
-    <string name="intro">Intro</string>
     <string name="intro_item_image_description">Intro immagine</string>
     <string name="placeholder_user_level">Livello</string>
-    <string name="find_art_work">Cerca un\'opera</string>
-    <string name="search_art_works">Ricerca opere</string>
     <string name="logout">Esci</string>
 
     <!-- LOGOUT -->
@@ -196,17 +84,12 @@
 
     <string name="confirm_request">CONFERMA</string>
     <string name="cancel_request">ANNULLA</string>
-    <string name="find_by_author">Autori</string>
-    <string name="find_by_date">Data</string>
-    <string name="find_by_name">Nome</string>
     <string name="image_dummy_content_description">Descrizione</string>
     <string name="report_bug">Segnala un problema</string>
     <string name="already_registered">Già iscritto?</string>
     <string name="splash_screen_title">Visita l\'arte in un modo</string>
     <string name="splash_screen_body">tutto nuovo</string>
-    <string name="art_work">Opera</string>
     <string name="art_work_description">Descrizione Opera</string>
-    <string name="art_work_title">Titolo Opera</string>
     <string name="more_action">Scopri</string>
     <string name="art_work_date">Data Creazione</string>
     <string name="hint_token">Token</string>

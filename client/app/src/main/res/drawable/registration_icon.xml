@@ -19,10 +19,12 @@
   ~
   -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:viewportWidth="693"
     android:viewportHeight="528"
     android:width="693dp"
-    android:height="528dp">
+    android:height="528dp"
+    tools:ignore="VectorRaster,VectorPath">
     <path
         android:pathData="M608.199 146.5138A47 47 0 0 1 514.199 146.5138A47 47 0 0 1 608.199 146.5138Z"
         android:fillColor="#FF6584" />
