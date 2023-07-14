@@ -15,8 +15,6 @@
   #include "../pool/thread_pool.h"
   #include "../database/database.h"
 
-  typedef enum connection_status { NEW, ALIVE, DEAD } connection_status;
-
   #ifndef IPV4_ADDRESS_FORMAT
      #define IPV4_ADDRESS_FORMAT "%d.%d.%d.%d"
   #endif

@@ -117,7 +117,7 @@ void destroy_thread_pool(thread_pool* pool_to_destroy) {
   pthread_mutex_lock(&(pool_to_destroy->lock));
 
   /* Wake up all worker threads */
-    if (pthread_cond_broadcast(&(pool_to_destroy->signal)) != 0)
+  if (pthread_cond_broadcast(&(pool_to_destroy->signal)) != 0)
     _m(_msginfo, "[%s] (%s) Failed to signal all the threads as requested", __FILE_NAME__, __func__);
 
   if (pthread_mutex_unlock(&(pool_to_destroy->lock)) != 0)
