@@ -10,15 +10,10 @@
 
 #include <stdio.h>
 
-#include "core/database/database.h"
 #include "core/server/server.h"
-#include "helpers/logging/logging.h"
 #include "helpers/logging/welcome_message.h"
-
 #include "helpers/config/info_point_config.h"
 #include "helpers/command_line_runner/command_line_runner.h"
-#include "helpers/utility/utility.h"
-#include "core/payload/payload.h"
 
 int main(int argc, char** argv) {
   // Welcome message
