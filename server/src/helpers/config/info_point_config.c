@@ -31,7 +31,6 @@ info_point_config* provide_config(const char* file_name) {
   read_uint_from_cfg(parser, "connections", "max_threads", &info_point_cfg->cs.max_workers, 10);
 
   /* [Logging] Retriving config options fields from the given config file */
-
   read_str_from_cfg(parser, "logging", "log_level", info_point_cfg->ls.log_level, sizeof(info_point_cfg->ls.log_level), "warning");
   read_str_from_cfg(parser, "logging", "log_file",  info_point_cfg->ls.log_file, sizeof(info_point_cfg->ls.log_file), "stderr");
 
@@ -41,7 +40,6 @@ info_point_config* provide_config(const char* file_name) {
   read_str_from_cfg(parser, "database", "host", info_point_cfg->ds.host, sizeof(info_point_cfg->ds.host), "undefined");
   read_str_from_cfg(parser, "database", "username", info_point_cfg->ds.username, sizeof(info_point_cfg->ds.username), "undefined");
   read_str_from_cfg(parser, "database", "password", info_point_cfg->ds.password, sizeof(info_point_cfg->ds.password), "undefined");
-
   read_uint_from_cfg(parser, "database", "port", &info_point_cfg->ds.port, 1234);
 
   destroy_config(parser);

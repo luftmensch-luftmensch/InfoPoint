@@ -195,6 +195,9 @@ A questo si aggiunge l'utilizzo per la memorizzazione dei dati si è scelto di f
 #+ATTR_REVEAL: :frag (appear)
 Si è inoltre scelto di non fare uso di librerie esterne, che altro non sono che *syntactic sugar*. In questo modo si ha una maggiore gestione del flusso di controllo durante l'esecuzione del server.
 *** Client
+:PROPERTIES:
+:CUSTOM_ID: Client
+:END:
 Analogamente alle scelte effettuate per il server anche per il client si è fatto largo uso di funzioni personali che, come ci si aspettava, hanno reso di più semplice gestione il control-flow dell'applicazione
 ** Demo
 :PROPERTIES:

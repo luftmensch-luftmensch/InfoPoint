@@ -54,7 +54,9 @@ set(headers
     # Configuration parser with ini config file
     src/helpers/config/config_parser.h
     src/helpers/config/info_point_config.h
-    src/helpers/config/sys_queue.h
+
+    # Macros
+    src/helpers/base/macros.h
 
     # Database Related
     src/core/database/database.h
