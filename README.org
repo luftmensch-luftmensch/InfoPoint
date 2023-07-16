@@ -37,24 +37,40 @@
 
 <h1 align="center"> InfoPoint</h1>
 #+END_HTML
-
-* Contributori
+* Contributors
 #+BEGIN_HTML
 <p align="center" width="100%">
-    <!-- Valentino -->
     <a href="https://github.com/luftmensch-luftmensch">
         <img width="15%" src="./res/contributors/luftmensch-luftmensch.png"> 
     </a>
 
-    <!-- Dario -->
     <a href="https://github.com/saltyDario">
         <img width="15%" src="./res/contributors/goblino.png"> 
     </a>
 
-    <!-- Lucia -->
     <a href="https://github.com/lbrando">
         <img width="15%" src="./res/contributors/lbrando.png"> 
     </a>
-
 </p>
 #+END_HTML
+* Usage
+** Server
+In order to compile the server you need ~cmake~ and [[https://mongoc.org/libmongoc/current/tutorial.html][libmongoc]].
+
+On the root of the project run:
+
+#+begin_src bash
+# To apply the definition specified in the CMakeLists.txt file
+cmake -S . -B build/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+# To actually build the project
+cmake --build build/
+
+# To cleanup the generated executable
+cmake --build build/ --target clean
+
+# To execute the projected
+./build/InfoPointServer -c <path/to/the/config-file>
+#+end_src
+** Client
+Open the project with ~Android Studio~ and then start the project from the IDE UI
