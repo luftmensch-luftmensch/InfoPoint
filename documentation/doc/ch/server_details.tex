@@ -142,6 +142,10 @@
     \end{itemize}
 
     \begin{lstlisting}[language=bash]
+      # Prima di poter eseguire il server è necessario avviare il container del database mongodb
+      # invocare il seguente comando nella root del progetto (server)
+      docker-compose up -d database
+
       # Esecuzione del server utilizzando il file di configurazione
       ./build/InfoPointServer -c src/info_point.ini
       # Esecuzione del server utilizzando facendo uso della configurazione di default (-d o -use-default-config)
