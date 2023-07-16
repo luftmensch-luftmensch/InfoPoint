@@ -203,8 +203,8 @@
     } request_t;
 
     typedef struct payload_t {
-      void* data;
-      size_t size;
+      void* data; // Content of the payload
+      size_t size; // Actual size
     } payload_t;
   \end{lstlisting}
 
@@ -308,7 +308,6 @@
   typedef struct server {
     ssize_t socket;
     struct sockaddr_in transport;
-    size_t conn_count;
     thread_pool* pool;
   } server;
   \end{lstlisting}

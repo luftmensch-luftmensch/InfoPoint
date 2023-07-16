@@ -186,9 +186,9 @@
     Vengono utilizzati come contenitori di conversione dei dati passati tra client e server. Sono così strutturati:
     
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=26, lastline=68]{../../client/app/src/main/java/com/infopoint/model/User.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={26-30, 40-40}]{../../client/app/src/main/java/com/infopoint/model/User.java}
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=26, lastline=50]{../../client/app/src/main/java/com/infopoint/model/ArtWork.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={26-32, 62-62}]{../../client/app/src/main/java/com/infopoint/model/ArtWork.java}
 
 
     \begin{center} \hi{Properties} \end{center}
@@ -203,7 +203,7 @@
 
     Di seguito riportiamo la loro struttura:
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=42, lastline=78]{../../client/app/src/main/java/com/infopoint/model/properties/ArtworkUtil.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={37-39, 41-46, 49-56}]{../../client/app/src/main/java/com/infopoint/model/properties/ArtworkUtil.java}
 
     \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=24]{../../client/app/src/main/java/com/infopoint/model/properties/UserType.java}
 
@@ -222,17 +222,17 @@
 
     \begin{center} \hi{Controllo della presenza della rete} \end{center}
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=49, lastline=55]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={48-54}]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
 
     \begin{center} \hi{Recupero delle informazioni} \end{center}
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=58, lastline=116]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={57-115}]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
 
     \begin{center} \hi{Operazioni per l'utente \footnotemark \footnotetext{Ovvero registrazione, accesso ed eliminazione dell'account}} \end{center}
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=118, lastline=186]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={117-186}]{../../client/app/src/main/java/com/infopoint/core/networking/NetworkManager.java}
 
-    Vista la natura di queste richieste, tutte le operazioni vengono eseguite da un thread \footnotemark \footnotetext{Cerchiamo di evitare a tutti i costi di effettuari operazioni bloccanti, rendendo in questo modo l'applicazione irresponsive per tutta la durata della comunicazione}. Di seguito riportiamo un esempio concreto del loro utilizzo:
+    Vista la natura di queste richieste, tutte le operazioni vengono eseguite da un thread \footnotemark \footnotetext{Cerchiamo di evitare a tutti i costi di effettuari operazioni bloccanti, rendendo in questo modo l'applicazione irresponsive per tutta la durata della comunicazione}. Di seguito riportiamo un esempio concreto del loro utilizzo, preso dalla classe \file{LoginActivity}:
 
 
-    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, firstlineandnumber=106, lastline=130]{../../client/app/src/main/java/com/infopoint/ui/activity/authentication/login/LoginActivity.java}
+    \lstinputlisting[language={[POSIX]JAVA}, style=wnumbers, linerange={43-43, 103-128}]{../../client/app/src/main/java/com/infopoint/ui/activity/authentication/login/LoginActivity.java}
